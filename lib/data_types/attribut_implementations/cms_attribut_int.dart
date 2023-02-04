@@ -6,17 +6,14 @@ class CmsAttributInt extends CmsAttribut<int> {
   final String? hint;
 
   const CmsAttributInt({
-    required String name,
-    String? errorMessage,
-    bool isOptional = false,
-    Validator<int>? validator,
     this.hint,
-  }) : super(
-          name: name,
-          invalidValueErrorMessage: errorMessage,
-          isOptional: isOptional,
-          validator: validator,
-        );
+    required super.name,
+    super.validator,
+    super.invalidValueErrorMessage = "invalid input",
+    super.isOptional = false,
+    super.canObjectBeSortedByThisAttribut = false,
+    super.shouldBeDisplayedOnOverviewTable = true,
+  });
 
   @override
   Widget buildWidget({
@@ -32,6 +29,9 @@ class CmsAttributInt extends CmsAttribut<int> {
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,
         onCmsTypeUpdated: onCmsTypeUpdated,
       );
+
+      @override
+      String valueToString(int? value) => value?.toString() ?? "---";
 
   @override
   List<Object?> get props => [

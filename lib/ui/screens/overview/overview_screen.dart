@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/routes.dart';
-import 'package:flutter_cms/ui/cms_object_overview/cms_object_overview.dart';
+import 'package:flutter_cms/ui/screens/overview/cms_object_overview.dart';
 import 'package:flutter_cms/ui/flutter_cms_widget.dart';
 import 'package:go_router/go_router.dart';
 

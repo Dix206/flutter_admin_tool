@@ -20,7 +20,7 @@ class CmsObjectValueList<T extends Object> extends Equatable {
 }
 
 class CmsObjectValue extends Equatable {
-  final Object id;
+  final Object? id;
   final List<CmsAttributValue> values;
 
   const CmsObjectValue({

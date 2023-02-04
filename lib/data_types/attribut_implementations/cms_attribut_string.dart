@@ -5,19 +5,16 @@ import 'package:flutter_cms/data_types/cms_attribut.dart';
 
 class CmsAttributString extends CmsAttribut<String> {
   final String? hint;
-  
+
   const CmsAttributString({
-    required String name,
     this.hint,
-    String? errorMessage,
-    bool isOptional = false,
-    Validator<String>? validator,
-  }) : super(
-          name: name,
-          invalidValueErrorMessage: errorMessage,
-          isOptional: isOptional,
-          validator: validator,
-        );
+    required super.name,
+    super.validator,
+    super.invalidValueErrorMessage = "invalid input",
+    super.isOptional = false,
+    super.canObjectBeSortedByThisAttribut = false,
+    super.shouldBeDisplayedOnOverviewTable = true,
+  });
 
   @override
   Widget buildWidget({
@@ -33,6 +30,9 @@ class CmsAttributString extends CmsAttribut<String> {
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,
         onCmsTypeUpdated: onCmsTypeUpdated,
       );
+
+  @override
+  String valueToString(String? value) => value ?? "---";
 
   @override
   List<Object?> get props => [

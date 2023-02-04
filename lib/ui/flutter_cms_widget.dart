@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_object.dart';
+import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/routes.dart';
 
 class FlutterCms extends StatelessWidget {
   final List<CmsObject> cmsObjects;
+  final CmsAuthInfos cmsAuthInfos;
 
   const FlutterCms({
     Key? key,
     required this.cmsObjects,
+    required this.cmsAuthInfos,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final router = getGoRouter(cmsObjects.first);
+    final router = getGoRouter(
+      cmsAuthInfos: cmsAuthInfos,
+      cmsOnjects: cmsObjects,
+    );
 
     return MaterialApp.router(
       routeInformationProvider: router.routeInformationProvider,

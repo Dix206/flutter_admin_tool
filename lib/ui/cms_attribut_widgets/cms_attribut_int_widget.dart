@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_attribut.dart';
-import 'package:flutter_cms/data_types/cms_attribut_int.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_int.dart';
 
 class CmsAttributIntWidget extends StatefulWidget {
   final BuildContext context;
@@ -23,7 +23,8 @@ class CmsAttributIntWidget extends StatefulWidget {
 }
 
 class _CmsAttributIntWidgetState extends State<CmsAttributIntWidget> {
-  late final _textEditingController = TextEditingController(text: widget.currentValue?.toString());
+  late final _textEditingController =
+      TextEditingController(text: widget.currentValue?.toString());
 
   @override
   void initState() {
@@ -41,7 +42,8 @@ class _CmsAttributIntWidgetState extends State<CmsAttributIntWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final isValid = widget.cmsTypeInt.isOptional || (widget.cmsTypeInt.validator?.call(widget.currentValue) ?? true);
+    final isValid = widget.cmsTypeInt.isOptional ||
+        (widget.cmsTypeInt.validator?.call(widget.currentValue) ?? true);
 
     return TextField(
       controller: _textEditingController,
@@ -50,7 +52,9 @@ class _CmsAttributIntWidgetState extends State<CmsAttributIntWidget> {
       decoration: InputDecoration(
         labelText: widget.cmsTypeInt.name,
         hintText: widget.cmsTypeInt.hint,
-        errorText: isValid || !widget.shouldDisplayValidationErrors ? null : widget.cmsTypeInt.invalidValueErrorMessage,
+        errorText: isValid || !widget.shouldDisplayValidationErrors
+            ? null
+            : widget.cmsTypeInt.invalidValueErrorMessage,
       ),
     );
   }

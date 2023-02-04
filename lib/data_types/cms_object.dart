@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import 'package:flutter_cms/data_types/cms_attribut.dart';
+import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/data_types/result.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
@@ -12,16 +13,17 @@ typedef OnManipulateCmsObject = Future<Result<Unit>> Function(CmsObjectValue);
 typedef OnLoadCmsObjects = Future<Result<CmsObjectValueList>> Function({
   required Object? lastLoadedCmsObjectId,
   required String? searchQuery,
+  required CmsObjectSortOptions sortOptions,
 });
 
 /// This Class represents an object in the CMS. It should be used for every object which is stored in your backend.
 class CmsObject extends Equatable {
-  /// The name of an object will be shown in the CMS-UI. 
+  /// The name of an object will be shown in the CMS-UI.
   /// The name should be unique.
   final String name;
 
-  /// The attributes define the properties of an object. 
-  /// They are used to create and update objects. 
+  /// The attributes define the properties of an object.
+  /// They are used to create and update objects.
   /// In the UI they will be displayed in the order they are defined.
   final List<CmsAttribut> attributes;
 
@@ -81,11 +83,8 @@ class CmsObject extends Equatable {
   /// An attribute is valid if it is not required and null or if it is required and valid based on the attribut validator.
   bool isCmsObjectValueValid(CmsObjectValue cmsObjectValue) {
     for (final attribute in attributes) {
-      final attributValue = cmsObjectValue.values
-          .firstWhereOrNull(
-            (value) => value.name == attribute.name,
-          )
-          ?.value;
+      final attributValue =
+          cmsObjectValue.getAttributeValueByName(attribute.name)?.value;
 
       if (!attribute.isValid(attributValue)) {
         return false;
@@ -94,6 +93,9 @@ class CmsObject extends Equatable {
 
     return true;
   }
+
+  CmsAttribut? getAttributByName(String attributName) =>
+      attributes.firstWhereOrNull((attribut) => attribut.name == attributName);
 
   @override
   List<Object?> get props {
