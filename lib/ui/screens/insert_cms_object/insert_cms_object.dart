@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_attribut_value.dart';
 import 'package:flutter_cms/data_types/cms_object.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/result.dart';
 import 'package:flutter_cms/ui/flutter_cms_widget.dart';
 import 'package:flutter_cms/ui/messages/error_message.dart';
+import 'package:flutter_cms/ui/screens/insert_cms_object/insert_cms_object_view_model.dart';
 import 'package:flutter_cms/ui/widgets/cms_error_widget.dart';
 import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 
@@ -34,29 +33,39 @@ class InsertCmsObject extends StatelessWidget {
           child: Text("There is no Object with the name $cmsObjectName"),
         ),
       );
-    } else if (existingCmsObjectValueId == null) {
-      content = _Content(
-        cmsObject: cmsObject,
-        existingCmsObjectValue: null,
-      );
     } else {
-      content = FutureBuilder(
-        future: cmsObject.loadCmsObjectById(
-          cmsObject.stringToId(existingCmsObjectValueId!)!,
-        ),
-        builder: (context, snapshot) {
-          if (snapshot.data == null) return const CmsLoading();
+      content = InsertCmsObjectViewModelProvider(
+        cmsObject: cmsObject,
+        existingCmsObjectValueId: existingCmsObjectValueId,
+        onStateUpdate: (state) {
+          if (state is InsertCmsObjectInitState && state.failure != null) {
+            showErrorMessage(context: context, errorMessage: state.failure!);
+          }
 
-          return snapshot.data!.fold(
-            onError: (errorMessage) => CmsErrorWidget(
-              errorMessage: errorMessage,
-              onRetry: () {}, // TODO how to recall future builder
-            ),
-            onSuccess: (cmsObjectValue) => _Content(
+          if (state is InsertCmsObjectInitState && state.isInsertSuccessfull) {
+            Navigator.pop(context);
+          }
+        },
+        childBuilder: (context) {
+          final state = InsertCmsObjectViewModel.of(context).state;
+
+          if (state is InsertCmsObjectInitState) {
+            return _Content(
               cmsObject: cmsObject,
-              existingCmsObjectValue: cmsObjectValue,
-            ),
-          );
+              currentCmsObjectValue: state.currentCmsObjectValue,
+              shouldDisplayValidationErrors: state.shouldDisplayValidationErrors,
+              isLoading: state.isInserting,
+            );
+          } else if (state is InsertCmsObjectLoadingState) {
+            return const CmsLoading();
+          } else if (state is InsertCmsObjectFailureState) {
+            return CmsErrorWidget(
+              errorMessage: state.failure,
+              onRetry: InsertCmsObjectViewModel.of(context).init,
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
         },
       );
     }
@@ -69,12 +78,16 @@ class InsertCmsObject extends StatelessWidget {
 
 class _Content extends StatefulWidget {
   final CmsObject cmsObject;
-  final CmsObjectValue? existingCmsObjectValue;
+  final CmsObjectValue currentCmsObjectValue;
+  final bool shouldDisplayValidationErrors;
+  final bool isLoading;
 
   const _Content({
     Key? key,
     required this.cmsObject,
-    required this.existingCmsObjectValue,
+    required this.currentCmsObjectValue,
+    required this.shouldDisplayValidationErrors,
+    required this.isLoading,
   }) : super(key: key);
 
   @override
@@ -82,55 +95,29 @@ class _Content extends StatefulWidget {
 }
 
 class _ContentState extends State<_Content> {
-  final _shouldDisplayValidationErrors = ValueNotifier(false);
-  late final _currentCmsObjectValue = ValueNotifier(
-    widget.cmsObject.toEmptyCmsObjectValue(),
-  );
-
-  @override
-  void dispose() {
-    _shouldDisplayValidationErrors.dispose();
-    _currentCmsObjectValue.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: _currentCmsObjectValue,
-        builder: (context, currentCmsObjectValue, child) {
-          return ValueListenableBuilder(
-              valueListenable: _shouldDisplayValidationErrors,
-              builder: (context, shouldDisplayValidationErrors, child) {
-                return Column(
-                  children: [
-                    Expanded(
-                      child: _AttributeWidgets(
-                        cmsObject: widget.cmsObject,
-                        currentCmsObjectValue: _currentCmsObjectValue,
-                        shouldDisplayValidationErrors:
-                            shouldDisplayValidationErrors,
-                        existingCmsObjectValue: widget.existingCmsObjectValue,
-                      ),
-                    ),
-                    _InsertButton(
-                      currentCmsObjectValue: _currentCmsObjectValue.value,
-                      cmsObject: widget.cmsObject,
-                      existingCmsObjectValue: widget.existingCmsObjectValue,
-                      shouldDisplayValidationErrors:
-                          _shouldDisplayValidationErrors,
-                    ),
-                  ],
-                );
-              });
-        });
+    return Column(
+      children: [
+        Expanded(
+          child: _AttributeWidgets(
+            cmsObject: widget.cmsObject,
+            currentCmsObjectValue: widget.currentCmsObjectValue,
+            shouldDisplayValidationErrors: widget.shouldDisplayValidationErrors,
+          ),
+        ),
+        _InsertButton(
+          cmsObject: widget.cmsObject,
+          isLoading: widget.isLoading,
+        ),
+      ],
+    );
   }
 }
 
 class _AttributeWidgets extends StatelessWidget {
   final CmsObject cmsObject;
-  final CmsObjectValue? existingCmsObjectValue;
-  final ValueNotifier<CmsObjectValue> currentCmsObjectValue;
+  final CmsObjectValue currentCmsObjectValue;
   final bool shouldDisplayValidationErrors;
 
   const _AttributeWidgets({
@@ -138,7 +125,6 @@ class _AttributeWidgets extends StatelessWidget {
     required this.cmsObject,
     required this.currentCmsObjectValue,
     required this.shouldDisplayValidationErrors,
-    this.existingCmsObjectValue,
   }) : super(key: key);
 
   @override
@@ -151,18 +137,12 @@ class _AttributeWidgets extends StatelessWidget {
 
         return cmsValue.buildWidget(
           context: context,
-          currentValue: currentCmsObjectValue.value
-                  .getAttributeValueByName(cmsValue.name)
-                  ?.value ??
-              existingCmsObjectValue?.values[index].value,
+          currentValue: currentCmsObjectValue.getAttributeValueByName(cmsValue.name)?.value,
           shouldDisplayValidationErrors: shouldDisplayValidationErrors,
           onCmsTypeUpdated: (newValue) {
-            currentCmsObjectValue.value =
-                currentCmsObjectValue.value.copyWithNewValue(
-              CmsAttributValue(
-                name: cmsValue.name,
-                value: newValue,
-              ),
+            InsertCmsObjectViewModel.of(context).updateAttributValue(
+              name: cmsValue.name,
+              value: newValue,
             );
           },
         );
@@ -173,16 +153,12 @@ class _AttributeWidgets extends StatelessWidget {
 
 class _InsertButton extends StatefulWidget {
   final CmsObject cmsObject;
-  final CmsObjectValue? existingCmsObjectValue;
-  final CmsObjectValue currentCmsObjectValue;
-  final ValueNotifier<bool> shouldDisplayValidationErrors;
+  final bool isLoading;
 
   const _InsertButton({
     Key? key,
-    required this.currentCmsObjectValue,
     required this.cmsObject,
-    required this.existingCmsObjectValue,
-    required this.shouldDisplayValidationErrors,
+    required this.isLoading,
   }) : super(key: key);
 
   @override
@@ -190,62 +166,11 @@ class _InsertButton extends StatefulWidget {
 }
 
 class __InsertButtonState extends State<_InsertButton> {
-  final _isInserting = ValueNotifier(false);
-
-  @override
-  void dispose() {
-    _isInserting.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: _isInserting,
-        builder: (context, isInserting, child) {
-          return ElevatedButton(
-            onPressed: _onInsertObject,
-            child: isInserting
-                ? const CircularProgressIndicator()
-                : const Text("Speichern"),
-          );
-        });
-  }
-
-  Future<void> _onInsertObject() async {
-    final currentCmsObjectValue = widget.currentCmsObjectValue;
-    if (!widget.cmsObject.isCmsObjectValueValid(currentCmsObjectValue)) {
-      showErrorMessage(
-        context: context,
-        errorMessage: "Bitte überprüfe deine Eingaben",
-      );
-      widget.shouldDisplayValidationErrors.value = true;
-      return;
-    }
-
-    _isInserting.value = true;
-
-    final Result result;
-
-    if (widget.existingCmsObjectValue != null) {
-      result = widget.cmsObject.onUpdateCmsObject != null
-          ? await widget.cmsObject.onUpdateCmsObject!(currentCmsObjectValue)
-          : Result.success(const Unit());
-    } else {
-      result = widget.cmsObject.onCreateCmsObject != null
-          ? await widget.cmsObject.onCreateCmsObject!(currentCmsObjectValue)
-          : Result.success(const Unit());
-    }
-
-    result.fold(
-      onError: (errorMessage) {
-        _isInserting.value = false;
-        showErrorMessage(
-          context: context,
-          errorMessage: errorMessage,
-        );
-      },
-      onSuccess: (unit) => Navigator.of(context).pop(),
+    return ElevatedButton(
+      onPressed: InsertCmsObjectViewModel.of(context).insertObject,
+      child: widget.isLoading ? const CircularProgressIndicator() : const Text("Speichern"),
     );
   }
 }

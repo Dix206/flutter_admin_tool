@@ -23,6 +23,12 @@ class _CmsObjectOverviewViewModelProviderState extends State<CmsObjectOverviewVi
   final ValueNotifier<CmsObjectOverviewState?> _state = ValueNotifier(null);
 
   @override
+  void dispose() {
+    _state.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CmsObjectOverviewViewModel(
       cmsObject: widget.cmsObject,
