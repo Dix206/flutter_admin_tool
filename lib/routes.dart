@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_object.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
+import 'package:flutter_cms/ui/screens/main_screen.dart';
 import 'package:flutter_cms/ui/screens/overview/overview_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -56,22 +57,31 @@ GoRouter getGoRouter({
       }
     },
     routes: [
-      GoRoute(
+      FadeRoute(
         path: Routes.login,
-        builder: (context, state) => cmsAuthInfos.loginScreenBuilder(
+        childBuilder: (state) => cmsAuthInfos.loginScreenBuilder(
           authStateService.onUserLoggedIn,
         ),
       ),
-      GoRoute(
-        path: "/overview/:cmsObjectName",
-        builder: (context, state) {
+      ShellRoute(
+        builder: (context, state, child) {
           final cmsObjectName = state.params['cmsObjectName'] ?? "";
-          return OverviewScreen(selectedCmsObjectName: cmsObjectName);
+          return MainScreen(
+            selectedCmsObjectName: cmsObjectName,
+            child: child,
+          );
         },
         routes: [
-          GoRoute(
-            path: "create",
-            builder: (context, state) {
+          FadeRoute(
+            path: "/overview/:cmsObjectName",
+            childBuilder: (state) {
+              final cmsObjectName = state.params['cmsObjectName'] ?? "";
+              return OverviewScreen(selectedCmsObjectName: cmsObjectName);
+            },
+          ),
+          FadeRoute(
+            path: "/overview/:cmsObjectName/create",
+            childBuilder: (state) {
               final cmsObjectName = state.params['cmsObjectName'] ?? "";
 
               return InsertCmsObject(
@@ -80,9 +90,9 @@ GoRouter getGoRouter({
               );
             },
           ),
-          GoRoute(
-            path: "update/:existingCmsObjectValueId",
-            builder: (context, state) {
+          FadeRoute(
+            path: "/overview/:cmsObjectName/update/:existingCmsObjectValueId",
+            childBuilder: (state) {
               final cmsObjectName = state.params['cmsObjectName'] ?? "";
               final existingCmsObjectValueId = state.params['existingCmsObjectValueId'];
               return InsertCmsObject(
@@ -106,4 +116,23 @@ class Routes {
   }) =>
       "/overview/$cmsObjectName/update/$existingCmsObjectValueId";
   static createObject(String cmsObjectName) => "/overview/$cmsObjectName/create";
+}
+
+class FadeRoute extends GoRoute {
+  FadeRoute({
+    required super.path,
+    super.name,
+    required Widget Function(GoRouterState) childBuilder,
+    List<GoRoute> super.routes = const [],
+    Future<String?> Function(BuildContext, GoRouterState)? redirect,
+  }) : super(
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+            child: childBuilder(state),
+          ),
+        );
 }

@@ -32,7 +32,10 @@ class _CmsObjectOverviewViewModelProviderState extends State<CmsObjectOverviewVi
   Widget build(BuildContext context) {
     return CmsObjectOverviewViewModel(
       cmsObject: widget.cmsObject,
-      onNotifyListener: (state) => _state.value = state,
+      onNotifyListener: (state) {
+        if (!mounted) return;
+        _state.value = state;
+      },
       child: ValueListenableBuilder(
         valueListenable: _state,
         builder: (context, value, child) => widget.childBuilder(context),

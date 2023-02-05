@@ -40,6 +40,7 @@ class _InsertCmsObjectViewModelProviderState extends State<InsertCmsObjectViewMo
       cmsObject: widget.cmsObject,
       existingCmsObjectValueId: widget.existingCmsObjectValueId,
       onNotifyListener: (state) {
+        if(!mounted) return;
         if (_state.value != state) widget.onStateUpdate(state);
         _state.value = state;
       },
