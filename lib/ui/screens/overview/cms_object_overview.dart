@@ -103,7 +103,14 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SizedBox(
-              width: (widget.cmsObject.attributes.length + 1) * 160 + 32,
+              width: (widget.cmsObject.attributes
+                              .where(
+                                (attribut) => attribut.shouldBeDisplayedOnOverviewTable,
+                              )
+                              .length +
+                          1) *
+                      160 +
+                  32,
               child: Column(
                 children: [
                   Row(

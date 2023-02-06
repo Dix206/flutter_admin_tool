@@ -95,7 +95,7 @@ class CmsObject extends Equatable {
   }
 
   CmsAttribut? getAttributByName(String attributName) =>
-      attributes.firstWhereOrNull((attribut) => attribut.name == attributName);
+      attributes.firstWhereOrNull((attribut) => attribut.name.toLowerCase() == attributName.toLowerCase());
 
   @override
   List<Object?> get props {

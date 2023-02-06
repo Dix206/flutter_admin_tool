@@ -1,6 +1,7 @@
+import 'package:example/appwrite/auth_service.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   final Function() onLoginSuccess;
 
   const LoginScreen({
@@ -9,24 +10,56 @@ class LoginScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final emailController = TextEditingController(text: "bb@test.de");
+  final passwordController = TextEditingController(text: "123456789");
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          const TextField(
-            decoration: InputDecoration(
+          TextField(
+            controller: emailController,
+            decoration: const InputDecoration(
               hintText: "Email",
             ),
           ),
           const SizedBox(height: 16),
-          const TextField(
-            decoration: InputDecoration(
+          TextField(
+            controller: passwordController,
+            decoration: const InputDecoration(
               hintText: "Passwort",
             ),
           ),
           const SizedBox(height: 32),
           ElevatedButton(
-            onPressed: onLoginSuccess,
+            onPressed: () async {
+              final result = await authAppwriteService.login(
+                email: emailController.text,
+                password: passwordController.text,
+              );
+
+              result.fold(
+                onError: (error) => showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(error),
+                  ),
+                ),
+                onSuccess: (_) => widget.onLoginSuccess(),
+              );
+            },
             child: const Text("Login"),
           ),
         ],

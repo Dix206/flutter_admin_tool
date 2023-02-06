@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  appwrite: ^8.1.0
+  uuid: ^3.0.7
   flutter_cms:
       path: ../
 

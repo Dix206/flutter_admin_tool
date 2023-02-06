@@ -1,3 +1,5 @@
+import 'package:example/appwrite/auth_service.dart';
+import 'package:example/article/article_object.dart';
 import 'package:example/author_object.dart';
 import 'package:example/book_object.dart';
 import 'package:example/login.dart';
@@ -11,12 +13,12 @@ void main() {
       cmsObjects: [
         authorCmsObject,
         booksCmsObject,
+        articleCmsObject,
       ],
       cmsAuthInfos: CmsAuthInfos(
-        isUserLoggedIn: () async => false,
+        isUserLoggedIn: authAppwriteService.isUserLoggedIn,
         onLogout: () async {},
-        loginScreenBuilder: (onLoginSuccess) =>
-            LoginScreen(onLoginSuccess: onLoginSuccess),
+        loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
       ),
     ),
   );
