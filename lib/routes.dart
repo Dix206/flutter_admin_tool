@@ -3,36 +3,10 @@ import 'package:flutter_cms/data_types/cms_object.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/ui/screens/main_screen.dart';
 import 'package:flutter_cms/ui/screens/overview/overview_screen.dart';
+import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 import 'package:go_router/go_router.dart';
 
 import 'ui/screens/insert_cms_object/insert_cms_object.dart';
-
-class AuthStateService with ChangeNotifier {
-  final CmsAuthInfos _cmsAuthInfos;
-
-  bool _isLoggedIn = false;
-  bool _isInitialized = false;
-
-  AuthStateService(
-    this._cmsAuthInfos,
-  ) {
-    _init();
-  }
-
-  bool get isLoggedIn => _isLoggedIn;
-  bool get isInitialized => _isInitialized;
-
-  void onUserLoggedIn() {
-    _isLoggedIn = true;
-    notifyListeners();
-  }
-
-  Future<void> _init() async {
-    _isLoggedIn = await _cmsAuthInfos.isUserLoggedIn();
-    _isInitialized = true;
-    notifyListeners();
-  }
-}
 
 GoRouter getGoRouter({
   required CmsAuthInfos cmsAuthInfos,
@@ -59,6 +33,7 @@ GoRouter getGoRouter({
     routes: [
       FadeRoute(
         path: Routes.login,
+        authStateService: authStateService,
         childBuilder: (state) => cmsAuthInfos.loginScreenBuilder(
           authStateService.onUserLoggedIn,
         ),
@@ -74,6 +49,7 @@ GoRouter getGoRouter({
         routes: [
           FadeRoute(
             path: "/overview/:cmsObjectName",
+            authStateService: authStateService,
             childBuilder: (state) {
               final cmsObjectName = state.params['cmsObjectName'] ?? "";
               return OverviewScreen(selectedCmsObjectName: cmsObjectName);
@@ -81,6 +57,7 @@ GoRouter getGoRouter({
           ),
           FadeRoute(
             path: "/overview/:cmsObjectName/create",
+            authStateService: authStateService,
             childBuilder: (state) {
               final cmsObjectName = state.params['cmsObjectName'] ?? "";
 
@@ -92,6 +69,7 @@ GoRouter getGoRouter({
           ),
           FadeRoute(
             path: "/overview/:cmsObjectName/update/:existingCmsObjectValueId",
+            authStateService: authStateService,
             childBuilder: (state) {
               final cmsObjectName = state.params['cmsObjectName'] ?? "";
               final existingCmsObjectValueId = state.params['existingCmsObjectValueId'];
@@ -125,6 +103,7 @@ class FadeRoute extends GoRoute {
     required Widget Function(GoRouterState) childBuilder,
     List<GoRoute> super.routes = const [],
     Future<String?> Function(BuildContext, GoRouterState)? redirect,
+    required AuthStateService authStateService,
   }) : super(
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
@@ -132,7 +111,58 @@ class FadeRoute extends GoRoute {
               opacity: animation,
               child: child,
             ),
-            child: childBuilder(state),
+            child: _LoadingScreen(
+              screen: childBuilder(state),
+              authStateService: authStateService,
+            ),
           ),
         );
+}
+
+class AuthStateService with ChangeNotifier {
+  final CmsAuthInfos _cmsAuthInfos;
+
+  bool _isLoggedIn = false;
+  bool _isInitialized = false;
+
+  AuthStateService(
+    this._cmsAuthInfos,
+  ) {
+    _init();
+  }
+
+  bool get isLoggedIn => _isLoggedIn;
+  bool get isInitialized => _isInitialized;
+
+  void onUserLoggedIn() {
+    _isLoggedIn = true;
+    notifyListeners();
+  }
+
+  Future<void> _init() async {
+    _isLoggedIn = await _cmsAuthInfos.isUserLoggedIn();
+    _isInitialized = true;
+    notifyListeners();
+  }
+}
+
+class _LoadingScreen extends StatelessWidget {
+  final Widget screen;
+  final AuthStateService authStateService;
+
+  const _LoadingScreen({
+    required this.screen,
+    required this.authStateService,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (authStateService.isInitialized) {
+      return screen;
+    } else {
+      return const Scaffold(
+        body: CmsLoading(),
+      );
+    }
+  }
 }

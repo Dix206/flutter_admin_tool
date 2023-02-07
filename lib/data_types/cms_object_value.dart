@@ -37,24 +37,18 @@ class CmsObjectValue extends Equatable {
     };
   }
 
-  CmsAttributValue? getAttributeValueByName(String name) {
-    final k = 0;
-    return values.firstWhereOrNull((value) => value.name.toLowerCase() == name.toLowerCase());
-  }
+  CmsAttributValue? getAttributeValueByName(String name) =>
+      values.firstWhereOrNull((value) => value.name.toLowerCase() == name.toLowerCase());
 
-  Object? getValueByName(String name) {
-    final att = values.firstWhereOrNull((value) => value.name.toLowerCase() == name.toLowerCase());
-    final value = values.firstWhereOrNull((value) => value.name.toLowerCase() == name.toLowerCase())?.value;
-    final k = 0;
-    return values.firstWhereOrNull((value) => value.name.toLowerCase() == name.toLowerCase())?.value;
-  }
+  Object? getValueByName(String name) =>
+      values.firstWhereOrNull((value) => value.name.toLowerCase() == name.toLowerCase())?.value;
 
   CmsObjectValue copyWithNewValue(CmsAttributValue newValue) {
     return CmsObjectValue(
       id: id,
       values: values.map(
         (value) {
-          if (value.name == newValue.name) {
+          if (value.name.toLowerCase() == newValue.name.toLowerCase()) {
             return newValue;
           } else {
             return value;

@@ -204,16 +204,19 @@ class _AttributeWidgets extends StatelessWidget {
       itemBuilder: (context, index) {
         final cmsValue = cmsObject.attributes[index];
 
-        return cmsValue.buildWidget(
-          context: context,
-          currentValue: currentCmsObjectValue.getAttributeValueByName(cmsValue.name)?.value,
-          shouldDisplayValidationErrors: shouldDisplayValidationErrors,
-          onCmsTypeUpdated: (newValue) {
-            InsertCmsObjectViewModel.of(context).updateAttributValue(
-              name: cmsValue.name,
-              value: newValue,
-            );
-          },
+        return Align(
+          alignment: Alignment.centerLeft,
+          child: cmsValue.buildWidget(
+            context: context,
+            currentValue: currentCmsObjectValue.getAttributeValueByName(cmsValue.name)?.value,
+            shouldDisplayValidationErrors: shouldDisplayValidationErrors,
+            onCmsTypeUpdated: (newValue) {
+              InsertCmsObjectViewModel.of(context).updateAttributValue(
+                name: cmsValue.name,
+                value: newValue,
+              );
+            },
+          ),
         );
       },
     );

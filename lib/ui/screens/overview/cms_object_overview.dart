@@ -90,6 +90,9 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
 
   @override
   Widget build(BuildContext context) {
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    scrollController.notifyListeners();
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

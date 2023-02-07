@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_bool.dart';
 import 'package:flutter_cms/data_types/cms_attribut.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_int.dart';
 
 class CmsAttributBoolWidget extends StatelessWidget {
   final bool currentValue;

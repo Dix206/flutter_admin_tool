@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:example/constants.dart';
 
-final client = Client().setEndpoint("http://localhost:776/v1").setProject("63e0f6dd73200066c8eb").setSelfSigned();
+final client = Client().setEndpoint(appwriteHost).setProject(appwriteProjectId).setSelfSigned();
 final account = Account(client);
 final databases = Databases(client);
 final teams = Teams(client);
