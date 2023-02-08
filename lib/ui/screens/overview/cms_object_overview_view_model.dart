@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_object.dart';
+import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/data_types/nullable_object.dart';
 
 class CmsObjectOverviewViewModelProvider extends StatefulWidget {
-  final CmsObject cmsObject;
+  final CmsObjectStructure cmsObject;
   final Widget Function(BuildContext) childBuilder;
 
   const CmsObjectOverviewViewModelProvider({
@@ -46,7 +46,7 @@ class _CmsObjectOverviewViewModelProviderState extends State<CmsObjectOverviewVi
 
 // ignore: must_be_immutable
 class CmsObjectOverviewViewModel extends InheritedWidget {
-  final CmsObject cmsObject;
+  final CmsObjectStructure cmsObject;
   final Function(CmsObjectOverviewState) onNotifyListener;
   CmsObjectOverviewState state = const CmsObjectOverviewState();
 

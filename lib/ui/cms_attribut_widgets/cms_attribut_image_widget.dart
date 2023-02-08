@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_attribut.dart';
+import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_image.dart';
 
 class CmsAttributImageWidget extends StatefulWidget {

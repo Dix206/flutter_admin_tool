@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:flutter_cms/data_types/cms_attribut.dart';
+import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/ui/cms_attribut_widgets/cms_attribut_image_widget.dart';
 
 class ImageValue extends Equatable {
@@ -21,9 +21,10 @@ class ImageValue extends Equatable {
   List<Object?> get props => [imageData, imageUrl];
 }
 
-class CmsAttributImage extends CmsAttribut<ImageValue> {
+class CmsAttributImage extends CmsAttributStructure<ImageValue> {
   const CmsAttributImage({
-    required super.name,
+    required super.id,
+    required super.displayName,
     super.isOptional = false,
     super.canObjectBeSortedByThisAttribut = false,
     super.shouldBeDisplayedOnOverviewTable = true,

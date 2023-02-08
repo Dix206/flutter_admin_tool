@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_object.dart';
+import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/routes.dart';
 import 'package:flutter_cms/ui/messages/error_message.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 import 'package:go_router/go_router.dart';
 
 class CmsObjectOverview extends StatelessWidget {
-  final CmsObject cmsObject;
+  final CmsObjectStructure cmsObject;
 
   const CmsObjectOverview({
     Key? key,
@@ -45,7 +45,7 @@ class CmsObjectOverview extends StatelessWidget {
 }
 
 class _CmsObjectContent extends StatefulWidget {
-  final CmsObject cmsObject;
+  final CmsObjectStructure cmsObject;
   final List<CmsObjectValue> cmsObjectValues;
   final bool hasMoreItems;
   final bool isLoadingMoreItems;
@@ -90,15 +90,15 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
 
   @override
   Widget build(BuildContext context) {
-        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
     scrollController.notifyListeners();
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: () => context.go(Routes.createObject(widget.cmsObject.name)),
+          onPressed: () => context.go(Routes.createObject(widget.cmsObject.displayName)),
           child: const Text("Neues Objekt"),
         ),
         const SizedBox(height: 16),
@@ -129,7 +129,7 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
                           )
                           .map(
                             (attribute) => _TableEntry(
-                              text: attribute.name,
+                              text: attribute.displayName,
                               isTitle: true,
                             ),
                           )
@@ -179,21 +179,20 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
                           child: Row(
                             children: [
                               _TableEntry(
-                                text:
-                                    cmsObjectValue.id == null ? "---" : widget.cmsObject.idToString(cmsObjectValue.id!),
+                                text: cmsObjectValue.id ?? "---",
                               ),
                               ...cmsObjectValue.values
                                   .where(
                                     (cmsAttributeValue) =>
                                         widget.cmsObject
-                                            .getAttributByName(cmsAttributeValue.name)
+                                            .getAttributById(cmsAttributeValue.id)
                                             ?.shouldBeDisplayedOnOverviewTable ??
                                         false,
                                   )
                                   .map(
                                     (cmsAttributeValue) => _TableEntry(
                                       text: widget.cmsObject
-                                              .getAttributByName(cmsAttributeValue.name)
+                                              .getAttributById(cmsAttributeValue.id)
                                               ?.valueToString(cmsAttributeValue.value) ??
                                           "---",
                                     ),
@@ -228,8 +227,8 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
 
     context.go(
       Routes.updateObject(
-        cmsObjectName: widget.cmsObject.name,
-        existingCmsObjectValueId: widget.cmsObject.idToString(cmsObjectValue.id!),
+        cmsObjectName: widget.cmsObject.displayName,
+        existingCmsObjectValueId: cmsObjectValue.id!,
       ),
     );
   }

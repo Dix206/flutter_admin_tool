@@ -2,7 +2,7 @@ import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_ima
 import 'package:flutter_cms/data_types/cms_attribut_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 
-class ArticleAppwriteDto {
+class Article {
   final String id;
   final String title;
   final String description;
@@ -10,7 +10,7 @@ class ArticleAppwriteDto {
   final DateTime timestamp;
   final bool isActive;
 
-  ArticleAppwriteDto({
+  Article({
     required this.id,
     required this.title,
     required this.description,
@@ -23,35 +23,35 @@ class ArticleAppwriteDto {
     return CmsObjectValue(
       id: id,
       values: [
-        CmsAttributValue(name: 'id', value: id),
-        CmsAttributValue(name: 'title', value: title),
-        CmsAttributValue(name: 'description', value: description),
+        CmsAttributValue(id: 'id', value: id),
+        CmsAttributValue(id: 'title', value: title),
+        CmsAttributValue(id: 'description', value: description),
         CmsAttributValue(
-          name: 'image',
+          id: 'image',
           value: ImageValue(
             imageUrl: imageUrl,
             imageData: null,
             headers: authHeaders,
           ),
         ),
-        CmsAttributValue(name: 'timestamp', value: timestamp),
-        CmsAttributValue(name: 'isActive', value: isActive),
+        CmsAttributValue(id: 'timestamp', value: timestamp),
+        CmsAttributValue(id: 'isActive', value: isActive),
       ],
     );
   }
 
-  factory ArticleAppwriteDto.fromCmsObjectValue({
+  factory Article.fromCmsObjectValue({
     required CmsObjectValue cmsObjectValue,
     String? id,
     String? imageUrl,
   }) {
-    return ArticleAppwriteDto(
+    return Article(
       id: id ?? cmsObjectValue.id as String,
-      title: cmsObjectValue.getValueByName('Title') as String,
-      description: cmsObjectValue.getValueByName('Description') as String,
-      imageUrl: imageUrl ?? (cmsObjectValue.getValueByName('Image') as ImageValue).imageUrl,
-      timestamp: cmsObjectValue.getValueByName('Timestamp') as DateTime,
-      isActive: cmsObjectValue.getValueByName('IsActive') as bool,
+      title: cmsObjectValue.getAttributValueByAttributId('Title'),
+      description: cmsObjectValue.getAttributValueByAttributId('Description'),
+      imageUrl: imageUrl ?? cmsObjectValue.getAttributValueByAttributId<ImageValue>('Image').imageUrl,
+      timestamp: cmsObjectValue.getAttributValueByAttributId('Timestamp'),
+      isActive: cmsObjectValue.getAttributValueByAttributId('IsActive'),
     );
   }
 
@@ -66,8 +66,8 @@ class ArticleAppwriteDto {
     };
   }
 
-  factory ArticleAppwriteDto.fromJson(Map<String, dynamic> map) {
-    return ArticleAppwriteDto(
+  factory Article.fromJson(Map<String, dynamic> map) {
+    return Article(
       id: map['id'] as String,
       title: map['title'] as String,
       description: map['description'] as String,
@@ -81,7 +81,7 @@ class ArticleAppwriteDto {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ArticleAppwriteDto &&
+    return other is Article &&
         other.id == id &&
         other.title == title &&
         other.description == description &&

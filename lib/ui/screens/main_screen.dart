@@ -37,11 +37,11 @@ class MainScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Material(
                     child: ListTile(
-                      title: Text(cmsObjects[index].name),
-                      onTap: () => context.go(Routes.overview(cmsObjects[index].name)),
+                      title: Text(cmsObjects[index].displayName),
+                      onTap: () => context.go(Routes.overview(cmsObjects[index].displayName)),
                       tileColor: Theme.of(context).colorScheme.surface,
                       selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                      selected: cmsObjects[index].name == selectedCmsObjectName,
+                      selected: cmsObjects[index].displayName == selectedCmsObjectName,
                     ),
                   );
                 },

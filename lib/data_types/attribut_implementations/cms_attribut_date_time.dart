@@ -1,14 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/ui/cms_attribut_widgets/cms_attribut_date_time_widget.dart';
 
-import 'package:flutter_cms/data_types/cms_attribut.dart';
+import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
-class CmsAttributDateTime extends CmsAttribut<DateTime> {
+class CmsAttributDateTime extends CmsAttributStructure<DateTime> {
   final DateTime? minDateTime;
   final DateTime? maxDateTime;
 
   const CmsAttributDateTime({
-    required super.name,
+    required super.id,
+    required super.displayName,
     this.minDateTime,
     this.maxDateTime,
     super.validator,
@@ -40,7 +41,7 @@ class CmsAttributDateTime extends CmsAttribut<DateTime> {
 
   @override
   List<Object?> get props => [
-        name,
+        displayName,
         isOptional,
         validator,
         invalidValueErrorMessage,

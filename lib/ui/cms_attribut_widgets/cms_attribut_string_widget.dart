@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_attribut.dart';
+import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string.dart';
 
 class CmsAttributStringWidget extends StatefulWidget {
@@ -47,7 +47,7 @@ class _CmsAttributStringWidgetState extends State<CmsAttributStringWidget> {
     return TextField(
       controller: _textEditingController,
       decoration: InputDecoration(
-        labelText: widget.cmsTypeString.name,
+        labelText: widget.cmsTypeString.displayName,
         hintText: widget.cmsTypeString.hint,
         errorText:
             isValid || !widget.shouldDisplayValidationErrors ? null : widget.cmsTypeString.invalidValueErrorMessage,

@@ -1,9 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 import 'package:flutter_cms/data_types/cms_attribut_value.dart';
-import 'package:flutter_cms/extensions/iterable_extensions.dart';
 
-class CmsObjectValueList<T extends Object> extends Equatable {
+class CmsObjectValueList extends Equatable {
   final List<CmsObjectValue> cmsObjectValues;
   final bool hasMoreItems;
 
@@ -20,7 +19,7 @@ class CmsObjectValueList<T extends Object> extends Equatable {
 }
 
 class CmsObjectValue extends Equatable {
-  final Object? id;
+  final String? id;
   final List<CmsAttributValue> values;
 
   const CmsObjectValue({
@@ -32,29 +31,24 @@ class CmsObjectValue extends Equatable {
     return {
       'id': id,
       ...values.asMap().map(
-            (_, value) => MapEntry(value.name, value.value),
+            (_, value) => MapEntry(value.id, value.value),
           ),
     };
   }
 
-  CmsAttributValue? getAttributeValueByName(String name) =>
-      values.firstWhereOrNull((value) => value.name.toLowerCase() == name.toLowerCase());
-
-  Object? getValueByName(String name) =>
-      values.firstWhereOrNull((value) => value.name.toLowerCase() == name.toLowerCase())?.value;
+  S getAttributValueByAttributId<S>(String id) => values.firstWhere(
+        (value) => value.id.toLowerCase() == id.toLowerCase(),
+        orElse: () => throw Exception('CmsAttributValue with id $id not found'),
+      ).value as S;
 
   CmsObjectValue copyWithNewValue(CmsAttributValue newValue) {
     return CmsObjectValue(
       id: id,
-      values: values.map(
-        (value) {
-          if (value.name.toLowerCase() == newValue.name.toLowerCase()) {
-            return newValue;
-          } else {
-            return value;
-          }
-        },
-      ).toList(),
+      values: values
+          .map(
+            (value) => value.id.toLowerCase() == newValue.id.toLowerCase() ? newValue : value,
+          )
+          .toList(),
     );
   }
 

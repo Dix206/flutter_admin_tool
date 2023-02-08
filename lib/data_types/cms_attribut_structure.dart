@@ -6,11 +6,14 @@ typedef Validator<T extends Object> = bool Function(T?);
 typedef OnCmsTypeUpdated<T extends Object> = void Function(T?);
 typedef ValueToString<T extends Object> = String Function(T?);
 
-/// This class represents a single attribute of a [CmsObject].
+/// This class represents the structure of a single attribute of a [CmsObjectStructure].
 /// [T] is the type of the value of this attribute.
-abstract class CmsAttribut<T extends Object> extends Equatable {
+abstract class CmsAttributStructure<T extends Object> extends Equatable {
+  /// This id will be used to identify a specific CmsAttribut of an CmsObject. The id has to be unique per CmsObject.
+  final String id;
+
   /// The name of an attribute will be shown in the CMS-UI.
-  final String name;
+  final String displayName;
 
   /// If this value is set to true, this value has to be setted in the CMS.
   /// If its false, this attribute can be null.
@@ -30,8 +33,9 @@ abstract class CmsAttribut<T extends Object> extends Equatable {
   /// If the list can be sorted by this value, it is neccessary to implement the sort functionality in the object load function.
   final bool canObjectBeSortedByThisAttribut;
 
-  const CmsAttribut({
-    required this.name,
+  const CmsAttributStructure({
+    required this.id,
+    required this.displayName,
     required this.invalidValueErrorMessage,
     required this.isOptional,
     required this.validator,
@@ -55,7 +59,7 @@ abstract class CmsAttribut<T extends Object> extends Equatable {
 
   CmsAttributValue toEmptyAttributValue() {
     return CmsAttributValue<T>(
-      name: name,
+      id: displayName,
       value: null,
     );
   }
@@ -65,7 +69,7 @@ abstract class CmsAttribut<T extends Object> extends Equatable {
 
   @override
   List<Object?> get props => [
-        name,
+        displayName,
         isOptional,
         validator,
         invalidValueErrorMessage,

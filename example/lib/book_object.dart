@@ -1,43 +1,43 @@
 
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string.dart';
 import 'package:flutter_cms/data_types/cms_attribut_value.dart';
-import 'package:flutter_cms/data_types/cms_object.dart';
+import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/data_types/result.dart';
 
 const booksCmsObjectValues = [
   CmsObjectValue(
-    id: 1,
+    id: "1",
     values: [
-      CmsAttributValue(name: "Name", value: "John Doe"),
-      CmsAttributValue(name: "Publisher", value: "Reclaim"),
+      CmsAttributValue(id: "Name", value: "John Doe"),
+      CmsAttributValue(id: "Publisher", value: "Reclaim"),
     ],
   ),
   CmsObjectValue(
-    id: 2,
+    id: "2",
     values: [
-      CmsAttributValue(name: "Name", value: "Jane Doe"),
-      CmsAttributValue(name: "Publisher", value: "Fred"),
+      CmsAttributValue(id: "Name", value: "Jane Doe"),
+      CmsAttributValue(id: "Publisher", value: "Fred"),
     ],
   ),
 ];
 
-final booksCmsObject = CmsObject(
-  name: "Books",
+final booksCmsObject = CmsObjectStructure(
+  displayName: "Books",
   attributes: [
     CmsAttributString(
-      name: "Name",
+      id: "Name",
+      displayName: "Name",
       validator: (name) => name != null && name.length > 3,
       invalidValueErrorMessage: "Name must be at least 3 characters long",
     ),
     CmsAttributString(
-      name: "Publisher",
+      id: "Publisher",
+      displayName: "Publisher",
       validator: (verlag) => verlag != null && verlag.isNotEmpty,
       invalidValueErrorMessage: "Please enter a valid publisher",
     ),
   ],
-  idToString: (id) => id.toString(),
-  stringToId: (id) => int.parse(id),
   loadCmsObjectById: (id) async {
     await Future.delayed(const Duration(seconds: 1));
     for (var value in booksCmsObjectValues) {

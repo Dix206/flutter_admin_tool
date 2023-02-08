@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_object.dart';
+import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/routes.dart';
 
 class FlutterCms extends StatelessWidget {
-  final List<CmsObject> cmsObjects;
+  final List<CmsObjectStructure> cmsObjects;
   final CmsAuthInfos cmsAuthInfos;
 
   const FlutterCms({
@@ -32,17 +32,17 @@ class FlutterCms extends StatelessWidget {
     );
   }
 
-  static List<CmsObject> getAllObjects(BuildContext context) {
+  static List<CmsObjectStructure> getAllObjects(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsObjects;
   }
 
-  static CmsObject? getObjectByName({
+  static CmsObjectStructure? getObjectByName({
     required BuildContext context,
     required String cmsObjectName,
   }) {
     final allObjects = getAllObjects(context);
     for (final object in allObjects) {
-      if (object.name == cmsObjectName) return object;
+      if (object.displayName == cmsObjectName) return object;
     }
 
     return null;
@@ -50,7 +50,7 @@ class FlutterCms extends StatelessWidget {
 }
 
 class _CmsObjectsInherited extends InheritedWidget {
-  final List<CmsObject> cmsObjects;
+  final List<CmsObjectStructure> cmsObjects;
 
   const _CmsObjectsInherited({
     required this.cmsObjects,

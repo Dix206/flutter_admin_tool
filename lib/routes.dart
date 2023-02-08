@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_object.dart';
+import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/ui/screens/main_screen.dart';
 import 'package:flutter_cms/ui/screens/overview/overview_screen.dart';
@@ -10,7 +10,7 @@ import 'ui/screens/insert_cms_object/insert_cms_object.dart';
 
 GoRouter getGoRouter({
   required CmsAuthInfos cmsAuthInfos,
-  required List<CmsObject> cmsOnjects,
+  required List<CmsObjectStructure> cmsOnjects,
 }) {
   final authStateService = AuthStateService(cmsAuthInfos);
 
@@ -23,7 +23,7 @@ GoRouter getGoRouter({
       if (!authStateService.isInitialized) {
         return null;
       } else if (authStateService.isLoggedIn && isLoginRoute) {
-        return Routes.overview(cmsOnjects.first.name);
+        return Routes.overview(cmsOnjects.first.displayName);
       } else if (!authStateService.isLoggedIn) {
         return Routes.login;
       } else {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_object.dart';
+import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/routes.dart';
 import 'package:flutter_cms/ui/flutter_cms_widget.dart';
@@ -43,7 +43,7 @@ class InsertCmsObject extends StatelessWidget {
           }
 
           if (state is InsertCmsObjectInitState && state.isInsertSuccessfull) {
-            context.go(Routes.overview(cmsObject.name));
+            context.go(Routes.overview(cmsObject.displayName));
           }
         },
         childBuilder: (context) {
@@ -73,7 +73,7 @@ class InsertCmsObject extends StatelessWidget {
 }
 
 class _Content extends StatefulWidget {
-  final CmsObject cmsObject;
+  final CmsObjectStructure cmsObject;
   final CmsObjectValue currentCmsObjectValue;
   final bool shouldDisplayValidationErrors;
   final bool isLoading;
@@ -111,7 +111,7 @@ class _ContentState extends State<_Content> {
             children: [
               const SizedBox(width: 8),
               InkWell(
-                onTap: () => context.go(Routes.overview(widget.cmsObject.name)),
+                onTap: () => context.go(Routes.overview(widget.cmsObject.displayName)),
                 child: Container(
                   height: 40,
                   width: 40,
@@ -163,7 +163,7 @@ class _ContentState extends State<_Content> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    widget.cmsObject.name,
+                    widget.cmsObject.displayName,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
@@ -184,7 +184,7 @@ class _ContentState extends State<_Content> {
 }
 
 class _AttributeWidgets extends StatelessWidget {
-  final CmsObject cmsObject;
+  final CmsObjectStructure cmsObject;
   final CmsObjectValue currentCmsObjectValue;
   final bool shouldDisplayValidationErrors;
 
@@ -208,11 +208,11 @@ class _AttributeWidgets extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: cmsValue.buildWidget(
             context: context,
-            currentValue: currentCmsObjectValue.getAttributeValueByName(cmsValue.name)?.value,
+            currentValue: currentCmsObjectValue.getAttributValueByAttributId(cmsValue.id),
             shouldDisplayValidationErrors: shouldDisplayValidationErrors,
             onCmsTypeUpdated: (newValue) {
               InsertCmsObjectViewModel.of(context).updateAttributValue(
-                name: cmsValue.name,
+                id: cmsValue.id,
                 value: newValue,
               );
             },

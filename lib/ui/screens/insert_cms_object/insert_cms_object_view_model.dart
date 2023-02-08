@@ -2,13 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_cms/data_types/cms_attribut_value.dart';
-import 'package:flutter_cms/data_types/cms_object.dart';
+import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/data_types/nullable_object.dart';
 import 'package:flutter_cms/data_types/result.dart';
 
 class InsertCmsObjectViewModelProvider extends StatefulWidget {
-  final CmsObject cmsObject;
+  final CmsObjectStructure cmsObject;
   final String? existingCmsObjectValueId;
   final Widget Function(BuildContext) childBuilder;
   final Function(InsertCmsObjectState) onStateUpdate;
@@ -40,7 +40,7 @@ class _InsertCmsObjectViewModelProviderState extends State<InsertCmsObjectViewMo
       cmsObject: widget.cmsObject,
       existingCmsObjectValueId: widget.existingCmsObjectValueId,
       onNotifyListener: (state) {
-        if(!mounted) return;
+        if (!mounted) return;
         if (_state.value != state) widget.onStateUpdate(state);
         _state.value = state;
       },
@@ -54,7 +54,7 @@ class _InsertCmsObjectViewModelProviderState extends State<InsertCmsObjectViewMo
 
 // ignore: must_be_immutable
 class InsertCmsObjectViewModel extends InheritedWidget {
-  final CmsObject cmsObject;
+  final CmsObjectStructure cmsObject;
   final String? existingCmsObjectValueId;
   final Function(InsertCmsObjectState) onNotifyListener;
   InsertCmsObjectState state = InsertCmsObjectLoadingState();
@@ -85,9 +85,7 @@ class InsertCmsObjectViewModel extends InheritedWidget {
       return;
     }
 
-    final result = await cmsObject.loadCmsObjectById(
-      cmsObject.stringToId(existingCmsObjectValueId!)!,
-    );
+    final result = await cmsObject.loadCmsObjectById(existingCmsObjectValueId!);
 
     state = result.fold(
       onError: (errorMessage) => InsertCmsObjectFailureState(errorMessage),
@@ -99,7 +97,7 @@ class InsertCmsObjectViewModel extends InheritedWidget {
   }
 
   void updateAttributValue({
-    required String name,
+    required String id,
     required Object? value,
   }) {
     if (state is! InsertCmsObjectInitState) return;
@@ -108,7 +106,7 @@ class InsertCmsObjectViewModel extends InheritedWidget {
     state = initState.copyWith(
       currentCmsObjectValue: initState.currentCmsObjectValue.copyWithNewValue(
         CmsAttributValue(
-          name: name,
+          id: id,
           value: value,
         ),
       ),

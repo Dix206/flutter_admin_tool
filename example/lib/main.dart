@@ -1,6 +1,5 @@
 import 'package:example/appwrite/auth_service.dart';
-import 'package:example/article/article_object.dart';
-import 'package:example/author_object.dart';
+import 'package:example/article/article_cms_object.dart';
 import 'package:example/book_object.dart';
 import 'package:example/login.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ void main() {
   runApp(
     FlutterCms(
       cmsObjects: [
-        authorCmsObject,
         booksCmsObject,
         articleCmsObject,
       ],

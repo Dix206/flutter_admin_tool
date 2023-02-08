@@ -1,13 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/ui/cms_attribut_widgets/cms_attribut_int_widget.dart';
-import 'package:flutter_cms/data_types/cms_attribut.dart';
+import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
-class CmsAttributInt extends CmsAttribut<int> {
+class CmsAttributInt extends CmsAttributStructure<int> {
   final String? hint;
 
   const CmsAttributInt({
     this.hint,
-    required super.name,
+    required super.id,
+    required super.displayName,
     super.validator,
     super.invalidValueErrorMessage = "invalid input",
     super.isOptional = false,
@@ -35,7 +36,7 @@ class CmsAttributInt extends CmsAttribut<int> {
 
   @override
   List<Object?> get props => [
-        name,
+        displayName,
         isOptional,
         validator,
         invalidValueErrorMessage,

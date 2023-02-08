@@ -1,31 +1,31 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:flutter_cms/data_types/cms_attribut.dart';
+import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/data_types/result.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
 
-typedef IdToString = String Function(Object);
-typedef StringToId = Object? Function(String);
-typedef LoadCmsObjectById = Future<Result<CmsObjectValue>> Function(Object);
+typedef LoadCmsObjectById = Future<Result<CmsObjectValue>> Function(String id);
 typedef OnManipulateCmsObject = Future<Result<Unit>> Function(CmsObjectValue);
+typedef OnDeleteCmsObject = Future<Result<Unit>> Function(String id);
 typedef OnLoadCmsObjects = Future<Result<CmsObjectValueList>> Function({
-  required Object? lastLoadedCmsObjectId,
+  required String? lastLoadedCmsObjectId,
   required String? searchQuery,
   required CmsObjectSortOptions sortOptions,
 });
 
 /// This Class represents an object in the CMS. It should be used for every object which is stored in your backend.
-class CmsObject extends Equatable {
+/// The id of an CMSObject will always be a string. If your id isnt a string you have to convert it to a string while loading [CmsObjectValues] and load the id from a string while getting the id of a [CmsObjectValue].
+class CmsObjectStructure extends Equatable {
   /// The name of an object will be shown in the CMS-UI.
   /// The name should be unique.
-  final String name;
+  final String displayName;
 
   /// The attributes define the properties of an object.
   /// They are used to create and update objects.
   /// In the UI they will be displayed in the order they are defined.
-  final List<CmsAttribut> attributes;
+  final List<CmsAttributStructure> attributes;
 
   /// This method should return values of this cms object based on passed filters and pagination.
   /// If there are no more items to load, the [CmsObjectValueList.hasMoreItems] should be set to false.
@@ -44,33 +44,25 @@ class CmsObject extends Equatable {
   /// This method will be called if an existing object should be delete.
   /// If the deletion failed it should return a [Result.error] with an error message which will be displayed to the user.
   /// If this method is not set, there will be no option to delete an existing instance of this object.
-  final OnManipulateCmsObject? onDeleteCmsObject;
+  final OnDeleteCmsObject? onDeleteCmsObject;
 
   /// This method will be called to load a single object by its id.
   /// If loading the object failed it should return a [Result.error] with an error message which will be displayed to the user.
   final LoadCmsObjectById loadCmsObjectById;
 
-  /// This method should return a string representation of the passed id.
-  final IdToString idToString;
-
-  /// This method should return an id based on the passed string. The passed string will have the format from the result of [idToString].
-  final StringToId stringToId;
-
-  const CmsObject({
-    required this.name,
+  const CmsObjectStructure({
+    required this.displayName,
     required this.attributes,
     required this.onLoadCmsObjects,
     this.onCreateCmsObject,
     this.onUpdateCmsObject,
     this.onDeleteCmsObject,
     required this.loadCmsObjectById,
-    required this.idToString,
-    required this.stringToId,
   });
 
   CmsObjectValue toEmptyCmsObjectValue() {
     return CmsObjectValue(
-      id: 2,
+      id: null,
       values: attributes
           .map(
             (cmsValue) => cmsValue.toEmptyAttributValue(),
@@ -83,8 +75,7 @@ class CmsObject extends Equatable {
   /// An attribute is valid if it is not required and null or if it is required and valid based on the attribut validator.
   bool isCmsObjectValueValid(CmsObjectValue cmsObjectValue) {
     for (final attribute in attributes) {
-      final attributValue =
-          cmsObjectValue.getAttributeValueByName(attribute.name)?.value;
+      final attributValue = cmsObjectValue.getAttributValueByAttributId(attribute.id)?.value;
 
       if (!attribute.isValid(attributValue)) {
         return false;
@@ -94,13 +85,14 @@ class CmsObject extends Equatable {
     return true;
   }
 
-  CmsAttribut? getAttributByName(String attributName) =>
-      attributes.firstWhereOrNull((attribut) => attribut.name.toLowerCase() == attributName.toLowerCase());
+  CmsAttributStructure? getAttributById(String attributId) => attributes.firstWhereOrNull(
+        (attribut) => attribut.id.toLowerCase() == attributId.toLowerCase(),
+      );
 
   @override
   List<Object?> get props {
     return [
-      name,
+      displayName,
       attributes,
       onLoadCmsObjects,
       onCreateCmsObject,

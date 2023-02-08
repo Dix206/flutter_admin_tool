@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date_time.dart';
-import 'package:flutter_cms/data_types/cms_attribut.dart';
+import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
 class CmsAttributDateTimeWidget extends StatefulWidget {
   final BuildContext context;
@@ -30,7 +30,7 @@ class _CmsAttributDateTimeWidgetState extends State<CmsAttributDateTimeWidget> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text("${widget.cmsTypeDateTime.name}: ${widget.cmsTypeDateTime.valueToString(widget.currentValue)}"),
+      title: Text("${widget.cmsTypeDateTime.displayName}: ${widget.cmsTypeDateTime.valueToString(widget.currentValue)}"),
       subtitle: widget.shouldDisplayValidationErrors && !widget.cmsTypeDateTime.isValid(widget.currentValue)
           ? Text(
               widget.cmsTypeDateTime.invalidValueErrorMessage,

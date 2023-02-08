@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_attribut.dart';
+import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_int.dart';
 
 class CmsAttributIntWidget extends StatefulWidget {
@@ -50,7 +50,7 @@ class _CmsAttributIntWidgetState extends State<CmsAttributIntWidget> {
       keyboardType: TextInputType.number,
       // TODO Formatter
       decoration: InputDecoration(
-        labelText: widget.cmsTypeInt.name,
+        labelText: widget.cmsTypeInt.displayName,
         hintText: widget.cmsTypeInt.hint,
         errorText: isValid || !widget.shouldDisplayValidationErrors
             ? null

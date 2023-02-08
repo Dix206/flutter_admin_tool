@@ -1,10 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/ui/cms_attribut_widgets/cms_attribut_bool_widget.dart';
-import 'package:flutter_cms/data_types/cms_attribut.dart';
+import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
-class CmsAttributBool extends CmsAttribut<bool> {
+class CmsAttributBool extends CmsAttributStructure<bool> {
   const CmsAttributBool({
-    required super.name,
+    required super.id,
+    required super.displayName,
     super.canObjectBeSortedByThisAttribut = false,
     super.shouldBeDisplayedOnOverviewTable = true,
   }) : super(
@@ -21,7 +22,7 @@ class CmsAttributBool extends CmsAttribut<bool> {
     required OnCmsTypeUpdated<bool> onCmsTypeUpdated,
   }) =>
       CmsAttributBoolWidget(
-        title: name,
+        title: displayName,
         currentValue: currentValue ?? false,
         onCmsTypeUpdated: onCmsTypeUpdated,
       );
@@ -31,7 +32,7 @@ class CmsAttributBool extends CmsAttribut<bool> {
 
   @override
   List<Object?> get props => [
-        name,
+        displayName,
         isOptional,
         validator,
         invalidValueErrorMessage,
