@@ -23,7 +23,7 @@ GoRouter getGoRouter({
       if (!authStateService.isInitialized) {
         return null;
       } else if (authStateService.isLoggedIn && isLoginRoute) {
-        return Routes.overview(cmsOnjects.first.displayName);
+        return Routes.overview(cmsOnjects.first.id);
       } else if (!authStateService.isLoggedIn) {
         return Routes.login;
       } else {
@@ -40,41 +40,41 @@ GoRouter getGoRouter({
       ),
       ShellRoute(
         builder: (context, state, child) {
-          final cmsObjectName = state.params['cmsObjectName'] ?? "";
+          final cmsObjectId = state.params['cmsObjectId'] ?? "";
           return MainScreen(
-            selectedCmsObjectName: cmsObjectName,
+            selectedCmsObjectId: cmsObjectId,
             child: child,
           );
         },
         routes: [
           FadeRoute(
-            path: "/overview/:cmsObjectName",
+            path: "/overview/:cmsObjectId",
             authStateService: authStateService,
             childBuilder: (state) {
-              final cmsObjectName = state.params['cmsObjectName'] ?? "";
-              return OverviewScreen(selectedCmsObjectName: cmsObjectName);
+              final cmsObjectId = state.params['cmsObjectId'] ?? "";
+              return OverviewScreen(selectedCmsObjectId: cmsObjectId);
             },
           ),
           FadeRoute(
-            path: "/overview/:cmsObjectName/create",
+            path: "/overview/:cmsObjectId/create",
             authStateService: authStateService,
             childBuilder: (state) {
-              final cmsObjectName = state.params['cmsObjectName'] ?? "";
+              final cmsObjectId = state.params['cmsObjectId'] ?? "";
 
               return InsertCmsObject(
-                cmsObjectName: cmsObjectName,
+                cmsObjectId: cmsObjectId,
                 existingCmsObjectValueId: null,
               );
             },
           ),
           FadeRoute(
-            path: "/overview/:cmsObjectName/update/:existingCmsObjectValueId",
+            path: "/overview/:cmsObjectId/update/:existingCmsObjectValueId",
             authStateService: authStateService,
             childBuilder: (state) {
-              final cmsObjectName = state.params['cmsObjectName'] ?? "";
+              final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final existingCmsObjectValueId = state.params['existingCmsObjectValueId'];
               return InsertCmsObject(
-                cmsObjectName: cmsObjectName,
+                cmsObjectId: cmsObjectId,
                 existingCmsObjectValueId: existingCmsObjectValueId,
               );
             },
@@ -89,11 +89,11 @@ class Routes {
   static String login = "/login";
   static overview(String cmsObjectName) => "/overview/$cmsObjectName";
   static updateObject({
-    required String cmsObjectName,
+    required String cmsObjectId,
     required Object existingCmsObjectValueId,
   }) =>
-      "/overview/$cmsObjectName/update/$existingCmsObjectValueId";
-  static createObject(String cmsObjectName) => "/overview/$cmsObjectName/create";
+      "/overview/$cmsObjectId/update/$existingCmsObjectValueId";
+  static createObject(String cmsObjectId) => "/overview/$cmsObjectId/create";
 }
 
 class FadeRoute extends GoRoute {

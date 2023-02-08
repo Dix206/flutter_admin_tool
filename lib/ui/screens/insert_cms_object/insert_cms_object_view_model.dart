@@ -114,6 +114,39 @@ class InsertCmsObjectViewModel extends InheritedWidget {
     onNotifyListener(state);
   }
 
+  Future<void> deleteObject() async {
+    if (state is! InsertCmsObjectInitState || existingCmsObjectValueId == null || cmsObject.onDeleteCmsObject == null) {
+      return;
+    }
+    final initState = state as InsertCmsObjectInitState;
+
+    state = initState.copyWith(isDeleting: true);
+    onNotifyListener(state);
+
+    final result = await cmsObject.onDeleteCmsObject!(existingCmsObjectValueId!);
+
+    result.fold(
+      onError: (errorMessage) {
+        state = initState.copyWith(
+          failure: NullableObject(errorMessage),
+        );
+        onNotifyListener(state);
+        state = initState.copyWith(
+          isDeleting: false,
+          failure: const NullableObject(),
+        );
+        onNotifyListener(state);
+      },
+      onSuccess: (unit) {
+        state = initState.copyWith(
+          isDeleting: false,
+          isDeletionSuccessfull: true,
+        );
+        onNotifyListener(state);
+      },
+    );
+  }
+
   Future<void> insertObject() async {
     if (state is! InsertCmsObjectInitState) return;
     final initState = state as InsertCmsObjectInitState;
@@ -189,11 +222,15 @@ class InsertCmsObjectInitState extends InsertCmsObjectState with EquatableMixin 
   final bool shouldDisplayValidationErrors;
   final bool isInserting;
   final bool isInsertSuccessfull;
+  final bool isDeleting;
+  final bool isDeletionSuccessfull;
   final String? failure;
 
   InsertCmsObjectInitState({
     required this.currentCmsObjectValue,
     this.shouldDisplayValidationErrors = false,
+    this.isDeleting = false,
+    this.isDeletionSuccessfull = false,
     this.isInserting = false,
     this.isInsertSuccessfull = false,
     this.failure,
@@ -206,6 +243,8 @@ class InsertCmsObjectInitState extends InsertCmsObjectState with EquatableMixin 
       shouldDisplayValidationErrors,
       isInserting,
       isInsertSuccessfull,
+      isDeleting,
+      isDeletionSuccessfull,
       failure,
     ];
   }
@@ -215,6 +254,8 @@ class InsertCmsObjectInitState extends InsertCmsObjectState with EquatableMixin 
     bool? shouldDisplayValidationErrors,
     bool? isInserting,
     bool? isInsertSuccessfull,
+    bool? isDeleting,
+    bool? isDeletionSuccessfull,
     NullableObject<String>? failure,
   }) {
     return InsertCmsObjectInitState(
@@ -222,6 +263,8 @@ class InsertCmsObjectInitState extends InsertCmsObjectState with EquatableMixin 
       shouldDisplayValidationErrors: shouldDisplayValidationErrors ?? this.shouldDisplayValidationErrors,
       isInserting: isInserting ?? this.isInserting,
       isInsertSuccessfull: isInsertSuccessfull ?? this.isInsertSuccessfull,
+      isDeleting: isDeleting ?? this.isDeleting,
+      isDeletionSuccessfull: isDeletionSuccessfull ?? this.isDeletionSuccessfull,
       failure: failure == null ? this.failure : failure.value,
     );
   }

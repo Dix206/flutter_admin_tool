@@ -23,6 +23,7 @@ const booksCmsObjectValues = [
 ];
 
 final booksCmsObject = CmsObjectStructure(
+  id: "books",
   displayName: "Books",
   attributes: [
     CmsAttributString(

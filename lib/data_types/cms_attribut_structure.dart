@@ -59,7 +59,7 @@ abstract class CmsAttributStructure<T extends Object> extends Equatable {
 
   CmsAttributValue toEmptyAttributValue() {
     return CmsAttributValue<T>(
-      id: displayName,
+      id: id,
       value: null,
     );
   }
@@ -69,6 +69,7 @@ abstract class CmsAttributStructure<T extends Object> extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         displayName,
         isOptional,
         validator,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
+import 'package:flutter_cms/extensions/iterable_extensions.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/routes.dart';
 
@@ -7,11 +8,19 @@ class FlutterCms extends StatelessWidget {
   final List<CmsObjectStructure> cmsObjects;
   final CmsAuthInfos cmsAuthInfos;
 
-  const FlutterCms({
+  FlutterCms({
     Key? key,
     required this.cmsObjects,
     required this.cmsAuthInfos,
-  }) : super(key: key);
+  })  : assert(
+          cmsObjects.every(
+            (object) => cmsObjects.every(
+              (otherObject) => object.id != otherObject.id || object == otherObject,
+            ),
+          ),
+          'There are two objects with the same id',
+        ),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +45,12 @@ class FlutterCms extends StatelessWidget {
     return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsObjects;
   }
 
-  static CmsObjectStructure? getObjectByName({
+  static CmsObjectStructure? getObjectById({
     required BuildContext context,
-    required String cmsObjectName,
+    required String cmsObjectId,
   }) {
     final allObjects = getAllObjects(context);
-    for (final object in allObjects) {
-      if (object.displayName == cmsObjectName) return object;
-    }
-
-    return null;
+    return allObjects.firstWhereOrNull((object) => object.id.toLowerCase() == cmsObjectId.toLowerCase());
   }
 }
 

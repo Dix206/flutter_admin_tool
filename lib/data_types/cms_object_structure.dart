@@ -18,8 +18,12 @@ typedef OnLoadCmsObjects = Future<Result<CmsObjectValueList>> Function({
 /// This Class represents an object in the CMS. It should be used for every object which is stored in your backend.
 /// The id of an CMSObject will always be a string. If your id isnt a string you have to convert it to a string while loading [CmsObjectValues] and load the id from a string while getting the id of a [CmsObjectValue].
 class CmsObjectStructure extends Equatable {
-  /// The name of an object will be shown in the CMS-UI.
-  /// The name should be unique.
+  /// The id of an object structure will be used to identify the type of an object.
+  /// It will also be used to navigate and will be visivle in the url.
+  /// The id should be unique.
+  final String id;
+
+  /// The displayName of an object will be shown in the CMS-UI.
   final String displayName;
 
   /// The attributes define the properties of an object.
@@ -50,7 +54,8 @@ class CmsObjectStructure extends Equatable {
   /// If loading the object failed it should return a [Result.error] with an error message which will be displayed to the user.
   final LoadCmsObjectById loadCmsObjectById;
 
-  const CmsObjectStructure({
+  CmsObjectStructure({
+    required this.id,
     required this.displayName,
     required this.attributes,
     required this.onLoadCmsObjects,
@@ -58,7 +63,14 @@ class CmsObjectStructure extends Equatable {
     this.onUpdateCmsObject,
     this.onDeleteCmsObject,
     required this.loadCmsObjectById,
-  });
+  }) : assert(
+          attributes.every(
+            (attribut) => attributes.every(
+              (otherAttribut) => attribut.id != otherAttribut.id || attribut == otherAttribut,
+            ),
+          ),
+          'There are two attributes with the same id in the cms object structure with id $id.',
+        );
 
   CmsObjectValue toEmptyCmsObjectValue() {
     return CmsObjectValue(
@@ -93,6 +105,7 @@ class CmsObjectStructure extends Equatable {
   List<Object?> get props {
     return [
       displayName,
+      id,
       attributes,
       onLoadCmsObjects,
       onCreateCmsObject,

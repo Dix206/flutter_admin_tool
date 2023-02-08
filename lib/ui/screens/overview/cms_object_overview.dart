@@ -98,7 +98,7 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
       children: [
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: () => context.go(Routes.createObject(widget.cmsObject.displayName)),
+          onPressed: () => context.go(Routes.createObject(widget.cmsObject.id)),
           child: const Text("Neues Objekt"),
         ),
         const SizedBox(height: 16),
@@ -227,7 +227,7 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
 
     context.go(
       Routes.updateObject(
-        cmsObjectName: widget.cmsObject.displayName,
+        cmsObjectId: widget.cmsObject.id,
         existingCmsObjectValueId: cmsObjectValue.id!,
       ),
     );

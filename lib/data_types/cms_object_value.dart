@@ -27,15 +27,6 @@ class CmsObjectValue extends Equatable {
     required this.values,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      ...values.asMap().map(
-            (_, value) => MapEntry(value.id, value.value),
-          ),
-    };
-  }
-
   S getAttributValueByAttributId<S>(String id) => values.firstWhere(
         (value) => value.id.toLowerCase() == id.toLowerCase(),
         orElse: () => throw Exception('CmsAttributValue with id $id not found'),

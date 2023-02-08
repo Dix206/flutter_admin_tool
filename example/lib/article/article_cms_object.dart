@@ -10,6 +10,7 @@ import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_dat
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 
 final articleCmsObject = CmsObjectStructure(
+  id: "article",
   displayName: "Article",
   attributes: [
     const CmsAttributString(

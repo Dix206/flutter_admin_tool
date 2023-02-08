@@ -4,12 +4,12 @@ import 'package:flutter_cms/ui/flutter_cms_widget.dart';
 import 'package:go_router/go_router.dart';
 
 class MainScreen extends StatelessWidget {
-  final String selectedCmsObjectName;
+  final String selectedCmsObjectId;
   final Widget child;
 
   const MainScreen({
     Key? key,
-    required this.selectedCmsObjectName,
+    required this.selectedCmsObjectId,
     required this.child,
   }) : super(key: key);
 
@@ -38,10 +38,10 @@ class MainScreen extends StatelessWidget {
                   return Material(
                     child: ListTile(
                       title: Text(cmsObjects[index].displayName),
-                      onTap: () => context.go(Routes.overview(cmsObjects[index].displayName)),
+                      onTap: () => context.go(Routes.overview(cmsObjects[index].id)),
                       tileColor: Theme.of(context).colorScheme.surface,
                       selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                      selected: cmsObjects[index].displayName == selectedCmsObjectName,
+                      selected: cmsObjects[index].id == selectedCmsObjectId,
                     ),
                   );
                 },
