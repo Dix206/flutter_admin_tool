@@ -1,5 +1,5 @@
 
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
 import 'package:flutter_cms/data_types/cms_attribut_value.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';

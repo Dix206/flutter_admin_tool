@@ -27,10 +27,14 @@ class CmsObjectValue extends Equatable {
     required this.values,
   });
 
-  S getAttributValueByAttributId<S>(String id) => values.firstWhere(
-        (value) => value.id.toLowerCase() == id.toLowerCase(),
-        orElse: () => throw Exception('CmsAttributValue with id $id not found'),
-      ).value as S;
+  S getAttributValueByAttributId<S extends Object?>(String id) {
+    return values
+        .firstWhere(
+          (value) => value.id.toLowerCase() == id.toLowerCase(),
+          orElse: () => throw Exception('CmsAttributValue with id $id not found'),
+        )
+        .value as S;
+  }
 
   CmsObjectValue copyWithNewValue(CmsAttributValue newValue) {
     return CmsObjectValue(

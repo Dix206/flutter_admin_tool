@@ -5,6 +5,7 @@ import 'package:flutter_cms/routes.dart';
 import 'package:flutter_cms/ui/flutter_cms_widget.dart';
 import 'package:flutter_cms/ui/messages/error_message.dart';
 import 'package:flutter_cms/ui/screens/insert_cms_object/insert_cms_object_view_model.dart';
+import 'package:flutter_cms/ui/widgets/cms_button.dart';
 import 'package:flutter_cms/ui/widgets/cms_error_widget.dart';
 import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 import 'package:go_router/go_router.dart';
@@ -166,97 +167,41 @@ class _TopBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          InkWell(
-            onTap: isInserting ? null : InsertCmsObjectViewModel.of(context).insertObject,
-            child: Container(
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: isInserting ? Colors.grey : Theme.of(context).primaryColor,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Center(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Text(
-                        "Speichern",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: isInserting ? Colors.grey : Theme.of(context).colorScheme.onPrimary,
-                            ),
-                      ),
-                      SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(
-                          color: isInserting ? Colors.black : Colors.transparent,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+          CmsButton(
+            onPressed: InsertCmsObjectViewModel.of(context).insertObject,
+            text: "Speichern",
+            isLoading: isInserting,
           ),
           if (cmsObject.onDeleteCmsObject != null && existingCmsObjectValueId != null) ...[
             const SizedBox(width: 16),
-            InkWell(
-              onTap: isInserting
-                  ? null
-                  : () async {
-                      final shouldDeleteBject = await showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text("Löschen"),
-                          content: const Text("Möchten Sie das Objekt wirklich löschen?"),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(false),
-                              child: const Text("Abbrechen"),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(true),
-                              child: const Text("Löschen"),
-                            ),
-                          ],
-                        ),
-                      );
-
-                      if (shouldDeleteBject == true && context.mounted) {
-                        InsertCmsObjectViewModel.of(context).deleteObject();
-                      }
-                    },
-              child: Container(
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  color: isDeleting ? Colors.grey : Theme.of(context).colorScheme.error,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Center(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Text(
-                          "Löschen",
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: isDeleting ? Colors.grey : Theme.of(context).colorScheme.onError,
-                              ),
-                        ),
-                        SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(
-                            color: isDeleting ? Colors.black : Colors.transparent,
-                          ),
-                        ),
-                      ],
-                    ),
+            CmsButton(
+              onPressed: () async {
+                final shouldDeleteBject = await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Löschen"),
+                    content: const Text("Möchten Sie das Objekt wirklich löschen?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text("Abbrechen"),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: const Text("Löschen"),
+                      ),
+                    ],
                   ),
-                ),
-              ),
+                );
+
+                if (shouldDeleteBject == true && context.mounted) {
+                  InsertCmsObjectViewModel.of(context).deleteObject();
+                }
+              },
+              text: "Löschen",
+              isLoading: isDeleting,
+              buttonColor: Theme.of(context).colorScheme.error,
+              textColor: Theme.of(context).colorScheme.onError,
             ),
           ],
           const SizedBox(width: 16),

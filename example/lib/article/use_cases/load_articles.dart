@@ -26,7 +26,7 @@ Future<Result<CmsObjectValueList>> loadArticles({
       databaseId: databaseId,
       collectionId: articleCollectionId,
       queries: [
-        Query.limit(3),
+        Query.limit(10),
         if (lastLoadedCmsObjectId != null) Query.cursorAfter(lastLoadedCmsObjectId),
       ],
     );
@@ -43,7 +43,7 @@ Future<Result<CmsObjectValueList>> loadArticles({
               ),
             )
             .toList(),
-        hasMoreItems: 3 == databaseList.documents.length,
+        hasMoreItems: 10 == databaseList.documents.length,
       ),
     );
   } catch (exception) {

@@ -3,10 +3,10 @@ import 'package:example/article/use_cases/delete_article_use_case.dart';
 import 'package:example/article/use_cases/load_article_by_id.dart';
 import 'package:example/article/use_cases/load_articles.dart';
 import 'package:example/article/use_cases/update_article_use_case.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_image.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_bool.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date_time.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_image/cms_attribut_image.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_bool/cms_attribut_bool.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date_time/cms_attribut_date_time.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 
 final articleCmsObject = CmsObjectStructure(

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cms/ui/cms_attribut_widgets/cms_attribut_bool_widget.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_bool/cms_attribut_bool_widget.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
 class CmsAttributBool extends CmsAttributStructure<bool> {

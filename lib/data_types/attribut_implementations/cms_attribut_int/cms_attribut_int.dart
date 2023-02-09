@@ -1,17 +1,14 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cms/ui/cms_attribut_widgets/cms_attribut_date_time_widget.dart';
-
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_int/cms_attribut_int_widget.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
-class CmsAttributDateTime extends CmsAttributStructure<DateTime> {
-  final DateTime? minDateTime;
-  final DateTime? maxDateTime;
+class CmsAttributInt extends CmsAttributStructure<int> {
+  final String? hint;
 
-  const CmsAttributDateTime({
+  const CmsAttributInt({
+    this.hint,
     required super.id,
     required super.displayName,
-    this.minDateTime,
-    this.maxDateTime,
     super.validator,
     super.invalidValueErrorMessage = "invalid input",
     super.isOptional = false,
@@ -22,22 +19,20 @@ class CmsAttributDateTime extends CmsAttributStructure<DateTime> {
   @override
   Widget buildWidget({
     required BuildContext context,
-    required DateTime? currentValue,
+    required int? currentValue,
     required bool shouldDisplayValidationErrors,
-    required OnCmsTypeUpdated<DateTime> onCmsTypeUpdated,
+    required OnCmsTypeUpdated<int> onCmsTypeUpdated,
   }) =>
-      CmsAttributDateTimeWidget(
+      CmsAttributIntWidget(
         context: context,
-        cmsTypeDateTime: this,
+        cmsTypeInt: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,
         onCmsTypeUpdated: onCmsTypeUpdated,
-        minDateTime: minDateTime,
-        maxDateTime: maxDateTime,
       );
 
-  @override
-  String valueToString(DateTime? value) => value?.toString() ?? "---";
+      @override
+      String valueToString(int? value) => value?.toString() ?? "---";
 
   @override
   List<Object?> get props => [
@@ -45,5 +40,6 @@ class CmsAttributDateTime extends CmsAttributStructure<DateTime> {
         isOptional,
         validator,
         invalidValueErrorMessage,
+        hint,
       ];
 }

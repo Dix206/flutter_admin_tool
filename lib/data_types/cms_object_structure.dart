@@ -87,7 +87,7 @@ class CmsObjectStructure extends Equatable {
   /// An attribute is valid if it is not required and null or if it is required and valid based on the attribut validator.
   bool isCmsObjectValueValid(CmsObjectValue cmsObjectValue) {
     for (final attribute in attributes) {
-      final attributValue = cmsObjectValue.getAttributValueByAttributId(attribute.id)?.value;
+      final attributValue = cmsObjectValue.getAttributValueByAttributId(attribute.id);
 
       if (!attribute.isValid(attributValue)) {
         return false;

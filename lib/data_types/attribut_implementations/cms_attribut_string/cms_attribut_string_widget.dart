@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
 
 class CmsAttributStringWidget extends StatefulWidget {
   final BuildContext context;

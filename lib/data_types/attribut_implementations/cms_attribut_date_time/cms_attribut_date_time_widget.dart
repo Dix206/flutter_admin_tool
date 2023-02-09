@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date_time.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date_time/cms_attribut_date_time.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
 class CmsAttributDateTimeWidget extends StatefulWidget {

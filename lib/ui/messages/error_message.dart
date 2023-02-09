@@ -4,17 +4,17 @@ void showErrorMessage({
   required BuildContext context,
   required String errorMessage,
 }) {
-  final snackBar = SnackBar(
-    content: Text(
-      errorMessage,
-      style: Theme.of(context)
-          .textTheme
-          .displayMedium
-          ?.copyWith(color: Theme.of(context).colorScheme.onError),
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Error'),
+      content: Text(errorMessage),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('OK'),
+        ),
+      ],
     ),
-    backgroundColor: Theme.of(context).colorScheme.error,
-    padding: const EdgeInsets.all(16),
   );
-
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

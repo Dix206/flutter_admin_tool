@@ -3,22 +3,24 @@ import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_image/cms_attribut_image_widget.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
-import 'package:flutter_cms/ui/cms_attribut_widgets/cms_attribut_image_widget.dart';
 
 class ImageValue extends Equatable {
   final Uint8List? imageData;
   final String? imageUrl;
   final Map<String, String>? headers;
+  final bool wasDeleted;
 
   const ImageValue({
     required this.imageData,
     required this.imageUrl,
     required this.headers,
+    required this.wasDeleted,
   });
 
   @override
-  List<Object?> get props => [imageData, imageUrl];
+  List<Object?> get props => [imageData, imageUrl, headers, wasDeleted];
 }
 
 class CmsAttributImage extends CmsAttributStructure<ImageValue> {
