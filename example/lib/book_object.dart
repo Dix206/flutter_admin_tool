@@ -50,7 +50,7 @@ final booksCmsObject = CmsObjectStructure(
     return Result.error("Book not found");
   },
   onLoadCmsObjects: (({
-    lastLoadedCmsObjectId,
+    required page,
     searchQuery,
     required sortOptions,
   }) =>
@@ -58,7 +58,7 @@ final booksCmsObject = CmsObjectStructure(
         const Duration(seconds: 2),
         () => Result.success(
           const CmsObjectValueList(
-            hasMoreItems: false,
+            overallPageCount: 1,
             cmsObjectValues: booksCmsObjectValues,
           ),
         ),

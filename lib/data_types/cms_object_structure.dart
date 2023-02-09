@@ -10,7 +10,7 @@ typedef LoadCmsObjectById = Future<Result<CmsObjectValue>> Function(String id);
 typedef OnManipulateCmsObject = Future<Result<Unit>> Function(CmsObjectValue);
 typedef OnDeleteCmsObject = Future<Result<Unit>> Function(String id);
 typedef OnLoadCmsObjects = Future<Result<CmsObjectValueList>> Function({
-  required String? lastLoadedCmsObjectId,
+  required int page,
   required String? searchQuery,
   required CmsObjectSortOptions sortOptions,
 });

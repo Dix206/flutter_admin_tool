@@ -4,10 +4,14 @@ import 'package:flutter_cms/ui/flutter_cms_widget.dart';
 
 class OverviewScreen extends StatelessWidget {
   final String selectedCmsObjectId;
+  final String? searchQuery;
+  final int page;
 
   const OverviewScreen({
     Key? key,
     required this.selectedCmsObjectId,
+    required this.searchQuery,
+    required this.page,
   }) : super(key: key);
 
   @override
@@ -26,6 +30,8 @@ class OverviewScreen extends StatelessWidget {
           )
         : CmsObjectOverview(
             cmsObject: selectedCmsObject,
+            searchQuery: searchQuery,
+            page: page,
           );
   }
 }

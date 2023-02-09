@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CmsButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isLoading;
   final Color? buttonColor;
   final Color? textColor;
@@ -24,29 +24,27 @@ class CmsButton extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: isLoading ? Colors.grey : buttonColor ?? Theme.of(context).primaryColor,
+          color: isLoading || onPressed == null ? Colors.grey : buttonColor ?? Theme.of(context).primaryColor,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Center(
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Text(
-                  text,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: isLoading ? Colors.grey : textColor ?? Theme.of(context).colorScheme.onPrimary,
-                      ),
-                ),
-                SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: CircularProgressIndicator(
-                    color: isLoading ? Colors.black : Colors.transparent,
+            child: isLoading
+                ? const SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
+                  )
+                : Text(
+                    text,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: onPressed == null
+                              ? Colors.black
+                              : textColor ?? Theme.of(context).colorScheme.onPrimary,
+                        ),
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),

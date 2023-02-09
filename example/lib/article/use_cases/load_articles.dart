@@ -17,17 +17,20 @@ class ArticlesList {
 }
 
 Future<Result<CmsObjectValueList>> loadArticles({
-  required String? lastLoadedCmsObjectId,
+  required int page,
   required String? searchQuery,
   required CmsObjectSortOptions sortOptions,
 }) async {
   try {
+    const itemsToLoad = 3;
+
     final databaseList = await databases.listDocuments(
       databaseId: databaseId,
       collectionId: articleCollectionId,
       queries: [
-        Query.limit(10),
-        if (lastLoadedCmsObjectId != null) Query.cursorAfter(lastLoadedCmsObjectId),
+        Query.limit(itemsToLoad),
+        Query.offset((page- 1) * itemsToLoad),
+        if (searchQuery != null) Query.search("title", searchQuery),
       ],
     );
 
@@ -43,7 +46,7 @@ Future<Result<CmsObjectValueList>> loadArticles({
               ),
             )
             .toList(),
-        hasMoreItems: 10 == databaseList.documents.length,
+        overallPageCount: (databaseList.total / itemsToLoad).ceil(),
       ),
     );
   } catch (exception) {

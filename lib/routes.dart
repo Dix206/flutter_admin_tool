@@ -23,7 +23,10 @@ GoRouter getGoRouter({
       if (!authStateService.isInitialized) {
         return null;
       } else if (authStateService.isLoggedIn && isLoginRoute) {
-        return Routes.overview(cmsOnjects.first.id);
+        return Routes.overview(
+          cmsObjectId: cmsOnjects.first.id,
+          page: 1,
+        );
       } else if (!authStateService.isLoggedIn) {
         return Routes.login;
       } else {
@@ -52,7 +55,14 @@ GoRouter getGoRouter({
             authStateService: authStateService,
             childBuilder: (state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
-              return OverviewScreen(selectedCmsObjectId: cmsObjectId);
+              final searchQuery = state.queryParams['searchQuery'];
+              final pageString = state.queryParams['page'] ?? "1";
+
+              return OverviewScreen(
+                selectedCmsObjectId: cmsObjectId,
+                searchQuery: searchQuery,
+                page: int.tryParse(pageString) ?? 1,
+              );
             },
           ),
           FadeRoute(
@@ -87,7 +97,14 @@ GoRouter getGoRouter({
 
 class Routes {
   static String login = "/login";
-  static overview(String cmsObjectName) => "/overview/$cmsObjectName";
+  static overview({
+    required String cmsObjectId,
+    String? searchQuery,
+    required int page,
+  }) {
+    final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
+    return "/overview/$cmsObjectId?page=$page$searchQueryPath";
+  }
   static updateObject({
     required String cmsObjectId,
     required Object existingCmsObjectValueId,

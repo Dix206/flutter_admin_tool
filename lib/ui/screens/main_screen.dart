@@ -38,7 +38,12 @@ class MainScreen extends StatelessWidget {
                   return Material(
                     child: ListTile(
                       title: Text(cmsObjects[index].displayName),
-                      onTap: () => context.go(Routes.overview(cmsObjects[index].id)),
+                      onTap: () => context.go(
+                        Routes.overview(
+                          cmsObjectId: cmsObjects[index].id,
+                          page: 1,
+                        ),
+                      ),
                       tileColor: Theme.of(context).colorScheme.surface,
                       selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
                       selected: cmsObjects[index].id == selectedCmsObjectId,

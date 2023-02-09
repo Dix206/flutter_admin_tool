@@ -4,109 +4,98 @@ import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/routes.dart';
 import 'package:flutter_cms/ui/messages/error_message.dart';
 import 'package:flutter_cms/ui/screens/overview/cms_object_overview_view_model.dart';
+import 'package:flutter_cms/ui/widgets/cms_button.dart';
 import 'package:flutter_cms/ui/widgets/cms_error_widget.dart';
 import 'package:flutter_cms/ui/widgets/cms_loading.dart';
+import 'package:flutter_cms/ui/widgets/cms_top_bar.dart';
 import 'package:go_router/go_router.dart';
 
 class CmsObjectOverview extends StatelessWidget {
   final CmsObjectStructure cmsObject;
+  final String? searchQuery;
+  final int page;
 
   const CmsObjectOverview({
     Key? key,
     required this.cmsObject,
+    required this.searchQuery,
+    required this.page,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CmsObjectOverviewViewModelProvider(
-      cmsObject: cmsObject,
-      childBuilder: (context) {
-        final state = CmsObjectOverviewViewModel.of(context).state;
-
-        if (state.loadingError != null) {
-          return CmsErrorWidget(
-            errorMessage: state.loadingError!,
-            onRetry: CmsObjectOverviewViewModel.of(context).init,
-          );
-        } else if (state.cmsObjectValues == null) {
-          return const CmsLoading();
-        } else {
-          return _CmsObjectContent(
+    return Column(
+      children: [
+        CmsTopBar(
+          title: cmsObject.displayName,
+          actions: [
+            CmsButton(
+              text: "Neues Objekt",
+              onPressed: () => context.go(Routes.createObject(cmsObject.id)),
+            ),
+            _SearchBar(
+              cmsObject: cmsObject,
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Expanded(
+          child: CmsObjectOverviewViewModelProvider(
             cmsObject: cmsObject,
-            cmsObjectValues: state.cmsObjectValues!,
-            hasMoreItems: state.hasMoreItems,
-            isLoadingMoreItems: state.isLoadingMoreItems,
-            loadMoreItemsError: state.loadMoreItemsError,
-          );
-        }
-      },
+            searchQuery: searchQuery,
+            page: page,
+            childBuilder: (context) {
+              final state = CmsObjectOverviewViewModel.of(context).state;
+
+              if (state.loadingError != null) {
+                return CmsErrorWidget(
+                  errorMessage: state.loadingError!,
+                  onRetry: CmsObjectOverviewViewModel.of(context).init,
+                );
+              } else if (state.cmsObjectValues == null) {
+                return const CmsLoading();
+              } else {
+                return _CmsObjectContent(
+                  cmsObject: cmsObject,
+                  cmsObjectValues: state.cmsObjectValues!,
+                  page: page,
+                  overallPages: state.totalPages,
+                  searchQuery: searchQuery,
+                );
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 }
 
-class _CmsObjectContent extends StatefulWidget {
+class _CmsObjectContent extends StatelessWidget {
   final CmsObjectStructure cmsObject;
   final List<CmsObjectValue> cmsObjectValues;
-  final bool hasMoreItems;
-  final bool isLoadingMoreItems;
-  final String? loadMoreItemsError;
+  final int page;
+  final int overallPages;
+  final String? searchQuery;
 
   const _CmsObjectContent({
     Key? key,
     required this.cmsObject,
     required this.cmsObjectValues,
-    required this.hasMoreItems,
-    required this.isLoadingMoreItems,
-    required this.loadMoreItemsError,
+    required this.page,
+    required this.overallPages,
+    required this.searchQuery,
   }) : super(key: key);
 
   @override
-  State<_CmsObjectContent> createState() => _CmsObjectContentState();
-}
-
-class _CmsObjectContentState extends State<_CmsObjectContent> {
-  late final scrollController = ScrollController();
-
-  @override
-  void initState() {
-    scrollController.addListener(() {
-      if (scrollController.offset > scrollController.position.maxScrollExtent - 100) {
-        CmsObjectOverviewViewModel.of(context).loadMoreItems();
-      }
-    });
-    Future.delayed(
-      const Duration(milliseconds: 500),
-      // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-      () => scrollController.notifyListeners(),
-    );
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-    scrollController.notifyListeners();
-
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: () => context.go(Routes.createObject(widget.cmsObject.id)),
-          child: const Text("Neues Objekt"),
-        ),
-        const SizedBox(height: 16),
         Expanded(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SizedBox(
-              width: (widget.cmsObject.attributes
+              width: (cmsObject.attributes
                               .where(
                                 (attribut) => attribut.shouldBeDisplayedOnOverviewTable,
                               )
@@ -123,7 +112,7 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
                         text: "ID",
                         isTitle: true,
                       ),
-                      ...widget.cmsObject.attributes
+                      ...cmsObject.attributes
                           .where(
                             (attribut) => attribut.shouldBeDisplayedOnOverviewTable,
                           )
@@ -144,33 +133,13 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
                         left: 16,
                         right: 16,
                       ),
-                      controller: scrollController,
                       physics: const ClampingScrollPhysics(),
-                      itemCount: widget.cmsObjectValues.length + (widget.hasMoreItems ? 1 : 0),
+                      itemCount: cmsObjectValues.length,
                       itemBuilder: (context, index) {
-                        if (widget.hasMoreItems && index == widget.cmsObjectValues.length) {
-                          if (widget.loadMoreItemsError != null) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: CmsErrorWidget(
-                                errorMessage: widget.loadMoreItemsError!,
-                                onRetry: CmsObjectOverviewViewModel.of(context).loadMoreItems,
-                              ),
-                            );
-                          } else if (widget.isLoadingMoreItems) {
-                            return const Padding(
-                              padding: EdgeInsets.only(top: 8),
-                              child: CmsLoading(size: 16),
-                            );
-                          } else {
-                            return const SizedBox.shrink();
-                          }
-                        }
-
-                        final cmsObjectValue = widget.cmsObjectValues[index];
+                        final cmsObjectValue = cmsObjectValues[index];
 
                         return InkWell(
-                          onTap: widget.cmsObject.onUpdateCmsObject == null
+                          onTap: cmsObject.onUpdateCmsObject == null
                               ? null
                               : () => _updateObject(
                                     context: context,
@@ -184,14 +153,14 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
                               ...cmsObjectValue.values
                                   .where(
                                     (cmsAttributeValue) =>
-                                        widget.cmsObject
+                                        cmsObject
                                             .getAttributById(cmsAttributeValue.id)
                                             ?.shouldBeDisplayedOnOverviewTable ??
                                         false,
                                   )
                                   .map(
                                     (cmsAttributeValue) => _TableEntry(
-                                      text: widget.cmsObject
+                                      text: cmsObject
                                               .getAttributById(cmsAttributeValue.id)
                                               ?.valueToString(cmsAttributeValue.value) ??
                                           "---",
@@ -209,6 +178,13 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
             ),
           ),
         ),
+        if (overallPages > 1)
+          _Pagination(
+            cmsObject: cmsObject,
+            page: page,
+            overallPages: overallPages,
+            searchQuery: searchQuery,
+          ),
       ],
     );
   }
@@ -227,7 +203,7 @@ class _CmsObjectContentState extends State<_CmsObjectContent> {
 
     context.go(
       Routes.updateObject(
-        cmsObjectId: widget.cmsObject.id,
+        cmsObjectId: cmsObject.id,
         existingCmsObjectValueId: cmsObjectValue.id!,
       ),
     );
@@ -261,6 +237,112 @@ class _TableEntry extends StatelessWidget {
           style: isTitle ? Theme.of(context).textTheme.titleSmall : Theme.of(context).textTheme.bodyMedium,
         ),
       ),
+    );
+  }
+}
+
+class _Pagination extends StatelessWidget {
+  final CmsObjectStructure cmsObject;
+  final int page;
+  final int overallPages;
+  final String? searchQuery;
+
+  const _Pagination({
+    Key? key,
+    required this.cmsObject,
+    required this.page,
+    required this.overallPages,
+    required this.searchQuery,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: const <BoxShadow>[
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 4.0,
+            offset: Offset(0.0, -0.75),
+          ),
+        ],
+        color: Theme.of(context).colorScheme.surface,
+      ),
+      height: 40,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(
+          overallPages,
+          (index) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: CmsButton(
+              text: (index + 1).toString(),
+              onPressed: (index + 1) == page ? null : () => context.go(
+                Routes.overview(
+                  cmsObjectId: cmsObject.id,
+                  page: index + 1,
+                  searchQuery: searchQuery,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SearchBar extends StatefulWidget {
+  final CmsObjectStructure cmsObject;
+
+  const _SearchBar({
+    Key? key,
+    required this.cmsObject,
+  }) : super(key: key);
+
+  @override
+  State<_SearchBar> createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<_SearchBar> {
+  final _textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    // _textEditingController.addListener(() {
+    //   CmsObjectOverviewViewModel.of(context).setSearchString(_textEditingController.text);
+    // });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 200,
+          child: TextField(
+            controller: _textEditingController,
+          ),
+        ),
+        const SizedBox(width: 8),
+        CmsButton(
+          text: "Suchen",
+          onPressed: () => context.go(
+            Routes.overview(
+              cmsObjectId: widget.cmsObject.id,
+              page: 1,
+              searchQuery: _textEditingController.text.trim().isEmpty ? null : _textEditingController.text.trim(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

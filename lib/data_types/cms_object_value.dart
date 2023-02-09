@@ -4,15 +4,15 @@ import 'package:flutter_cms/data_types/cms_attribut_value.dart';
 
 class CmsObjectValueList extends Equatable {
   final List<CmsObjectValue> cmsObjectValues;
-  final bool hasMoreItems;
+  final int overallPageCount;
 
   const CmsObjectValueList({
     required this.cmsObjectValues,
-    required this.hasMoreItems,
+    required this.overallPageCount,
   });
 
   @override
-  List<Object?> get props => [cmsObjectValues, hasMoreItems];
+  List<Object?> get props => [cmsObjectValues, overallPageCount];
 
   @override
   bool get stringify => true;
