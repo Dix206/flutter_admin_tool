@@ -11,13 +11,15 @@ class CmsObjectOverviewViewModelProvider extends StatefulWidget {
   final String? searchQuery;
   final int page;
   final Widget Function(BuildContext) childBuilder;
+  final Function(CmsObjectOverviewState) onStateUpdate;
 
   const CmsObjectOverviewViewModelProvider({
     Key? key,
     required this.cmsObject,
-        required this.searchQuery,
+    required this.searchQuery,
     required this.page,
     required this.childBuilder,
+    required this.onStateUpdate,
   }) : super(key: key);
 
   @override
@@ -40,7 +42,8 @@ class _CmsObjectOverviewViewModelProviderState extends State<CmsObjectOverviewVi
       searchQuery: widget.searchQuery,
       page: widget.page,
       onNotifyListener: (state) {
-        if (!mounted) return;
+        if (!mounted || state == _state.value) return;
+        widget.onStateUpdate(state);
         _state.value = state;
       },
       child: ValueListenableBuilder(
@@ -100,68 +103,6 @@ class CmsObjectOverviewViewModel extends InheritedWidget {
     );
     onNotifyListener(state);
   }
-
-  // Future<void> loadMoreItems() async {
-  //   final result = await cmsObject.onLoadCmsObjects(
-  //     searchQuery: state.searchString,
-  //     page: state.cmsObjectValues!.last.id,
-  //     sortOptions: const CmsObjectSortOptions(
-  //       attributName: "id",
-  //       ascending: true,
-  //     ),
-  //   );
-
-  //   state = result.fold(
-  //     onError: (errorMessage) => state.copyWith(
-  //       isLoadingMoreItems: false,
-  //       loadMoreItemsError: NullableObject(errorMessage),
-  //     ),
-  //     onSuccess: (cmsObjectValueList) => state.copyWith(
-  //       isLoadingMoreItems: false,
-  //       cmsObjectValues: NullableObject([
-  //         ...state.cmsObjectValues!,
-  //         ...cmsObjectValueList.cmsObjectValues,
-  //       ]),
-  //       hasMoreItems: cmsObjectValueList.hasMoreItems,
-  //     ),
-  //   );
-  //   onNotifyListener(state);
-  // }
-
-  DateTime _lastSearchStringChange = DateTime.now();
-
-  // Future<void> setSearchString(String searchString) async {
-  //   if (searchString == state.searchString) return;
-
-  //   final thisSearchStringChange = DateTime.now();
-  //   _lastSearchStringChange = thisSearchStringChange;
-  //   await Future.delayed(const Duration(milliseconds: 1000));
-  //   if (_lastSearchStringChange != thisSearchStringChange) return;
-
-  //   state = state.copyWith(
-  //     searchString: NullableObject(searchString.trim().isEmpty ? null : searchString),
-  //   );
-
-  //   final result = await cmsObject.onLoadCmsObjects(
-  //     searchQuery: state.searchString,
-  //     lastLoadedCmsObjectId: null,
-  //     sortOptions: const CmsObjectSortOptions(
-  //       attributName: "id",
-  //       ascending: true,
-  //     ),
-  //   );
-
-  //   state = result.fold(
-  //     onError: (errorMessage) => state.copyWith(
-  //       loadingError: NullableObject(errorMessage),
-  //     ),
-  //     onSuccess: (cmsObjectValueList) => state.copyWith(
-  //       cmsObjectValues: NullableObject(cmsObjectValueList.cmsObjectValues),
-  //       hasMoreItems: cmsObjectValueList.hasMoreItems,
-  //     ),
-  //   );
-  //   onNotifyListener(state);
-  // }
 
   @override
   bool updateShouldNotify(CmsObjectOverviewViewModel oldWidget) {

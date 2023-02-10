@@ -7,6 +7,8 @@ import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/ui/flutter_cms_widget.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   runApp(
     FlutterCms(
       cmsObjects: [

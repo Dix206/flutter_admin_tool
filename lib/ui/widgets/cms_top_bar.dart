@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CmsTopBar extends StatelessWidget {
-  final String title;
+  final String? title;
   final List<Widget> actions;
 
   const CmsTopBar({
     Key? key,
-    required this.title,
-    required this.actions,
+    this.title,
+    this.actions = const [],
   }) : super(key: key);
 
   @override
@@ -33,15 +33,18 @@ class CmsTopBar extends StatelessWidget {
               child: action,
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                title,
-                style: Theme.of(context).textTheme.headlineMedium,
+          if (title != null)
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    title!,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ),
               ),
             ),
-          ),
           const SizedBox(width: 16),
         ],
       ),
