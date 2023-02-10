@@ -27,8 +27,6 @@ final articleCmsObject = CmsObjectStructure(
     const CmsAttributImage(
       id: "image",
       displayName: "Image",
-      canObjectBeSortedByThisAttribut: false,
-      shouldBeDisplayedOnOverviewTable: false,
     ),
     CmsAttributDateTime(
       id: "timestamp",

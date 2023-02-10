@@ -126,13 +126,14 @@ class _TableTitle extends StatelessWidget {
         Container(
           height: _tableTitleEntryHeight,
           width: double.infinity,
-          color: Colors.grey,
+          color: Theme.of(context).colorScheme.primaryContainer,
         ),
         Row(
           children: [
             const SizedBox(width: 16),
             _TableEntry(
               text: "ID",
+              textColor: Theme.of(context).colorScheme.onPrimaryContainer,
               width: _idTableEntryWidth,
               height: _tableTitleEntryHeight,
               canBeSorted: cmsObject.canBeSortedById,
@@ -156,6 +157,7 @@ class _TableTitle extends StatelessWidget {
                 .map(
                   (attribute) => _TableEntry(
                     text: attribute.displayName,
+                    textColor: Theme.of(context).colorScheme.onPrimaryContainer,
                     height: _tableTitleEntryHeight,
                     canBeSorted: attribute.canObjectBeSortedByThisAttribut,
                     isSortedAscending: sortOptions?.attributId == attribute.id ? sortOptions?.ascending == true : null,
@@ -258,6 +260,9 @@ class _TableContent extends StatelessWidget {
       Routes.updateObject(
         cmsObjectId: cmsObject.id,
         existingCmsObjectValueId: cmsObjectValue.id!,
+        page: page,
+        searchQuery: searchQuery,
+        sortOptions: sortOptions,
       ),
     );
   }
@@ -265,6 +270,7 @@ class _TableContent extends StatelessWidget {
 
 class _TableEntry extends StatelessWidget {
   final String text;
+  final Color? textColor;
   final double height;
   final double width;
   final bool? isSortedAscending;
@@ -274,6 +280,7 @@ class _TableEntry extends StatelessWidget {
   const _TableEntry({
     Key? key,
     required this.text,
+    this.textColor,
     this.height = _tableEntryHeight,
     this.width = _tableEntryWidth,
     this.isSortedAscending = false,
@@ -297,6 +304,9 @@ class _TableEntry extends StatelessWidget {
                   text,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: textColor,
+                      )
                 ),
               ),
             ),
@@ -308,6 +318,7 @@ class _TableEntry extends StatelessWidget {
                         ? Icons.arrow_drop_down
                         : Icons.arrow_drop_up,
                 size: 16,
+                color: textColor,
               ),
           ],
         ),

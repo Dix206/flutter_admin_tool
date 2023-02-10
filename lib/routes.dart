@@ -27,6 +27,8 @@ GoRouter getGoRouter({
         return Routes.overview(
           cmsObjectId: cmsOnjects.first.id,
           page: 1,
+          searchQuery: null,
+          sortOptions: null,
         );
       } else if (!authStateService.isLoggedIn) {
         return Routes.login;
@@ -38,7 +40,7 @@ GoRouter getGoRouter({
       FadeRoute(
         path: Routes.login,
         authStateService: authStateService,
-        childBuilder: (state) => cmsAuthInfos.loginScreenBuilder(
+        childBuilder: (context, state) => cmsAuthInfos.loginScreenBuilder(
           authStateService.onUserLoggedIn,
         ),
       ),
@@ -54,7 +56,7 @@ GoRouter getGoRouter({
           FadeRoute(
             path: "/overview/:cmsObjectId",
             authStateService: authStateService,
-            childBuilder: (state) {
+            childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
               final pageString = state.queryParams['page'] ?? "1";
@@ -77,24 +79,49 @@ GoRouter getGoRouter({
           FadeRoute(
             path: "/overview/:cmsObjectId/create",
             authStateService: authStateService,
-            childBuilder: (state) {
+            childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
+              final searchQuery = state.queryParams['searchQuery'];
+              final pageString = state.queryParams['page'] ?? "";
+              final sortAttributId = state.queryParams['sortAttribut'];
+              final sortAscending = state.queryParams['sortAscending'] == "true";
 
               return InsertCmsObject(
                 cmsObjectId: cmsObjectId,
                 existingCmsObjectValueId: null,
+                searchQuery: searchQuery,
+                page: int.tryParse(pageString),
+                sortOptions: sortAttributId == null
+                    ? null
+                    : CmsObjectSortOptions(
+                        attributId: sortAttributId,
+                        ascending: sortAscending,
+                      ),
               );
             },
           ),
           FadeRoute(
             path: "/overview/:cmsObjectId/update/:existingCmsObjectValueId",
             authStateService: authStateService,
-            childBuilder: (state) {
+            childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final existingCmsObjectValueId = state.params['existingCmsObjectValueId'];
+              final searchQuery = state.queryParams['searchQuery'];
+              final pageString = state.queryParams['page'] ?? "";
+              final sortAttributId = state.queryParams['sortAttribut'];
+              final sortAscending = state.queryParams['sortAscending'] == "true";
+
               return InsertCmsObject(
                 cmsObjectId: cmsObjectId,
                 existingCmsObjectValueId: existingCmsObjectValueId,
+                searchQuery: searchQuery,
+                page: int.tryParse(pageString),
+                sortOptions: sortAttributId == null
+                    ? null
+                    : CmsObjectSortOptions(
+                        attributId: sortAttributId,
+                        ascending: sortAscending,
+                      ),
               );
             },
           ),
@@ -108,9 +135,9 @@ class Routes {
   static String login = "/login";
   static overview({
     required String cmsObjectId,
-    String? searchQuery,
+    required String? searchQuery,
     required int page,
-    CmsObjectSortOptions? sortOptions,
+    required CmsObjectSortOptions? sortOptions,
   }) {
     final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
     final sortOptionsPath =
@@ -121,16 +148,38 @@ class Routes {
   static updateObject({
     required String cmsObjectId,
     required Object existingCmsObjectValueId,
-  }) =>
-      "/overview/$cmsObjectId/update/$existingCmsObjectValueId";
-  static createObject(String cmsObjectId) => "/overview/$cmsObjectId/create";
+    required String? searchQuery,
+    required int? page,
+    required CmsObjectSortOptions? sortOptions,
+  }) {
+    final pagePath = "?page=$page";
+    final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
+    final sortOptionsPath =
+        sortOptions == null ? "" : "&sortAttribut=${sortOptions.attributId}&sortAscending=${sortOptions.ascending}";
+
+    return "/overview/$cmsObjectId/update/$existingCmsObjectValueId$pagePath$searchQueryPath$sortOptionsPath";
+  }
+
+  static createObject({
+    required String cmsObjectId,
+    required String? searchQuery,
+    required int? page,
+    required CmsObjectSortOptions? sortOptions,
+  }) {
+    final pagePath = "?page=$page";
+    final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
+    final sortOptionsPath =
+        sortOptions == null ? "" : "&sortAttribut=${sortOptions.attributId}&sortAscending=${sortOptions.ascending}";
+
+    return "/overview/$cmsObjectId/create$pagePath$searchQueryPath$sortOptionsPath";
+  }
 }
 
 class FadeRoute extends GoRoute {
   FadeRoute({
     required super.path,
     super.name,
-    required Widget Function(GoRouterState) childBuilder,
+    required Widget Function(BuildContext, GoRouterState) childBuilder,
     List<GoRoute> super.routes = const [],
     Future<String?> Function(BuildContext, GoRouterState)? redirect,
     required AuthStateService authStateService,
@@ -142,7 +191,7 @@ class FadeRoute extends GoRoute {
               child: child,
             ),
             child: _LoadingScreen(
-              screen: childBuilder(state),
+              screen: childBuilder(context, state),
               authStateService: authStateService,
             ),
           ),

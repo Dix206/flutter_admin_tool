@@ -48,6 +48,8 @@ class _CmsObjectOverviewState extends State<CmsObjectOverview> {
                 CmsObjectOverviewActions(
                   cmsObjectStructure: widget.cmsObject,
                   searchQuery: widget.searchQuery,
+                  page: widget.page,
+                  sortOptions: widget.sortOptions,
                 ),
                 const SizedBox(height: 16),
                 Expanded(

@@ -42,6 +42,8 @@ class MainScreen extends StatelessWidget {
                         Routes.overview(
                           cmsObjectId: cmsObjects[index].id,
                           page: 1,
+                          searchQuery: null,
+                          sortOptions: null,
                         ),
                       ),
                       tileColor: Theme.of(context).colorScheme.surface,

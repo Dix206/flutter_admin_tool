@@ -28,11 +28,11 @@ class CmsAttributImage extends CmsAttributStructure<ImageValue> {
     required super.id,
     required super.displayName,
     super.isOptional = false,
-    super.canObjectBeSortedByThisAttribut = false,
-    super.shouldBeDisplayedOnOverviewTable = true,
   }) : super(
           validator: null,
           invalidValueErrorMessage: "invalid input",
+          shouldBeDisplayedOnOverviewTable: false,
+          canObjectBeSortedByThisAttribut: false,
         );
 
   @override

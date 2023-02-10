@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/routes.dart';
@@ -14,11 +15,17 @@ import 'package:go_router/go_router.dart';
 class InsertCmsObject extends StatelessWidget {
   final String? existingCmsObjectValueId;
   final String cmsObjectId;
+  final String? searchQuery;
+  final int? page;
+  final CmsObjectSortOptions? sortOptions;
 
   const InsertCmsObject({
     Key? key,
     this.existingCmsObjectValueId,
     required this.cmsObjectId,
+    required this.searchQuery,
+    required this.page,
+    required this.sortOptions,
   }) : super(key: key);
 
   @override
@@ -45,12 +52,9 @@ class InsertCmsObject extends StatelessWidget {
           }
 
           if (state is InsertCmsObjectInitState && (state.isInsertSuccessfull || state.isDeletionSuccessfull)) {
-            context.go(
-              Routes.overview(
-                cmsObjectId: cmsObject.id,
-                page: 1, // TODO old params
-                sortOptions: null, // TODO old params
-              ),
+            _onNavigateBack(
+              context: context,
+              cmsObject: cmsObject,
             );
           }
         },
@@ -65,6 +69,10 @@ class InsertCmsObject extends StatelessWidget {
               shouldDisplayValidationErrors: state.shouldDisplayValidationErrors,
               isInserting: state.isInserting,
               isDeleting: state.isDeleting,
+              onNavigateBack: () => _onNavigateBack(
+                context: context,
+                cmsObject: cmsObject,
+              ),
             );
           } else if (state is InsertCmsObjectLoadingState) {
             return const CmsLoading();
@@ -80,6 +88,19 @@ class InsertCmsObject extends StatelessWidget {
       );
     }
   }
+
+  void _onNavigateBack({
+    required BuildContext context,
+    required CmsObjectStructure cmsObject,
+  }) =>
+      context.go(
+        Routes.overview(
+          cmsObjectId: cmsObject.id,
+          page: page ?? 1,
+          sortOptions: sortOptions,
+          searchQuery: searchQuery,
+        ),
+      );
 }
 
 class _Content extends StatefulWidget {
@@ -89,6 +110,7 @@ class _Content extends StatefulWidget {
   final bool shouldDisplayValidationErrors;
   final bool isInserting;
   final bool isDeleting;
+  final Function() onNavigateBack;
 
   const _Content({
     Key? key,
@@ -98,6 +120,7 @@ class _Content extends StatefulWidget {
     required this.shouldDisplayValidationErrors,
     required this.isInserting,
     required this.isDeleting,
+    required this.onNavigateBack,
   }) : super(key: key);
 
   @override
@@ -114,6 +137,7 @@ class _ContentState extends State<_Content> {
           cmsObject: widget.cmsObject,
           isDeleting: widget.isDeleting,
           isInserting: widget.isInserting,
+          onNavigateBack: widget.onNavigateBack,
         ),
         Expanded(
           child: _AttributeWidgets(
@@ -132,6 +156,7 @@ class _TopBar extends StatelessWidget {
   final bool isInserting;
   final bool isDeleting;
   final CmsObjectStructure cmsObject;
+  final Function() onNavigateBack;
 
   const _TopBar({
     Key? key,
@@ -139,6 +164,7 @@ class _TopBar extends StatelessWidget {
     required this.isInserting,
     required this.isDeleting,
     required this.cmsObject,
+    required this.onNavigateBack,
   }) : super(key: key);
 
   @override
@@ -147,13 +173,7 @@ class _TopBar extends StatelessWidget {
       title: cmsObject.displayName,
       actions: [
         InkWell(
-          onTap: () => context.go(
-            Routes.overview(
-              cmsObjectId: cmsObject.id,
-              page: 1, // TODO old params
-              sortOptions: null, // TODO old params
-            ),
-          ),
+          onTap: onNavigateBack,
           child: Container(
             height: 40,
             width: 40,
