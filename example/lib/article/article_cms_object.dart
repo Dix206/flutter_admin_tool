@@ -12,6 +12,7 @@ import 'package:flutter_cms/data_types/cms_object_structure.dart';
 final articleCmsObject = CmsObjectStructure(
   id: "article",
   displayName: "Article",
+  canBeSortedById: false,
   attributes: [
     const CmsAttributString(
       id: "title",
@@ -21,7 +22,7 @@ final articleCmsObject = CmsObjectStructure(
     const CmsAttributString(
       id: "description",
       displayName: "Description",
-      canObjectBeSortedByThisAttribut: true,
+      canObjectBeSortedByThisAttribut: false,
     ),
     const CmsAttributImage(
       id: "image",
@@ -33,7 +34,7 @@ final articleCmsObject = CmsObjectStructure(
       id: "timestamp",
       displayName: "Created at",
       canObjectBeSortedByThisAttribut: true,
-      shouldBeDisplayedOnOverviewTable: false,
+      shouldBeDisplayedOnOverviewTable: true,
       invalidValueErrorMessage: "You have to enter a date time",
       minDateTime: DateTime(2020),
       maxDateTime: DateTime.now().add(const Duration(days: 365)),

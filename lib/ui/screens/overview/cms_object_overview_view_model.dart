@@ -10,6 +10,7 @@ class CmsObjectOverviewViewModelProvider extends StatefulWidget {
   final CmsObjectStructure cmsObject;
   final String? searchQuery;
   final int page;
+  final CmsObjectSortOptions? sortOptions;
   final Widget Function(BuildContext) childBuilder;
   final Function(CmsObjectOverviewState) onStateUpdate;
 
@@ -20,6 +21,7 @@ class CmsObjectOverviewViewModelProvider extends StatefulWidget {
     required this.page,
     required this.childBuilder,
     required this.onStateUpdate,
+    required this.sortOptions,
   }) : super(key: key);
 
   @override
@@ -46,6 +48,7 @@ class _CmsObjectOverviewViewModelProviderState extends State<CmsObjectOverviewVi
         widget.onStateUpdate(state);
         _state.value = state;
       },
+      sortOptions: widget.sortOptions,
       child: ValueListenableBuilder(
         valueListenable: _state,
         builder: (context, value, child) => widget.childBuilder(context),
@@ -60,6 +63,7 @@ class CmsObjectOverviewViewModel extends InheritedWidget {
   final String? searchQuery;
   final int page;
   final Function(CmsObjectOverviewState) onNotifyListener;
+  final CmsObjectSortOptions? sortOptions;
   CmsObjectOverviewState state = const CmsObjectOverviewState();
 
   CmsObjectOverviewViewModel({
@@ -67,6 +71,7 @@ class CmsObjectOverviewViewModel extends InheritedWidget {
     required this.onNotifyListener,
     required this.searchQuery,
     required this.page,
+    required this.sortOptions,
     required super.child,
     super.key,
   }) {
@@ -86,10 +91,7 @@ class CmsObjectOverviewViewModel extends InheritedWidget {
     final result = await cmsObject.onLoadCmsObjects(
       searchQuery: searchQuery,
       page: page,
-      sortOptions: const CmsObjectSortOptions(
-        attributName: "id",
-        ascending: true,
-      ),
+      sortOptions: sortOptions,
     );
 
     state = result.fold(

@@ -49,6 +49,7 @@ class InsertCmsObject extends StatelessWidget {
               Routes.overview(
                 cmsObjectId: cmsObject.id,
                 page: 1, // TODO old params
+                sortOptions: null, // TODO old params
               ),
             );
           }
@@ -150,6 +151,7 @@ class _TopBar extends StatelessWidget {
             Routes.overview(
               cmsObjectId: cmsObject.id,
               page: 1, // TODO old params
+              sortOptions: null, // TODO old params
             ),
           ),
           child: Container(

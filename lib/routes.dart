@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/ui/screens/main_screen.dart';
@@ -57,11 +58,19 @@ GoRouter getGoRouter({
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
               final pageString = state.queryParams['page'] ?? "1";
+              final sortAttributId = state.queryParams['sortAttribut'];
+              final sortAscending = state.queryParams['sortAscending'] == "true";
 
               return OverviewScreen(
                 selectedCmsObjectId: cmsObjectId,
                 searchQuery: searchQuery,
                 page: int.tryParse(pageString) ?? 1,
+                sortOptions: sortAttributId == null
+                    ? null
+                    : CmsObjectSortOptions(
+                        attributId: sortAttributId,
+                        ascending: sortAscending,
+                      ),
               );
             },
           ),
@@ -101,10 +110,14 @@ class Routes {
     required String cmsObjectId,
     String? searchQuery,
     required int page,
+    CmsObjectSortOptions? sortOptions,
   }) {
     final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
-    return "/overview/$cmsObjectId?page=$page$searchQueryPath";
+    final sortOptionsPath =
+        sortOptions == null ? "" : "&sortAttribut=${sortOptions.attributId}&sortAscending=${sortOptions.ascending}";
+    return "/overview/$cmsObjectId?page=$page$searchQueryPath$sortOptionsPath";
   }
+
   static updateObject({
     required String cmsObjectId,
     required Object existingCmsObjectValueId,

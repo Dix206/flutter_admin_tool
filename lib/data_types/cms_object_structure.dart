@@ -12,7 +12,7 @@ typedef OnDeleteCmsObject = Future<Result<Unit>> Function(String id);
 typedef OnLoadCmsObjects = Future<Result<CmsObjectValueList>> Function({
   required int page,
   required String? searchQuery,
-  required CmsObjectSortOptions sortOptions,
+  required CmsObjectSortOptions? sortOptions,
 });
 
 /// This Class represents an object in the CMS. It should be used for every object which is stored in your backend.
@@ -25,6 +25,8 @@ class CmsObjectStructure extends Equatable {
 
   /// The displayName of an object will be shown in the CMS-UI.
   final String displayName;
+
+  final bool canBeSortedById;
 
   /// The attributes define the properties of an object.
   /// They are used to create and update objects.
@@ -56,6 +58,7 @@ class CmsObjectStructure extends Equatable {
 
   CmsObjectStructure({
     required this.id,
+    this.canBeSortedById = true,
     required this.displayName,
     required this.attributes,
     required this.onLoadCmsObjects,
@@ -104,8 +107,9 @@ class CmsObjectStructure extends Equatable {
   @override
   List<Object?> get props {
     return [
-      displayName,
       id,
+      displayName,
+      canBeSortedById,
       attributes,
       onLoadCmsObjects,
       onCreateCmsObject,

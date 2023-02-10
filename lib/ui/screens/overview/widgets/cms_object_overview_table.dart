@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/routes.dart';
 import 'package:flutter_cms/ui/messages/error_message.dart';
+import 'package:flutter_cms/ui/screens/overview/cms_object_overview_view_model.dart';
+import 'package:flutter_cms/ui/widgets/cms_error_widget.dart';
+import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 import 'package:go_router/go_router.dart';
 
-const _tableEntryWidth = 160.0;
+const _tableEntryHeight = 56.0;
+const _tableTitleEntryHeight = 40.0;
+const _tableEntryWidth = 200.0;
 const _idTableEntryWidth = 60.0;
 
 class CmsObjectOverviewTable extends StatelessWidget {
   final CmsObjectStructure cmsObject;
-  final List<CmsObjectValue> cmsObjectValues;
-  final int page;
-  final int overallPages;
   final String? searchQuery;
+  final int page;
+  final ValueNotifier<int> overallPages;
+  final CmsObjectSortOptions? sortOptions;
 
   const CmsObjectOverviewTable({
     Key? key,
     required this.cmsObject,
-    required this.cmsObjectValues,
+    required this.searchQuery,
     required this.page,
     required this.overallPages,
-    required this.searchQuery,
+    required this.sortOptions,
   }) : super(key: key);
 
   @override
@@ -35,91 +41,201 @@ class CmsObjectOverviewTable extends StatelessWidget {
         _idTableEntryWidth +
         32.0;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: SizedBox(
-            width: minWidth > constraints.maxWidth ? minWidth : constraints.maxWidth,
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      height: 60,
-                      width: double.infinity,
-                      color: Colors.grey,
-                    ),
-                    Row(
-                      children: [
-                        const SizedBox(width: 16),
-                        const _TableEntry(
-                          text: "ID",
-                          width: _idTableEntryWidth,
-                        ),
-                        ...cmsObject.attributes
-                            .where(
-                              (attribut) => attribut.shouldBeDisplayedOnOverviewTable,
-                            )
-                            .map(
-                              (attribute) => _TableEntry(
-                                text: attribute.displayName,
-                              ),
-                            )
-                            .toList(),
-                        const SizedBox(width: 16),
-                      ],
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: ListView.separated(
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: cmsObjectValues.length,
-                    separatorBuilder: (context, index) => const Divider(height: 0),
-                    itemBuilder: (context, index) {
-                      final cmsObjectValue = cmsObjectValues[index];
+    return Card(
+      margin: EdgeInsets.zero,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(4),
+        child: SizedBox(
+          width: double.infinity,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: minWidth > constraints.maxWidth ? minWidth : constraints.maxWidth,
+                  child: Column(
+                    children: [
+                      _TableTitle(
+                        cmsObject: cmsObject,
+                        searchQuery: searchQuery,
+                        page: page,
+                        sortOptions: sortOptions,
+                      ),
+                      Expanded(
+                        child: CmsObjectOverviewViewModelProvider(
+                          cmsObject: cmsObject,
+                          searchQuery: searchQuery,
+                          page: page,
+                          sortOptions: sortOptions,
+                          onStateUpdate: (state) {
+                            if (state.cmsObjectValues != null) overallPages.value = state.totalPages;
+                          },
+                          childBuilder: (context) {
+                            final state = CmsObjectOverviewViewModel.of(context).state;
 
-                      return InkWell(
-                        onTap: cmsObject.onUpdateCmsObject == null
-                            ? null
-                            : () => _updateObject(
-                                  context: context,
-                                  cmsObjectValue: cmsObjectValue,
-                                ),
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 16),
-                            _TableEntry(
-                              text: cmsObjectValue.id ?? "---",
-                              width: _idTableEntryWidth,
-                            ),
-                            ...cmsObjectValue.values
-                                .where(
-                                  (cmsAttributeValue) =>
-                                      cmsObject
-                                          .getAttributById(cmsAttributeValue.id)
-                                          ?.shouldBeDisplayedOnOverviewTable ??
-                                      false,
-                                )
-                                .map(
-                                  (cmsAttributeValue) => _TableEntry(
-                                    text: cmsObject
-                                            .getAttributById(cmsAttributeValue.id)
-                                            ?.valueToString(cmsAttributeValue.value) ??
-                                        "---",
-                                  ),
-                                )
-                                .toList(),
-                            const SizedBox(width: 16),
-                          ],
+                            if (state.loadingError != null) {
+                              return CmsErrorWidget(
+                                errorMessage: state.loadingError!,
+                                onRetry: CmsObjectOverviewViewModel.of(context).init,
+                              );
+                            } else if (state.cmsObjectValues == null) {
+                              return const CmsLoading();
+                            } else {
+                              return _TableContent(
+                                cmsObject: cmsObject,
+                                cmsObjectValues: state.cmsObjectValues!,
+                                page: page,
+                                overallPages: state.totalPages,
+                                searchQuery: searchQuery,
+                                sortOptions: sortOptions,
+                              );
+                            }
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TableTitle extends StatelessWidget {
+  final CmsObjectStructure cmsObject;
+  final String? searchQuery;
+  final int page;
+  final CmsObjectSortOptions? sortOptions;
+
+  const _TableTitle({
+    Key? key,
+    required this.cmsObject,
+    required this.searchQuery,
+    required this.page,
+    required this.sortOptions,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          height: _tableTitleEntryHeight,
+          width: double.infinity,
+          color: Colors.grey,
+        ),
+        Row(
+          children: [
+            const SizedBox(width: 16),
+            _TableEntry(
+              text: "ID",
+              width: _idTableEntryWidth,
+              height: _tableTitleEntryHeight,
+              canBeSorted: cmsObject.canBeSortedById,
+              isSortedAscending: sortOptions?.attributId == "id" ? sortOptions?.ascending == true : null,
+              onSort: (isSortedAscending) => context.go(
+                Routes.overview(
+                  cmsObjectId: cmsObject.id,
+                  page: page,
+                  searchQuery: searchQuery,
+                  sortOptions: CmsObjectSortOptions(
+                    attributId: "id",
+                    ascending: isSortedAscending,
+                  ),
+                ),
+              ),
             ),
+            ...cmsObject.attributes
+                .where(
+                  (attribut) => attribut.shouldBeDisplayedOnOverviewTable,
+                )
+                .map(
+                  (attribute) => _TableEntry(
+                    text: attribute.displayName,
+                    height: _tableTitleEntryHeight,
+                    canBeSorted: attribute.canObjectBeSortedByThisAttribut,
+                    isSortedAscending: sortOptions?.attributId == attribute.id ? sortOptions?.ascending == true : null,
+                    onSort: (isSortedAscending) => context.go(
+                      Routes.overview(
+                        cmsObjectId: cmsObject.id,
+                        page: page,
+                        searchQuery: searchQuery,
+                        sortOptions: CmsObjectSortOptions(
+                          attributId: attribute.id,
+                          ascending: isSortedAscending,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+            const SizedBox(width: 16),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _TableContent extends StatelessWidget {
+  final CmsObjectStructure cmsObject;
+  final List<CmsObjectValue> cmsObjectValues;
+  final int page;
+  final int overallPages;
+  final String? searchQuery;
+  final CmsObjectSortOptions? sortOptions;
+
+  const _TableContent({
+    Key? key,
+    required this.cmsObject,
+    required this.cmsObjectValues,
+    required this.page,
+    required this.overallPages,
+    required this.searchQuery,
+    required this.sortOptions,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      physics: const ClampingScrollPhysics(),
+      itemCount: cmsObjectValues.length,
+      separatorBuilder: (context, index) => const Divider(height: 0),
+      itemBuilder: (context, index) {
+        final cmsObjectValue = cmsObjectValues[index];
+
+        return InkWell(
+          onTap: cmsObject.onUpdateCmsObject == null
+              ? null
+              : () => _updateObject(
+                    context: context,
+                    cmsObjectValue: cmsObjectValue,
+                  ),
+          child: Row(
+            children: [
+              const SizedBox(width: 16),
+              _TableEntry(
+                text: cmsObjectValue.id ?? "---",
+                width: _idTableEntryWidth,
+              ),
+              ...cmsObjectValue.values
+                  .where(
+                    (cmsAttributeValue) =>
+                        cmsObject.getAttributById(cmsAttributeValue.id)?.shouldBeDisplayedOnOverviewTable ?? false,
+                  )
+                  .map(
+                    (cmsAttributeValue) => _TableEntry(
+                      text: cmsObject.getAttributById(cmsAttributeValue.id)?.valueToString(cmsAttributeValue.value) ??
+                          "---",
+                    ),
+                  )
+                  .toList(),
+              const SizedBox(width: 16),
+            ],
           ),
         );
       },
@@ -149,30 +265,60 @@ class CmsObjectOverviewTable extends StatelessWidget {
 
 class _TableEntry extends StatelessWidget {
   final String text;
+  final double height;
   final double width;
+  final bool? isSortedAscending;
+  final bool canBeSorted;
+  final Function(bool isSortedAscending)? onSort;
 
   const _TableEntry({
     Key? key,
     required this.text,
+    this.height = _tableEntryHeight,
     this.width = _tableEntryWidth,
+    this.isSortedAscending = false,
+    this.canBeSorted = false,
+    this.onSort,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
+    final tableEntry = Tooltip(
       message: text,
       waitDuration: const Duration(seconds: 1),
       child: SizedBox(
-        height: 56,
+        height: height,
         width: width,
-        child: Center(
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-          ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            if (canBeSorted)
+              Icon(
+                isSortedAscending == null
+                    ? Icons.unfold_more
+                    : isSortedAscending!
+                        ? Icons.arrow_drop_down
+                        : Icons.arrow_drop_up,
+                size: 16,
+              ),
+          ],
         ),
       ),
     );
+
+    return canBeSorted
+        ? InkWell(
+            onTap: () => onSort?.call(!(isSortedAscending ?? false)),
+            child: tableEntry,
+          )
+        : tableEntry;
   }
 }

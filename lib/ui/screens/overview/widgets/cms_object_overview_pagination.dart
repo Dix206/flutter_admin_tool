@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/routes.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +10,7 @@ class CmsObjectOverviewPagination extends StatefulWidget {
   final int page;
   final int overallPages;
   final String? searchQuery;
+  final CmsObjectSortOptions? sortOptions;
 
   const CmsObjectOverviewPagination({
     Key? key,
@@ -16,6 +18,7 @@ class CmsObjectOverviewPagination extends StatefulWidget {
     required this.page,
     required this.overallPages,
     required this.searchQuery,
+    required this.sortOptions,
   }) : super(key: key);
 
   @override
@@ -52,6 +55,7 @@ class _PaginationState extends State<CmsObjectOverviewPagination> {
         cmsObjectId: widget.cmsObject.id,
         page: newPage,
         searchQuery: widget.searchQuery,
+        sortOptions: widget.sortOptions,
       ),
     );
   }
@@ -77,6 +81,7 @@ class _PaginationState extends State<CmsObjectOverviewPagination> {
                       cmsObjectId: widget.cmsObject.id,
                       page: widget.page - 1,
                       searchQuery: widget.searchQuery,
+                      sortOptions: widget.sortOptions,
                     ),
                   );
                   _pageController.text = (widget.page - 1).toString();
@@ -132,6 +137,7 @@ class _PaginationState extends State<CmsObjectOverviewPagination> {
                       cmsObjectId: widget.cmsObject.id,
                       page: widget.page + 1,
                       searchQuery: widget.searchQuery,
+                      sortOptions: widget.sortOptions,
                     ),
                   );
                   _pageController.text = (widget.page + 1).toString();

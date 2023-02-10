@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/ui/screens/overview/cms_object_overview.dart';
 import 'package:flutter_cms/ui/flutter_cms_widget.dart';
 
@@ -6,12 +7,14 @@ class OverviewScreen extends StatelessWidget {
   final String selectedCmsObjectId;
   final String? searchQuery;
   final int page;
+  final CmsObjectSortOptions? sortOptions;
 
   const OverviewScreen({
     Key? key,
     required this.selectedCmsObjectId,
     required this.searchQuery,
     required this.page,
+    required this.sortOptions,
   }) : super(key: key);
 
   @override
@@ -32,6 +35,7 @@ class OverviewScreen extends StatelessWidget {
             cmsObject: selectedCmsObject,
             searchQuery: searchQuery,
             page: page,
+            sortOptions: sortOptions,
           );
   }
 }

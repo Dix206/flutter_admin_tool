@@ -19,7 +19,7 @@ class ArticlesList {
 Future<Result<CmsObjectValueList>> loadArticles({
   required int page,
   required String? searchQuery,
-  required CmsObjectSortOptions sortOptions,
+  required CmsObjectSortOptions? sortOptions,
 }) async {
   try {
     const itemsToLoad = 3;
@@ -29,8 +29,10 @@ Future<Result<CmsObjectValueList>> loadArticles({
       collectionId: articleCollectionId,
       queries: [
         Query.limit(itemsToLoad),
-        Query.offset((page- 1) * itemsToLoad),
+        Query.offset((page - 1) * itemsToLoad),
         if (searchQuery != null) Query.search("title", searchQuery),
+        if (sortOptions?.ascending == true) Query.orderAsc(sortOptions!.attributId),
+        if (sortOptions?.ascending == false) Query.orderDesc(sortOptions!.attributId),
       ],
     );
 
