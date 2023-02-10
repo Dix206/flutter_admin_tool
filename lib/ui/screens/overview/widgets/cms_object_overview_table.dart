@@ -231,7 +231,10 @@ class _TableContent extends StatelessWidget {
                   )
                   .map(
                     (cmsAttributeValue) => _TableEntry(
-                      text: cmsObject.getAttributById(cmsAttributeValue.id)?.valueToString(cmsAttributeValue.value) ??
+                      text: cmsObject.getAttributById(cmsAttributeValue.id)?.valueToString(
+                                context: context,
+                                value: cmsAttributeValue.value,
+                              ) ??
                           "---",
                     ),
                   )
@@ -300,14 +303,12 @@ class _TableEntry extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: textColor,
-                      )
-                ),
+                child: Text(text,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: textColor,
+                        )),
               ),
             ),
             if (canBeSorted)

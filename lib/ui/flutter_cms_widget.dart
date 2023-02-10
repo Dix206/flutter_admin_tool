@@ -3,15 +3,18 @@ import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/routes.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class FlutterCms extends StatelessWidget {
   final List<CmsObjectStructure> cmsObjects;
   final CmsAuthInfos cmsAuthInfos;
+  final List<Locale> supportedLocales;
 
   FlutterCms({
     Key? key,
     required this.cmsObjects,
     required this.cmsAuthInfos,
+    required this.supportedLocales,
   })  : assert(
           cmsObjects.every(
             (object) => cmsObjects.every(
@@ -38,6 +41,12 @@ class FlutterCms extends StatelessWidget {
         cmsObjects: cmsObjects,
         child: child!,
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: supportedLocales,
     );
   }
 

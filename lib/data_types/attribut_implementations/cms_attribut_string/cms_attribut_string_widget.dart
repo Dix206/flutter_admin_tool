@@ -46,9 +46,11 @@ class _CmsAttributStringWidgetState extends State<CmsAttributStringWidget> {
 
     return TextField(
       controller: _textEditingController,
+      maxLines: widget.cmsTypeString.isMultiline ? 10 : 1,
+      minLines: widget.cmsTypeString.isMultiline ? 3 : 1,
       decoration: InputDecoration(
-        labelText: widget.cmsTypeString.displayName,
         hintText: widget.cmsTypeString.hint,
+        border: const OutlineInputBorder(),
         errorText:
             isValid || !widget.shouldDisplayValidationErrors ? null : widget.cmsTypeString.invalidValueErrorMessage,
       ),

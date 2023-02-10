@@ -131,6 +131,7 @@ class _ContentState extends State<_Content> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _TopBar(
           existingCmsObjectValueId: widget.existingCmsObjectValueId,
@@ -170,7 +171,6 @@ class _TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CmsTopBar(
-      title: cmsObject.displayName,
       actions: [
         InkWell(
           onTap: onNavigateBack,
@@ -244,22 +244,46 @@ class _AttributeWidgets extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: cmsObject.attributes.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 24),
+      separatorBuilder: (context, index) => const SizedBox(height: 32),
       itemBuilder: (context, index) {
         final cmsValue = cmsObject.attributes[index];
 
         return Align(
           alignment: Alignment.centerLeft,
-          child: cmsValue.buildWidget(
-            context: context,
-            currentValue: currentCmsObjectValue.getAttributValueByAttributId(cmsValue.id),
-            shouldDisplayValidationErrors: shouldDisplayValidationErrors,
-            onCmsTypeUpdated: (newValue) {
-              InsertCmsObjectViewModel.of(context).updateAttributValue(
-                id: cmsValue.id,
-                value: newValue,
-              );
-            },
+          child: Card(
+            child: SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      cmsValue.displayName,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 16),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1000),
+                      child: cmsValue.buildWidget(
+                        context: context,
+                        currentValue: currentCmsObjectValue.getAttributValueByAttributId(cmsValue.id),
+                        shouldDisplayValidationErrors: shouldDisplayValidationErrors,
+                        onCmsTypeUpdated: (newValue) {
+                          InsertCmsObjectViewModel.of(context).updateAttributValue(
+                            id: cmsValue.id,
+                            value: newValue,
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
           ),
         );
       },

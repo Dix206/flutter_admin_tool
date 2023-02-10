@@ -17,12 +17,15 @@ final articleCmsObject = CmsObjectStructure(
     const CmsAttributString(
       id: "title",
       displayName: "Title",
+      hint: "Enter a title",
       canObjectBeSortedByThisAttribut: true,
     ),
     const CmsAttributString(
       id: "description",
+      hint: "Enter a description",
       displayName: "Description",
       canObjectBeSortedByThisAttribut: false,
+      isMultiline: true,
     ),
     const CmsAttributImage(
       id: "image",

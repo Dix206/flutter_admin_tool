@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date_time/cms_attribut_date_time_widget.dart';
 
@@ -37,7 +38,13 @@ class CmsAttributDateTime extends CmsAttributStructure<DateTime> {
       );
 
   @override
-  String valueToString(DateTime? value) => value?.toString() ?? "---";
+  String valueToString({
+    required BuildContext context,
+    required DateTime? value,
+  }) =>
+      value == null
+          ? "---"
+          : "${DateFormat.yMd(Localizations.localeOf(context).languageCode).format(value)} ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(value)}";
 
   @override
   List<Object?> get props => [

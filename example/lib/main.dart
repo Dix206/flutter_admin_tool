@@ -8,18 +8,21 @@ import 'package:flutter_cms/ui/flutter_cms_widget.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   runApp(
     FlutterCms(
-      cmsObjects: [
-        booksCmsObject,
-        articleCmsObject,
-      ],
-      cmsAuthInfos: CmsAuthInfos(
-        isUserLoggedIn: authAppwriteService.isUserLoggedIn,
-        onLogout: () async {},
-        loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
-      ),
-    ),
+        cmsObjects: [
+          booksCmsObject,
+          articleCmsObject,
+        ],
+        cmsAuthInfos: CmsAuthInfos(
+          isUserLoggedIn: authAppwriteService.isUserLoggedIn,
+          onLogout: () async {},
+          loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
+        ),
+        supportedLocales: const [
+          Locale('de'),
+          Locale('en'),
+        ]),
   );
 }

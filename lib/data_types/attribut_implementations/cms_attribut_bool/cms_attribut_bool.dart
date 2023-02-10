@@ -28,7 +28,11 @@ class CmsAttributBool extends CmsAttributStructure<bool> {
       );
 
   @override
-  String valueToString(bool? value) => value?.toString() ?? "---";
+  String valueToString({
+    required BuildContext context,
+    required bool? value,
+  }) =>
+      value?.toString() ?? "---";
 
   @override
   List<Object?> get props => [

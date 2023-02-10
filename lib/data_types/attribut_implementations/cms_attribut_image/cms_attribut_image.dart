@@ -51,5 +51,9 @@ class CmsAttributImage extends CmsAttributStructure<ImageValue> {
       );
 
   @override
-  String valueToString(ImageValue? value) => value?.imageUrl ?? "---";
+  String valueToString({
+    required BuildContext context,
+    required ImageValue? value,
+  }) =>
+      value?.imageUrl ?? "---";
 }

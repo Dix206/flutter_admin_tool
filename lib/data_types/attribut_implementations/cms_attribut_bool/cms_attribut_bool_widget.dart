@@ -18,6 +18,7 @@ class CmsAttributBoolWidget extends StatelessWidget {
     return SwitchListTile(
       value: currentValue,
       onChanged: onCmsTypeUpdated,
+      contentPadding: EdgeInsets.zero,
       title: Text(title),
     );
   }

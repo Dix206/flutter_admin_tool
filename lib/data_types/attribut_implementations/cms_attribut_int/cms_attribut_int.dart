@@ -31,8 +31,12 @@ class CmsAttributInt extends CmsAttributStructure<int> {
         onCmsTypeUpdated: onCmsTypeUpdated,
       );
 
-      @override
-      String valueToString(int? value) => value?.toString() ?? "---";
+  @override
+  String valueToString({
+    required BuildContext context,
+    required int? value,
+  }) =>
+      value?.toString() ?? "---";
 
   @override
   List<Object?> get props => [

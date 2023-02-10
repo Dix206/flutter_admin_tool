@@ -51,7 +51,10 @@ abstract class CmsAttributStructure<T extends Object> extends Equatable {
   });
 
   /// This function should return a readable string based on the passed value of this attribut.
-  String valueToString(T? value);
+  String valueToString({
+   required BuildContext context,
+   required T? value,
+  });
 
   bool isValid(T? value) {
     return (isOptional || value != null) && (validator?.call(value) ?? true);

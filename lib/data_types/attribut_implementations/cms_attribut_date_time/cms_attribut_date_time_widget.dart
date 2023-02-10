@@ -29,17 +29,40 @@ class CmsAttributDateTimeWidget extends StatefulWidget {
 class _CmsAttributDateTimeWidgetState extends State<CmsAttributDateTimeWidget> {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text("${widget.cmsTypeDateTime.displayName}: ${widget.cmsTypeDateTime.valueToString(widget.currentValue)}"),
-      subtitle: widget.shouldDisplayValidationErrors && !widget.cmsTypeDateTime.isValid(widget.currentValue)
-          ? Text(
+    return Column(
+      children: [
+        InkWell(
+          onTap: _selectDateTime,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              children: [
+                const Icon(Icons.calendar_today),
+                const SizedBox(width: 16),
+                Text(
+                  widget.cmsTypeDateTime.valueToString(
+                    context: context,
+                    value: widget.currentValue,
+                  ),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        if (widget.shouldDisplayValidationErrors && !widget.cmsTypeDateTime.isValid(widget.currentValue))
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Text(
               widget.cmsTypeDateTime.invalidValueErrorMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),
-            )
-          : null,
-      onTap: _selectDateTime,
+            ),
+          ),
+      ],
     );
   }
 

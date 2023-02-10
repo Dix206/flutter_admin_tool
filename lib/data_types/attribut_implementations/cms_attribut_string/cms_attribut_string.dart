@@ -5,11 +5,13 @@ import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
 class CmsAttributString extends CmsAttributStructure<String> {
   final String? hint;
+  final bool isMultiline;
 
   const CmsAttributString({
     this.hint,
     required super.id,
     required super.displayName,
+    this.isMultiline = false,
     super.validator,
     super.invalidValueErrorMessage = "invalid input",
     super.isOptional = false,
@@ -33,14 +35,22 @@ class CmsAttributString extends CmsAttributStructure<String> {
       );
 
   @override
-  String valueToString(String? value) => value ?? "---";
+  String valueToString({
+    required BuildContext context,
+    required String? value,
+  }) =>
+      value ?? "---";
 
   @override
   List<Object?> get props => [
+        hint,
+        id,
         displayName,
-        isOptional,
+        isMultiline,
         validator,
         invalidValueErrorMessage,
-        hint,
+        isOptional,
+        canObjectBeSortedByThisAttribut,
+        shouldBeDisplayedOnOverviewTable,
       ];
 }
