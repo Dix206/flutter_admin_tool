@@ -30,6 +30,7 @@ class _CmsAttributDateTimeWidgetState extends State<CmsAttributDateTimeWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
           onTap: _selectDateTime,
@@ -54,7 +55,10 @@ class _CmsAttributDateTimeWidgetState extends State<CmsAttributDateTimeWidget> {
         ),
         if (widget.shouldDisplayValidationErrors && !widget.cmsTypeDateTime.isValid(widget.currentValue))
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 4,
+            ),
             child: Text(
               widget.cmsTypeDateTime.invalidValueErrorMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(

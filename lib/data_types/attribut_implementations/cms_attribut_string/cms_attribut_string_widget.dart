@@ -41,8 +41,7 @@ class _CmsAttributStringWidgetState extends State<CmsAttributStringWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final isValid =
-        widget.cmsTypeString.isOptional || (widget.cmsTypeString.validator?.call(widget.currentValue) ?? true);
+    final isValid = widget.cmsTypeString.isValid(widget.currentValue);
 
     return TextField(
       controller: _textEditingController,

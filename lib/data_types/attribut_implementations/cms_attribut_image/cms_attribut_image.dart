@@ -56,4 +56,10 @@ class CmsAttributImage extends CmsAttributStructure<ImageValue> {
     required ImageValue? value,
   }) =>
       value?.imageUrl ?? "---";
+
+  @override
+  bool isValid(ImageValue? value) {
+    return (value?.imageData != null || value?.imageUrl != null && value?.wasDeleted == false) ||
+        (value == null && isOptional);
+  }
 }

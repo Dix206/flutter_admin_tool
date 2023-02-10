@@ -259,7 +259,7 @@ class _AttributeWidgets extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      cmsValue.displayName,
+                      "${cmsValue.displayName}${cmsValue.isOptional ? "" : " *"}",
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),

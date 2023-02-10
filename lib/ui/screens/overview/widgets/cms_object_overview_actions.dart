@@ -102,7 +102,17 @@ class _SearchBarState extends State<_SearchBar> {
                 prefixIcon: const Icon(Icons.search),
                 contentPadding: EdgeInsets.zero,
                 suffixIcon: IconButton(
-                  onPressed: _textEditingController.clear,
+                  onPressed: () {
+                    _textEditingController.clear();
+                    context.go(
+                      Routes.overview(
+                        cmsObjectId: widget.cmsObject.id,
+                        page: 1,
+                        searchQuery: null,
+                        sortOptions: widget.sortOptions,
+                      ),
+                    );
+                  },
                   icon: const Icon(Icons.clear),
                 ),
               ),

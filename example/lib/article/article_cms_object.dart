@@ -18,18 +18,21 @@ final articleCmsObject = CmsObjectStructure(
       id: "title",
       displayName: "Title",
       hint: "Enter a title",
+      invalidValueErrorMessage: "You have to enter a title",
       canObjectBeSortedByThisAttribut: true,
     ),
     const CmsAttributString(
       id: "description",
       hint: "Enter a description",
       displayName: "Description",
+      invalidValueErrorMessage: "You have to enter a description",
       canObjectBeSortedByThisAttribut: false,
       isMultiline: true,
     ),
     const CmsAttributImage(
       id: "image",
       displayName: "Image",
+      isOptional: true,
     ),
     CmsAttributDateTime(
       id: "timestamp",

@@ -57,7 +57,7 @@ abstract class CmsAttributStructure<T extends Object> extends Equatable {
   });
 
   bool isValid(T? value) {
-    return (isOptional || value != null) && (validator?.call(value) ?? true);
+    return (value != null && (validator?.call(value) ?? true)) || (value == null && isOptional);
   }
 
   CmsAttributValue toEmptyAttributValue() {

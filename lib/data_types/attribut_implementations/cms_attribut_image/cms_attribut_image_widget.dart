@@ -56,23 +56,26 @@ class _CmsAttributImageWidgetState extends State<CmsAttributImageWidget> {
               color: Colors.grey,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: widget.currentValue?.imageData != null
-                ? Image.memory(
-                    widget.currentValue!.imageData!,
-                    fit: BoxFit.cover,
-                  )
-                : widget.currentValue?.imageUrl != null && !widget.currentValue!.wasDeleted
-                    ? Image.network(
-                        widget.currentValue!.imageUrl!,
-                        fit: BoxFit.cover,
-                        headers: widget.currentValue?.headers,
-                      )
-                    : const Center(
-                        child: Icon(
-                          Icons.camera_alt,
-                          color: Colors.white,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: widget.currentValue?.imageData != null
+                  ? Image.memory(
+                      widget.currentValue!.imageData!,
+                      fit: BoxFit.cover,
+                    )
+                  : widget.currentValue?.imageUrl != null && !widget.currentValue!.wasDeleted
+                      ? Image.network(
+                          widget.currentValue!.imageUrl!,
+                          fit: BoxFit.cover,
+                          headers: widget.currentValue?.headers,
+                        )
+                      : const Center(
+                          child: Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
+            ),
           ),
         ),
         if (widget.currentValue != null &&
@@ -94,6 +97,15 @@ class _CmsAttributImageWidgetState extends State<CmsAttributImageWidget> {
               buttonColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.onError,
             ),
+          ),
+        ],
+        if (widget.shouldDisplayValidationErrors && !widget.cmsTypeString.isValid(widget.currentValue)) ...[
+          const SizedBox(height: 8),
+          Text(
+            widget.cmsTypeString.invalidValueErrorMessage,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
           ),
         ],
       ],

@@ -35,6 +35,12 @@ class CmsAttributString extends CmsAttributStructure<String> {
       );
 
   @override
+  bool isValid(String? value) {
+    return (value?.trim().isNotEmpty == true && (validator?.call(value) ?? true)) ||
+        (value?.trim().isNotEmpty != false && isOptional);
+  }
+
+  @override
   String valueToString({
     required BuildContext context,
     required String? value,
