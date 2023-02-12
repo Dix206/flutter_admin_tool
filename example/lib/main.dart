@@ -17,7 +17,7 @@ void main() {
         ],
         cmsAuthInfos: CmsAuthInfos(
           isUserLoggedIn: authAppwriteService.isUserLoggedIn,
-          onLogout: () async {},
+          onLogout: authAppwriteService.logout,
           loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
         ),
         supportedLocales: const [

@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/routes.dart';
-import 'package:flutter_cms/ui/flutter_cms_widget.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:flutter_cms/routes.dart';
+import 'package:flutter_cms/ui/flutter_cms_widget.dart';
+
+enum MainScreenTab {
+  overview,
+  settings,
+}
+
 class MainScreen extends StatelessWidget {
-  final String selectedCmsObjectId;
+  final MainScreenTab selectedTab;
+  final String? selectedCmsObjectId;
   final Widget child;
 
   const MainScreen({
     Key? key,
+    required this.selectedTab,
     required this.selectedCmsObjectId,
     required this.child,
   }) : super(key: key);
@@ -33,8 +41,25 @@ class MainScreen extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surface,
               ),
               child: ListView.builder(
-                itemCount: cmsObjects.length,
+                itemCount: cmsObjects.length + 1,
                 itemBuilder: (context, index) {
+                  if (index == cmsObjects.length) {
+                    return Column(
+                      children: [
+                        const Divider(),
+                        Material(
+                          child: ListTile(
+                            title: const Text("Settings"),
+                            onTap: () => context.go(Routes.settings),
+                            tileColor: Theme.of(context).colorScheme.surface,
+                            selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
+                            selected: selectedTab == MainScreenTab.settings,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+
                   return Material(
                     child: ListTile(
                       title: Text(cmsObjects[index].displayName),
@@ -48,7 +73,7 @@ class MainScreen extends StatelessWidget {
                       ),
                       tileColor: Theme.of(context).colorScheme.surface,
                       selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                      selected: cmsObjects[index].id == selectedCmsObjectId,
+                      selected: selectedTab == MainScreenTab.overview && cmsObjects[index].id == selectedCmsObjectId,
                     ),
                   );
                 },

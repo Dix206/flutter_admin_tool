@@ -32,6 +32,14 @@ class Result<T> {
     }
   }
 
+  Result<S> foldSuccess<S>({
+    required S Function(T data) onSuccess,
+  }) =>
+      fold(
+        onError: (errorMessage) => Result.error(errorMessage),
+        onSuccess: (data) => Result.success(onSuccess(data)),
+      );
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

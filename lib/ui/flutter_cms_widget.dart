@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/auth_state_service.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
@@ -27,9 +28,12 @@ class FlutterCms extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authStateService = AuthStateService(cmsAuthInfos);
+
     final router = getGoRouter(
       cmsAuthInfos: cmsAuthInfos,
       cmsOnjects: cmsObjects,
+      authStateService: authStateService,
     );
 
     return MaterialApp.router(
@@ -39,6 +43,8 @@ class FlutterCms extends StatelessWidget {
       title: "asdasd",
       builder: (context, child) => _CmsObjectsInherited(
         cmsObjects: cmsObjects,
+        cmsAuthInfos: cmsAuthInfos,
+        authStateService: authStateService,
         child: child!,
       ),
       localizationsDelegates: const [
@@ -48,6 +54,14 @@ class FlutterCms extends StatelessWidget {
       ],
       supportedLocales: supportedLocales,
     );
+  }
+
+  static AuthStateService getAuthStateService(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.authStateService;
+  }
+
+  static CmsAuthInfos getCmsAuthInfos(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsAuthInfos;
   }
 
   static List<CmsObjectStructure> getAllObjects(BuildContext context) {
@@ -65,14 +79,20 @@ class FlutterCms extends StatelessWidget {
 
 class _CmsObjectsInherited extends InheritedWidget {
   final List<CmsObjectStructure> cmsObjects;
+  final CmsAuthInfos cmsAuthInfos;
+  final AuthStateService authStateService;
 
   const _CmsObjectsInherited({
     required this.cmsObjects,
+    required this.cmsAuthInfos,
+    required this.authStateService,
     required super.child,
   });
 
   @override
   bool updateShouldNotify(_CmsObjectsInherited oldWidget) {
-    return cmsObjects != oldWidget.cmsObjects;
+    return cmsObjects != oldWidget.cmsObjects ||
+        cmsAuthInfos != oldWidget.cmsAuthInfos ||
+        authStateService != oldWidget.authStateService;
   }
 }

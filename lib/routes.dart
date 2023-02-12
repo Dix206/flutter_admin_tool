@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/auth_state_service.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/ui/screens/main_screen.dart';
 import 'package:flutter_cms/ui/screens/overview/overview_screen.dart';
+import 'package:flutter_cms/ui/screens/settings/settings_screen.dart';
 import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,9 +14,8 @@ import 'ui/screens/insert_cms_object/insert_cms_object.dart';
 GoRouter getGoRouter({
   required CmsAuthInfos cmsAuthInfos,
   required List<CmsObjectStructure> cmsOnjects,
+  required AuthStateService authStateService,
 }) {
-  final authStateService = AuthStateService(cmsAuthInfos);
-
   return GoRouter(
     initialLocation: Routes.login,
     refreshListenable: authStateService,
@@ -46,13 +47,23 @@ GoRouter getGoRouter({
       ),
       ShellRoute(
         builder: (context, state, child) {
-          final cmsObjectId = state.params['cmsObjectId'] ?? "";
+          final cmsObjectId = state.params['cmsObjectId'];
+          final mainScreenTab = state.location == Routes.settings ? MainScreenTab.settings : MainScreenTab.overview;
+
           return MainScreen(
             selectedCmsObjectId: cmsObjectId,
+            selectedTab: mainScreenTab,
             child: child,
           );
         },
         routes: [
+          FadeRoute(
+            path: Routes.settings,
+            authStateService: authStateService,
+            childBuilder: (context, state) {
+              return const SettingsScreen();
+            },
+          ),
           FadeRoute(
             path: "/overview/:cmsObjectId",
             authStateService: authStateService,
@@ -133,6 +144,7 @@ GoRouter getGoRouter({
 
 class Routes {
   static String login = "/login";
+  static String settings = "/settings";
   static overview({
     required String cmsObjectId,
     required String? searchQuery,
@@ -196,33 +208,6 @@ class FadeRoute extends GoRoute {
             ),
           ),
         );
-}
-
-class AuthStateService with ChangeNotifier {
-  final CmsAuthInfos _cmsAuthInfos;
-
-  bool _isLoggedIn = false;
-  bool _isInitialized = false;
-
-  AuthStateService(
-    this._cmsAuthInfos,
-  ) {
-    _init();
-  }
-
-  bool get isLoggedIn => _isLoggedIn;
-  bool get isInitialized => _isInitialized;
-
-  void onUserLoggedIn() {
-    _isLoggedIn = true;
-    notifyListeners();
-  }
-
-  Future<void> _init() async {
-    _isLoggedIn = await _cmsAuthInfos.isUserLoggedIn();
-    _isInitialized = true;
-    notifyListeners();
-  }
 }
 
 class _LoadingScreen extends StatelessWidget {
