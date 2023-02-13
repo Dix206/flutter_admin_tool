@@ -4,18 +4,23 @@ import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/routes.dart';
+import 'package:flutter_cms/ui/theme_mode_handler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class FlutterCms extends StatelessWidget {
   final List<CmsObjectStructure> cmsObjects;
   final CmsAuthInfos cmsAuthInfos;
   final List<Locale> supportedLocales;
+  final ThemeData? lightTheme;
+  final ThemeData? darkTheme;
 
   FlutterCms({
     Key? key,
     required this.cmsObjects,
     required this.cmsAuthInfos,
     required this.supportedLocales,
+    this.lightTheme,
+    this.darkTheme,
   })  : assert(
           cmsObjects.every(
             (object) => cmsObjects.every(
@@ -36,23 +41,43 @@ class FlutterCms extends StatelessWidget {
       authStateService: authStateService,
     );
 
-    return MaterialApp.router(
-      routeInformationProvider: router.routeInformationProvider,
-      routerDelegate: router.routerDelegate,
-      routeInformationParser: router.routeInformationParser,
-      title: "asdasd",
-      builder: (context, child) => _CmsObjectsInherited(
-        cmsObjects: cmsObjects,
-        cmsAuthInfos: cmsAuthInfos,
-        authStateService: authStateService,
-        child: child!,
+    return ThemeModeHandler(
+      childBuilder: (themeMode) => MaterialApp.router(
+        routeInformationProvider: router.routeInformationProvider,
+        routerDelegate: router.routerDelegate,
+        routeInformationParser: router.routeInformationParser,
+        theme: lightTheme ??
+            ThemeData.from(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color(0xFF5C5D8D),
+                background: const Color.fromARGB(255, 243, 242, 252),
+                surface: const Color.fromARGB(255, 228, 227, 235),
+              ),
+            ),
+        darkTheme: darkTheme ??
+            ThemeData.from(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color.fromARGB(255, 160, 161, 206),
+                background: const Color.fromARGB(255, 50, 50, 52),
+                surface: const Color.fromARGB(255, 82, 81, 87),
+                brightness: Brightness.dark,
+              ),
+            ),
+        themeMode: themeMode,
+        title: "flutter cms",
+        builder: (context, child) => _CmsObjectsInherited(
+          cmsObjects: cmsObjects,
+          cmsAuthInfos: cmsAuthInfos,
+          authStateService: authStateService,
+          child: child!,
+        ),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: supportedLocales,
       ),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: supportedLocales,
     );
   }
 

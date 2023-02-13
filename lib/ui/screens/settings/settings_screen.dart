@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/ui/flutter_cms_widget.dart';
-import 'package:flutter_cms/ui/screens/main_screen.dart';
+import 'package:flutter_cms/ui/theme_mode_handler.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -8,19 +8,26 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authStateService = FlutterCms.getAuthStateService(context);
-    final cmsAuthInfos = FlutterCms.getCmsAuthInfos(context);
+    final themeMode = ThemeModeHandler.getThemeMode(context);
 
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        SwitchListTile(
+          value: (themeMode == ThemeMode.system && MediaQuery.of(context).platformBrightness == Brightness.dark) ||
+              themeMode == ThemeMode.dark,
+          onChanged: (value) => ThemeModeHandler.setThemeMode(
+            context: context,
+            themeMode: value ? ThemeMode.dark : ThemeMode.light,
+          ),
+          title: const Text("Dark Mode"),
+        ),
+        const SizedBox(height: 24),
         Align(
           alignment: Alignment.centerLeft,
           child: TextButton(
-            onPressed: () async {
-              await cmsAuthInfos.onLogout();
-              authStateService.onUserLoggedOut();
-            },
-            child: Text("Logout"),
+            onPressed: authStateService.onUserLoggedOut,
+            child: const Text("Logout"),
           ),
         ),
       ],

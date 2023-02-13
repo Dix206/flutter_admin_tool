@@ -21,7 +21,8 @@ class AuthStateService with ChangeNotifier {
     notifyListeners();
   }
 
-  void onUserLoggedOut() {
+  Future<void> onUserLoggedOut() async {
+    await _cmsAuthInfos.onLogout();
     _isLoggedIn = false;
     notifyListeners();
   }

@@ -24,7 +24,7 @@ class CmsButton extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: isLoading || onPressed == null ? Colors.grey : buttonColor ?? Theme.of(context).primaryColor,
+          color: isLoading || onPressed == null ? Colors.grey : buttonColor ?? Theme.of(context).colorScheme.primary,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -40,9 +40,8 @@ class CmsButton extends StatelessWidget {
                 : Text(
                     text,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: onPressed == null
-                              ? Colors.black
-                              : textColor ?? Theme.of(context).colorScheme.onPrimary,
+                          color:
+                              onPressed == null ? Colors.black : textColor ?? Theme.of(context).colorScheme.onPrimary,
                         ),
                   ),
           ),
