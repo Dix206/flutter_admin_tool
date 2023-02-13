@@ -44,8 +44,7 @@ class Blog {
       content: cmsObjectValue.getAttributValueByAttributId('content'),
       day: cmsObjectValue.getAttributValueByAttributId('day'),
       sortOrder: cmsObjectValue.getAttributValueByAttributId('sortOrder'),
-      color: null,
-      // color: cmsObjectValue.getAttributValueByAttributId('color'), // TODO
+      color: cmsObjectValue.getAttributValueByAttributId('color'),
     );
   }
 

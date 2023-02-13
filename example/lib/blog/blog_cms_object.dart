@@ -3,6 +3,7 @@ import 'package:example/blog/use_cases/delete_blog_use_case.dart';
 import 'package:example/blog/use_cases/load_blog_by_id.dart';
 import 'package:example/blog/use_cases/load_blogs.dart';
 import 'package:example/blog/use_cases/update_blog_use_case.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_color/cms_attribut_color.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_int/cms_attribut_int.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date_time/cms_attribut_date_time.dart';
@@ -40,7 +41,12 @@ final blogCmsObject = CmsObjectStructure(
       defaultValue: 0,
       canObjectBeSortedByThisAttribut: true,
     ),
-// CmsAttributValue(id: 'color', value: color),
+    CmsAttributColor(
+      id: "color",
+      displayName: "Color",
+      invalidValueErrorMessage: "You have to select a color",
+      isOptional: true,
+    ),
   ],
   onCreateCmsObject: createBlog,
   onUpdateCmsObject: updateBlog,

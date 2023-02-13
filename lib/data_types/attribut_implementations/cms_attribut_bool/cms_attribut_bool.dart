@@ -34,13 +34,4 @@ class CmsAttributBool extends CmsAttributStructure<bool> {
     required bool? value,
   }) =>
       value?.toString() ?? "---";
-
-  @override
-  List<Object?> get props => [
-        id,
-        displayName,
-        canObjectBeSortedByThisAttribut,
-        shouldBeDisplayedOnOverviewTable,
-        defaultValue,
-      ];
 }
