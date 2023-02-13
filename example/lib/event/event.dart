@@ -33,14 +33,14 @@ class Event {
       values: [
         CmsAttributValue(id: 'id', value: id),
         CmsAttributValue(id: 'title', value: title),
-        CmsAttributValue(id: 'price', value: 1.1), // TODO
+        CmsAttributValue(id: 'price', value: price),
         CmsAttributValue(id: 'phoneNumber', value: phoneNumber),
         CmsAttributValue(id: 'email', value: email),
-        CmsAttributValue(id: 'locationLatitude', value: null), // TODO
-        CmsAttributValue(id: 'locationLongitude', value: null), // TODO
-        CmsAttributValue(id: 'eventType', value: EventType.workshop), // TODO
-        CmsAttributValue(id: 'neededItems', value: null), // TODO
-        CmsAttributValue(id: 'startingTime', value: TimeOfDay.now()), // TODO
+        CmsAttributValue(id: 'locationLatitude', value: locationLatitude),
+        CmsAttributValue(id: 'locationLongitude', value: locationLongitude),
+        CmsAttributValue(id: 'eventType', value: eventType),
+        CmsAttributValue(id: 'neededItems', value: neededItems),
+        CmsAttributValue(id: 'startingTime', value: startingTime),
       ],
     );
   }
@@ -52,8 +52,7 @@ class Event {
     return Event(
       id: id ?? cmsObjectValue.id as String,
       title: cmsObjectValue.getAttributValueByAttributId('title'),
-      // price: cmsObjectValue.getAttributValueByAttributId('price'), // TODO
-      price: 0.0, // TODO
+      price: cmsObjectValue.getAttributValueByAttributId('price'),
       phoneNumber: cmsObjectValue.getAttributValueByAttributId('phoneNumber'),
       email: cmsObjectValue.getAttributValueByAttributId('email'),
       // locationLatitude: cmsObjectValue.getAttributValueByAttributId('locationLatitude'), // TODO
