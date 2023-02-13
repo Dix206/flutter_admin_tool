@@ -4,6 +4,7 @@ import 'package:example/blog/use_cases/load_blog_by_id.dart';
 import 'package:example/blog/use_cases/load_blogs.dart';
 import 'package:example/blog/use_cases/update_blog_use_case.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_color/cms_attribut_color.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_html/cms_attribut_html.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_int/cms_attribut_int.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date/cms_attribut_date.dart';
@@ -21,13 +22,10 @@ final blogCmsObject = CmsObjectStructure(
       invalidValueErrorMessage: "You have to enter a title",
       canObjectBeSortedByThisAttribut: true,
     ),
-    // TODO HTML
-    const CmsAttributString(
+    const CmsAttributHtml(
       id: "content",
       displayName: "Content",
-      hint: "Enter your content",
       invalidValueErrorMessage: "You have to enter content",
-      isMultiline: true,
     ),
     CmsAttributDate(
       id: "day",
