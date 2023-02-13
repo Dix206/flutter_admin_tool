@@ -1,4 +1,5 @@
 import 'package:example/blog/use_cases/create_blog_use_case.dart';
+import 'package:example/blog/use_cases/delete_blog_use_case.dart';
 import 'package:example/blog/use_cases/load_blog_by_id.dart';
 import 'package:example/blog/use_cases/load_blogs.dart';
 import 'package:example/blog/use_cases/update_blog_use_case.dart';
@@ -36,14 +37,14 @@ final blogCmsObject = CmsObjectStructure(
       id: "sortOrder",
       displayName: "Sort Order",
       invalidValueErrorMessage: "You have to enter a sort order number",
+      defaultValue: 0,
       canObjectBeSortedByThisAttribut: true,
     ),
+// CmsAttributValue(id: 'color', value: color),
   ],
   onCreateCmsObject: createBlog,
   onUpdateCmsObject: updateBlog,
   loadCmsObjectById: loadBlogById,
   onLoadCmsObjects: loadBlogs,
-  // onDeleteCmsObject: deleteArticle,
+  onDeleteCmsObject: deleteBlog,
 );
-
-// CmsAttributValue(id: 'color', value: color),

@@ -9,6 +9,7 @@ class CmsAttributInt extends CmsAttributStructure<int> {
     this.hint,
     required super.id,
     required super.displayName,
+    super.defaultValue,
     super.validator,
     super.invalidValueErrorMessage = "invalid input",
     super.isOptional = false,
@@ -40,10 +41,7 @@ class CmsAttributInt extends CmsAttributStructure<int> {
 
   @override
   List<Object?> get props => [
-        displayName,
-        isOptional,
-        validator,
-        invalidValueErrorMessage,
+        ...super.props,
         hint,
       ];
 }

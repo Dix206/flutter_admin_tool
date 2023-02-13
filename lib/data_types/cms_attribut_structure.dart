@@ -33,6 +33,9 @@ abstract class CmsAttributStructure<T extends Object> extends Equatable {
   /// If the list can be sorted by this value, it is neccessary to implement the sort functionality in the object load function.
   final bool canObjectBeSortedByThisAttribut;
 
+  // This value will be initially used while creating a new object.
+  final T? defaultValue;
+
   const CmsAttributStructure({
     required this.id,
     required this.displayName,
@@ -41,6 +44,7 @@ abstract class CmsAttributStructure<T extends Object> extends Equatable {
     required this.validator,
     required this.shouldBeDisplayedOnOverviewTable,
     required this.canObjectBeSortedByThisAttribut,
+    required this.defaultValue,
   });
 
   Widget buildWidget({
@@ -63,7 +67,7 @@ abstract class CmsAttributStructure<T extends Object> extends Equatable {
   CmsAttributValue toEmptyAttributValue() {
     return CmsAttributValue<T>(
       id: id,
-      value: null,
+      value: defaultValue,
     );
   }
 
@@ -80,5 +84,6 @@ abstract class CmsAttributStructure<T extends Object> extends Equatable {
         valueToString,
         shouldBeDisplayedOnOverviewTable,
         canObjectBeSortedByThisAttribut,
+        defaultValue,
       ];
 }

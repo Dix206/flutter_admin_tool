@@ -30,6 +30,7 @@ class CmsAttributImage extends CmsAttributStructure<ImageValue> {
     super.isOptional = false,
   }) : super(
           validator: null,
+          defaultValue: null,
           invalidValueErrorMessage: "invalid input",
           shouldBeDisplayedOnOverviewTable: false,
           canObjectBeSortedByThisAttribut: false,

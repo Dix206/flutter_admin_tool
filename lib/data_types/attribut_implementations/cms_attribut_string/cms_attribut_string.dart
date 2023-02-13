@@ -11,6 +11,7 @@ class CmsAttributString extends CmsAttributStructure<String> {
     this.hint,
     required super.id,
     required super.displayName,
+    super.defaultValue,
     this.isMultiline = false,
     super.validator,
     super.invalidValueErrorMessage = "invalid input",
@@ -49,14 +50,8 @@ class CmsAttributString extends CmsAttributStructure<String> {
 
   @override
   List<Object?> get props => [
+        ...super.props,
         hint,
-        id,
-        displayName,
         isMultiline,
-        validator,
-        invalidValueErrorMessage,
-        isOptional,
-        canObjectBeSortedByThisAttribut,
-        shouldBeDisplayedOnOverviewTable,
       ];
 }

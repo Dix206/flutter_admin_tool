@@ -13,6 +13,7 @@ class CmsAttributDateTime extends CmsAttributStructure<DateTime> {
     required super.displayName,
     this.minDateTime,
     this.maxDateTime,
+    super.defaultValue,
     super.validator,
     super.invalidValueErrorMessage = "invalid input",
     super.isOptional = false,
@@ -48,9 +49,8 @@ class CmsAttributDateTime extends CmsAttributStructure<DateTime> {
 
   @override
   List<Object?> get props => [
-        displayName,
-        isOptional,
-        validator,
-        invalidValueErrorMessage,
+        ...super.props,
+        maxDateTime,
+        minDateTime,
       ];
 }
