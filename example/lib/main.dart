@@ -1,6 +1,6 @@
 import 'package:example/appwrite/auth_service.dart';
 import 'package:example/article/article_cms_object.dart';
-import 'package:example/book_object.dart';
+import 'package:example/blog/blog_cms_object.dart';
 import 'package:example/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
@@ -12,7 +12,7 @@ void main() {
   runApp(
     FlutterCms(
         cmsObjects: [
-          booksCmsObject,
+          blogCmsObject,
           articleCmsObject,
         ],
         cmsAuthInfos: CmsAuthInfos(

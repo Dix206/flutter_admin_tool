@@ -1,12 +1,12 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:example/appwrite/client.dart';
-import 'package:example/article/article.dart';
+import 'package:example/blog/blog.dart';
 import 'package:example/constants.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/data_types/result.dart';
 
-Future<Result<CmsObjectValueList>> loadArticles({
+Future<Result<CmsObjectValueList>> loadBlogs({
   required int page,
   required String? searchQuery,
   required CmsObjectSortOptions? sortOptions,
@@ -16,7 +16,7 @@ Future<Result<CmsObjectValueList>> loadArticles({
 
     final databaseList = await databases.listDocuments(
       databaseId: databaseId,
-      collectionId: articleCollectionId,
+      collectionId: blogCollectionId,
       queries: [
         Query.limit(itemsToLoad),
         Query.offset((page - 1) * itemsToLoad),
@@ -26,22 +26,16 @@ Future<Result<CmsObjectValueList>> loadArticles({
       ],
     );
 
-    final jwt = await account.createJWT();
-
     return Result.success(
       CmsObjectValueList(
         cmsObjectValues: databaseList.documents
-            .map((document) => Article.fromJson(document.data))
-            .map(
-              (article) => article.toCmsObjectValue(
-                {"x-appwrite-jwt": jwt.jwt},
-              ),
-            )
+            .map((document) => Blog.fromJson(document.data))
+            .map((blog) => blog.toCmsObjectValue())
             .toList(),
         overallPageCount: (databaseList.total / itemsToLoad).ceil(),
       ),
     );
   } catch (exception) {
-    return Result.error("Failed to load articles. Please try again");
+    return Result.error("Failed to load blogs. Please try again");
   }
 }

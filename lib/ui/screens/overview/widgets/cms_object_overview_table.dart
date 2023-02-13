@@ -80,6 +80,13 @@ class CmsObjectOverviewTable extends StatelessWidget {
                               );
                             } else if (state.cmsObjectValues == null) {
                               return const CmsLoading();
+                            } else if (state.cmsObjectValues!.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  "No items found",
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                ),
+                              );
                             } else {
                               return _TableContent(
                                 cmsObject: cmsObject,
