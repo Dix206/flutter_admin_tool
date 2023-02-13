@@ -1,6 +1,7 @@
 import 'package:example/appwrite/auth_service.dart';
 import 'package:example/article/article_cms_object.dart';
 import 'package:example/blog/blog_cms_object.dart';
+import 'package:example/event/event_cms_object.dart';
 import 'package:example/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
@@ -14,6 +15,7 @@ void main() {
         cmsObjects: [
           blogCmsObject,
           articleCmsObject,
+          eventCmsObject,
         ],
         cmsAuthInfos: CmsAuthInfos(
           isUserLoggedIn: authAppwriteService.isUserLoggedIn,

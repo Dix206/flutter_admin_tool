@@ -9,7 +9,7 @@ Future<Result<Unit>> createBlog(CmsObjectValue cmsObjectValue) async {
   try {
     final id = const Uuid().v4();
 
-    final articleAppwriteDto = Blog.fromCmsObjectValue(
+    final blog = Blog.fromCmsObjectValue(
       cmsObjectValue: cmsObjectValue,
       id: id,
     );
@@ -17,8 +17,8 @@ Future<Result<Unit>> createBlog(CmsObjectValue cmsObjectValue) async {
     await databases.createDocument(
       databaseId: databaseId,
       collectionId: blogCollectionId,
-      data: articleAppwriteDto.toJson(),
-      documentId: articleAppwriteDto.id,
+      data: blog.toJson(),
+      documentId: blog.id,
     );
     return Result.success(const Unit());
   } catch (exception) {

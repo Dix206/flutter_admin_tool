@@ -22,7 +22,7 @@ Future<Result<Unit>> createArticle(CmsObjectValue cmsObjectValue) async {
       return result.fold(
           onError: (error) => Result.error(error),
           onSuccess: (url) async {
-            final articleAppwriteDto = Article.fromCmsObjectValue(
+            final article = Article.fromCmsObjectValue(
               cmsObjectValue: cmsObjectValue,
               id: id,
               imageId: imageId,
@@ -31,14 +31,14 @@ Future<Result<Unit>> createArticle(CmsObjectValue cmsObjectValue) async {
             await databases.createDocument(
               databaseId: databaseId,
               collectionId: articleCollectionId,
-              data: articleAppwriteDto.toJson(),
-              documentId: articleAppwriteDto.id,
+              data: article.toJson(),
+              documentId: article.id,
             );
             return Result.success(const Unit());
           });
     }
 
-    final articleAppwriteDto = Article.fromCmsObjectValue(
+    final article = Article.fromCmsObjectValue(
       cmsObjectValue: cmsObjectValue,
       id: id,
       imageId: null,
@@ -47,8 +47,8 @@ Future<Result<Unit>> createArticle(CmsObjectValue cmsObjectValue) async {
     await databases.createDocument(
       databaseId: databaseId,
       collectionId: articleCollectionId,
-      data: articleAppwriteDto.toJson(),
-      documentId: articleAppwriteDto.id,
+      data: article.toJson(),
+      documentId: article.id,
     );
     return Result.success(const Unit());
   } catch (exception) {

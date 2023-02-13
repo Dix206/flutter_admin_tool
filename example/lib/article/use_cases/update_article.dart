@@ -48,7 +48,7 @@ Future<Result<Unit>> _updateArticleFromExistingArticle({
       return result.fold(
         onError: (error) => Result.error(error),
         onSuccess: (url) async {
-          final articleAppwriteDto = Article.fromCmsObjectValue(
+          final newArticle = Article.fromCmsObjectValue(
             cmsObjectValue: cmsObjectValue,
             id: cmsObjectValue.id!,
             imageId: imageId,
@@ -57,8 +57,8 @@ Future<Result<Unit>> _updateArticleFromExistingArticle({
           await databases.updateDocument(
             databaseId: databaseId,
             collectionId: articleCollectionId,
-            data: articleAppwriteDto.toJson(),
-            documentId: articleAppwriteDto.id,
+            data: newArticle.toJson(),
+            documentId: newArticle.id,
           );
           return Result.success(const Unit());
         },
@@ -71,7 +71,7 @@ Future<Result<Unit>> _updateArticleFromExistingArticle({
       return result.fold(
         onError: (error) => Result.error(error),
         onSuccess: (url) async {
-          final articleAppwriteDto = Article.fromCmsObjectValue(
+          final newArticle = Article.fromCmsObjectValue(
             cmsObjectValue: cmsObjectValue,
             id: cmsObjectValue.id!,
             imageId: null,
@@ -80,15 +80,15 @@ Future<Result<Unit>> _updateArticleFromExistingArticle({
           await databases.updateDocument(
             databaseId: databaseId,
             collectionId: articleCollectionId,
-            data: articleAppwriteDto.toJson(),
-            documentId: articleAppwriteDto.id,
+            data: newArticle.toJson(),
+            documentId: newArticle.id,
           );
           return Result.success(const Unit());
         },
       );
     }
 
-    final articleAppwriteDto = Article.fromCmsObjectValue(
+    final newArticle = Article.fromCmsObjectValue(
       cmsObjectValue: cmsObjectValue,
       id: cmsObjectValue.id!,
       imageId: article.imageId,
@@ -97,8 +97,8 @@ Future<Result<Unit>> _updateArticleFromExistingArticle({
     await databases.updateDocument(
       databaseId: databaseId,
       collectionId: articleCollectionId,
-      data: articleAppwriteDto.toJson(),
-      documentId: articleAppwriteDto.id,
+      data: newArticle.toJson(),
+      documentId: newArticle.id,
     );
     return Result.success(const Unit());
   } catch (exception) {

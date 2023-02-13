@@ -6,15 +6,15 @@ import 'package:flutter_cms/data_types/result.dart';
 
 Future<Result<Unit>> updateBlog(CmsObjectValue cmsObjectValue) async {
   try {
-    final articleAppwriteDto = Blog.fromCmsObjectValue(
+    final blog = Blog.fromCmsObjectValue(
       cmsObjectValue: cmsObjectValue,
     );
 
     await databases.updateDocument(
       databaseId: databaseId,
       collectionId: blogCollectionId,
-      data: articleAppwriteDto.toJson(),
-      documentId: articleAppwriteDto.id,
+      data: blog.toJson(),
+      documentId: blog.id,
     );
     return Result.success(const Unit());
   } catch (exception) {

@@ -27,7 +27,6 @@ class CmsAttributHtmlWidget extends StatefulWidget {
 
 class _CmsAttributHtmlWidgetState extends State<CmsAttributHtmlWidget> {
   final controller = QuillEditorController();
-
   @override
   void initState() {
     Future.delayed(
