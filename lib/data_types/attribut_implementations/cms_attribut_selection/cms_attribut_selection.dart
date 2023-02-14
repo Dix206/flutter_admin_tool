@@ -25,7 +25,6 @@ class CmsAttributSelection<T extends Object> extends CmsAttributStructure<T> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required T? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<T> onCmsTypeUpdated,

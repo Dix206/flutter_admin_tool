@@ -5,7 +5,6 @@ import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_loc
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
 class CmsAttributLocationWidget extends StatefulWidget {
-  final BuildContext context;
   final CmsLocation? currentValue;
   final CmsAttributLocation cmsTypeLocation;
   final bool shouldDisplayValidationErrors;
@@ -13,7 +12,6 @@ class CmsAttributLocationWidget extends StatefulWidget {
 
   const CmsAttributLocationWidget({
     Key? key,
-    required this.context,
     required this.cmsTypeLocation,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,

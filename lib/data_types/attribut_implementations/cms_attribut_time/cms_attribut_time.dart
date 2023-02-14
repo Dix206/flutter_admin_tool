@@ -18,13 +18,11 @@ class CmsAttributTime extends CmsAttributStructure<TimeOfDay> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required TimeOfDay? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<TimeOfDay> onCmsTypeUpdated,
   }) =>
       CmsAttributTimeWidget(
-        context: context,
         cmsTypeTime: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,

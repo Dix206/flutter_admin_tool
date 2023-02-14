@@ -3,7 +3,6 @@ import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_tim
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
 class CmsAttributTimeWidget extends StatefulWidget {
-  final BuildContext context;
   final TimeOfDay? currentValue;
   final CmsAttributTime cmsTypeTime;
   final bool shouldDisplayValidationErrors;
@@ -11,7 +10,6 @@ class CmsAttributTimeWidget extends StatefulWidget {
 
   const CmsAttributTimeWidget({
     Key? key,
-    required this.context,
     required this.cmsTypeTime,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,

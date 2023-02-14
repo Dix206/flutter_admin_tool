@@ -4,6 +4,7 @@ import 'package:example/blog/use_cases/load_blog_by_id.dart';
 import 'package:example/blog/use_cases/load_blogs.dart';
 import 'package:example/blog/use_cases/update_blog.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_color/cms_attribut_color.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_file/cms_attribut_file.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_html/cms_attribut_html.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_int/cms_attribut_int.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
@@ -44,6 +45,11 @@ final blogCmsObject = CmsObjectStructure(
       id: "color",
       displayName: "Color",
       invalidValueErrorMessage: "You have to select a color",
+      isOptional: true,
+    ),
+    const CmsAttributFile(
+      id: "file",
+      displayName: "File",
       isOptional: true,
     ),
   ],

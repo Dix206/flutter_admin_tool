@@ -2,17 +2,18 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_image/cms_attribut_image.dart';
+import 'package:flutter_cms/data_types/cms_file_value.dart';
 import 'package:flutter_cms/ui/widgets/cms_button.dart';
 
 class CmsAttributImageWidget extends StatefulWidget {
-  final ImageValue? currentValue;
-  final CmsAttributImage cmsTypeString;
+  final CmsFileValue? currentValue;
+  final CmsAttributImage cmsTypeImage;
   final bool shouldDisplayValidationErrors;
-  final OnCmsTypeUpdated<ImageValue> onCmsTypeUpdated;
+  final OnCmsTypeUpdated<CmsFileValue> onCmsTypeUpdated;
 
   const CmsAttributImageWidget({
     Key? key,
-    required this.cmsTypeString,
+    required this.cmsTypeImage,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,
     required this.onCmsTypeUpdated,
@@ -37,12 +38,15 @@ class _CmsAttributImageWidgetState extends State<CmsAttributImageWidget> {
 
             if (result?.files.first.bytes != null) {
               final bytes = result!.files.first.bytes!;
+              final name = result.files.first.name;
+
               widget.onCmsTypeUpdated(
-                ImageValue(
-                  imageData: bytes,
+                CmsFileValue(
+                  data: bytes,
                   wasDeleted: false,
-                  imageUrl: widget.currentValue?.imageUrl,
-                  headers: widget.currentValue?.headers,
+                  fileName: name,
+                  url: widget.currentValue?.url,
+                  authHeaders: widget.currentValue?.authHeaders,
                 ),
               );
             }
@@ -56,16 +60,16 @@ class _CmsAttributImageWidgetState extends State<CmsAttributImageWidget> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: widget.currentValue?.imageData != null
+              child: widget.currentValue?.data != null
                   ? Image.memory(
-                      widget.currentValue!.imageData!,
+                      widget.currentValue!.data!,
                       fit: BoxFit.cover,
                     )
-                  : widget.currentValue?.imageUrl != null && !widget.currentValue!.wasDeleted
+                  : widget.currentValue?.url != null && !widget.currentValue!.wasDeleted
                       ? Image.network(
-                          widget.currentValue!.imageUrl!,
+                          widget.currentValue!.url!,
                           fit: BoxFit.cover,
-                          headers: widget.currentValue?.headers,
+                          headers: widget.currentValue?.authHeaders,
                         )
                       : const Center(
                           child: Icon(
@@ -77,18 +81,19 @@ class _CmsAttributImageWidgetState extends State<CmsAttributImageWidget> {
           ),
         ),
         if (widget.currentValue != null &&
-            (widget.currentValue!.imageData != null ||
-                (widget.currentValue!.imageUrl != null && !widget.currentValue!.wasDeleted))) ...[
+            (widget.currentValue!.data != null ||
+                (widget.currentValue!.url != null && !widget.currentValue!.wasDeleted))) ...[
           const SizedBox(height: 8),
           SizedBox(
             width: _imageSize,
             child: CmsButton(
               onPressed: () => widget.onCmsTypeUpdated(
-                ImageValue(
-                  imageData: null,
+                CmsFileValue(
+                  data: null,
                   wasDeleted: true,
-                  imageUrl: widget.currentValue?.imageUrl,
-                  headers: widget.currentValue?.headers,
+                  fileName: widget.currentValue?.fileName,
+                  url: widget.currentValue?.url,
+                  authHeaders: widget.currentValue?.authHeaders,
                 ),
               ),
               text: "Delete",
@@ -97,10 +102,10 @@ class _CmsAttributImageWidgetState extends State<CmsAttributImageWidget> {
             ),
           ),
         ],
-        if (widget.shouldDisplayValidationErrors && !widget.cmsTypeString.isValid(widget.currentValue)) ...[
+        if (widget.shouldDisplayValidationErrors && !widget.cmsTypeImage.isValid(widget.currentValue)) ...[
           const SizedBox(height: 8),
           Text(
-            widget.cmsTypeString.invalidValueErrorMessage,
+            widget.cmsTypeImage.invalidValueErrorMessage,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: Theme.of(context).colorScheme.error,
                 ),

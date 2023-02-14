@@ -1,6 +1,6 @@
 import 'package:example/constants.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_image/cms_attribut_image.dart';
 import 'package:flutter_cms/data_types/cms_attribut_value.dart';
+import 'package:flutter_cms/data_types/cms_file_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 
 class Article {
@@ -29,12 +29,13 @@ class Article {
         CmsAttributValue(id: 'description', value: description),
         CmsAttributValue(
           id: 'image',
-          value: ImageValue(
-            imageUrl: imageId != null
+          value: CmsFileValue(
+            url: imageId != null
                 ? '$appwriteHost/storage/buckets/articles/files/$imageId/view?project=$appwriteProjectId'
                 : null,
-            imageData: null,
-            headers: authHeaders,
+            data: null,
+            fileName: null,
+            authHeaders: authHeaders,
             wasDeleted: false,
           ),
         ),

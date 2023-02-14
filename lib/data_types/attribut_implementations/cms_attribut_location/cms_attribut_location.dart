@@ -22,13 +22,11 @@ class CmsAttributLocation extends CmsAttributStructure<CmsLocation> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required CmsLocation? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<CmsLocation> onCmsTypeUpdated,
   }) =>
       CmsAttributLocationWidget(
-        context: context,
         cmsTypeLocation: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,

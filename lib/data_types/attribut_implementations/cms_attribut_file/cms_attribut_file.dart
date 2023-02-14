@@ -1,13 +1,17 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_file/cms_attribut_file_widget.dart';
 
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_image/cms_attribut_image_widget.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/cms_file_value.dart';
 
-class CmsAttributImage extends CmsAttributStructure<CmsFileValue> {
-  const CmsAttributImage({
+class CmsAttributFile extends CmsAttributStructure<CmsFileValue> {
+  /// Set this method to allow the user to download the romte file
+  final Function(String fileUrl)? onFileDownload;
+
+  const CmsAttributFile({
     required super.id,
     required super.displayName,
+    this.onFileDownload,
     super.isOptional = false,
     super.invalidValueErrorMessage = "invalid input",
   }) : super(
@@ -23,8 +27,8 @@ class CmsAttributImage extends CmsAttributStructure<CmsFileValue> {
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<CmsFileValue> onCmsTypeUpdated,
   }) =>
-      CmsAttributImageWidget(
-        cmsTypeImage: this,
+      CmsAttributFileWidget(
+        cmsTypeFile: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,
         onCmsTypeUpdated: onCmsTypeUpdated,
@@ -41,4 +45,10 @@ class CmsAttributImage extends CmsAttributStructure<CmsFileValue> {
   bool isValid(CmsFileValue? value) {
     return value?.data != null || (value?.url != null && value?.wasDeleted == false) || isOptional;
   }
+
+  @override
+  List<Object?> get props => [
+        ...super.props,
+        onFileDownload,
+      ];
 }

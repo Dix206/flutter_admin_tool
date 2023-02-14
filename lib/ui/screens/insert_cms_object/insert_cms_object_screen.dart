@@ -12,14 +12,14 @@ import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 import 'package:flutter_cms/ui/widgets/cms_top_bar.dart';
 import 'package:go_router/go_router.dart';
 
-class InsertCmsObject extends StatelessWidget {
+class InsertCmsObjectScreen extends StatelessWidget {
   final String? existingCmsObjectValueId;
   final String cmsObjectId;
   final String? searchQuery;
   final int? page;
   final CmsObjectSortOptions? sortOptions;
 
-  const InsertCmsObject({
+  const InsertCmsObjectScreen({
     Key? key,
     this.existingCmsObjectValueId,
     required this.cmsObjectId,

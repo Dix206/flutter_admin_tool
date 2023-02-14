@@ -1,6 +1,8 @@
+import 'package:example/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_cms/data_types/cms_attribut_value.dart';
+import 'package:flutter_cms/data_types/cms_file_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 
 class Blog {
@@ -10,6 +12,7 @@ class Blog {
   final DateTime day;
   final int sortOrder;
   final Color? color;
+  final String? fileId;
 
   Blog({
     required this.id,
@@ -18,9 +21,10 @@ class Blog {
     required this.day,
     required this.sortOrder,
     required this.color,
+    required this.fileId,
   });
 
-  CmsObjectValue toCmsObjectValue() {
+  CmsObjectValue toCmsObjectValue(Map<String, String> authHeaders) {
     return CmsObjectValue(
       id: id,
       values: [
@@ -30,6 +34,18 @@ class Blog {
         CmsAttributValue(id: 'day', value: day),
         CmsAttributValue(id: 'sortOrder', value: sortOrder),
         CmsAttributValue(id: 'color', value: color),
+        CmsAttributValue(
+          id: 'file',
+          value: CmsFileValue(
+            url: fileId != null
+                ? '$appwriteHost/storage/buckets/blog/files/$fileId/view?project=$appwriteProjectId'
+                : null,
+            data: null,
+            fileName: null,
+            authHeaders: authHeaders,
+            wasDeleted: false,
+          ),
+        ),
       ],
     );
   }
@@ -37,6 +53,7 @@ class Blog {
   factory Blog.fromCmsObjectValue({
     required CmsObjectValue cmsObjectValue,
     String? id,
+    required String? fileId,
   }) {
     return Blog(
       id: id ?? cmsObjectValue.id as String,
@@ -45,6 +62,7 @@ class Blog {
       day: cmsObjectValue.getAttributValueByAttributId('day'),
       sortOrder: cmsObjectValue.getAttributValueByAttributId('sortOrder'),
       color: cmsObjectValue.getAttributValueByAttributId('color'),
+      fileId: fileId,
     );
   }
 
@@ -57,6 +75,7 @@ class Blog {
           "${day.year.toString().padLeft(4, '0')}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}",
       'sortOrder': sortOrder,
       'color': color?.value,
+      'fileId': fileId,
     };
   }
 
@@ -68,6 +87,7 @@ class Blog {
       day: DateTime.parse(map['day']),
       sortOrder: map['sortOrder'] as int,
       color: map['color'] == null ? null : Color(map['color']),
+      fileId: map['fileId'] as String?,
     );
   }
 }

@@ -26,11 +26,17 @@ Future<Result<CmsObjectValueList>> loadBlogs({
       ],
     );
 
+    final jwt = await account.createJWT();
+
     return Result.success(
       CmsObjectValueList(
         cmsObjectValues: databaseList.documents
             .map((document) => Blog.fromJson(document.data))
-            .map((blog) => blog.toCmsObjectValue())
+            .map(
+              (blog) => blog.toCmsObjectValue(
+                {"x-appwrite-jwt": jwt.jwt},
+              ),
+            )
             .toList(),
         overallPageCount: (databaseList.total / itemsToLoad).ceil(),
       ),

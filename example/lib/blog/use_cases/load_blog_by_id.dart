@@ -13,9 +13,12 @@ Future<Result<CmsObjectValue>> loadBlogById(String blogId) async {
     );
 
     final blog = Blog.fromJson(document.data);
+    final jwt = await account.createJWT();
 
     return Result.success(
-      blog.toCmsObjectValue(),
+      blog.toCmsObjectValue(
+        {"x-appwrite-jwt": jwt.jwt},
+      ),
     );
   } catch (exception) {
     return Result.error("Failed to load blog with ID $blogId.");

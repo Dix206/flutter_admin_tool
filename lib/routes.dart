@@ -8,10 +8,9 @@ import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/ui/screens/main_screen.dart';
 import 'package:flutter_cms/ui/screens/overview/overview_screen.dart';
 import 'package:flutter_cms/ui/screens/settings/settings_screen.dart';
+import 'package:flutter_cms/ui/screens/insert_cms_object/insert_cms_object_screen.dart';
 import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 import 'package:go_router/go_router.dart';
-
-import 'ui/screens/insert_cms_object/insert_cms_object.dart';
 
 GoRouter getGoRouter({
   required CmsAuthInfos cmsAuthInfos,
@@ -123,7 +122,7 @@ GoRouter getGoRouter({
               final sortAttributId = state.queryParams['sortAttribut'];
               final sortAscending = state.queryParams['sortAscending'] == "true";
 
-              return InsertCmsObject(
+              return InsertCmsObjectScreen(
                 cmsObjectId: cmsObjectId,
                 existingCmsObjectValueId: null,
                 searchQuery: searchQuery,
@@ -148,7 +147,7 @@ GoRouter getGoRouter({
               final sortAttributId = state.queryParams['sortAttribut'];
               final sortAscending = state.queryParams['sortAscending'] == "true";
 
-              return InsertCmsObject(
+              return InsertCmsObjectScreen(
                 cmsObjectId: cmsObjectId,
                 existingCmsObjectValueId: existingCmsObjectValueId,
                 searchQuery: searchQuery,

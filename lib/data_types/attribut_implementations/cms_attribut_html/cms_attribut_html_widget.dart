@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_html/cms_attribut_html.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
@@ -28,7 +29,7 @@ class _CmsAttributHtmlWidgetState extends State<CmsAttributHtmlWidget> {
   @override
   void initState() {
     Future.delayed(
-      const Duration(milliseconds: 500),
+      const Duration(milliseconds: 1000),
       () => controller.setText(widget.currentValue ?? ''),
     );
     super.initState();
@@ -42,7 +43,7 @@ class _CmsAttributHtmlWidgetState extends State<CmsAttributHtmlWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+    if (!kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
       return const Center(
         child: Text('Not supported on this platform'),
       );

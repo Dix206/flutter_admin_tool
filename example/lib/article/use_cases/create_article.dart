@@ -2,7 +2,7 @@ import 'package:example/appwrite/client.dart';
 import 'package:example/article/article.dart';
 import 'package:example/article/use_cases/article_image_service.dart';
 import 'package:example/constants.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_image/cms_attribut_image.dart';
+import 'package:flutter_cms/data_types/cms_file_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/data_types/result.dart';
 import 'package:uuid/uuid.dart';
@@ -10,13 +10,13 @@ import 'package:uuid/uuid.dart';
 Future<Result<Unit>> createArticle(CmsObjectValue cmsObjectValue) async {
   try {
     final id = const Uuid().v4();
-    final imageData = cmsObjectValue.getAttributValueByAttributId<ImageValue?>('image');
+    final imageData = cmsObjectValue.getAttributValueByAttributId<CmsFileValue?>('image');
 
-    if (imageData?.imageData != null) {
+    if (imageData?.data != null) {
       final imageId = const Uuid().v4();
       final result = await uploadArticleImage(
-        data: imageData!.imageData!,
-        imageId: id,
+        data: imageData!.data!,
+        imageId: imageId,
       );
 
       return result.fold(
