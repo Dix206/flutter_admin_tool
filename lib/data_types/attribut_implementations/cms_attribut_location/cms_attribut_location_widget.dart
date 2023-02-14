@@ -25,8 +25,8 @@ class CmsAttributLocationWidget extends StatefulWidget {
 }
 
 class _CmsAttributLocationWidgetState extends State<CmsAttributLocationWidget> {
-  late final _latitudeController = TextEditingController(text: widget.currentValue?.toString());
-  late final _longitudeController = TextEditingController(text: widget.currentValue?.toString());
+  late final _latitudeController = TextEditingController(text: widget.currentValue?.latitude.toString());
+  late final _longitudeController = TextEditingController(text: widget.currentValue?.longitude.toString());
 
   @override
   void initState() {

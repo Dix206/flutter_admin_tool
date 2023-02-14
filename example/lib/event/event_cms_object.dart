@@ -1,3 +1,4 @@
+import 'package:example/event/event.dart';
 import 'package:example/event/use_cases/create_event.dart';
 import 'package:example/event/use_cases/delete_event.dart';
 import 'package:example/event/use_cases/load_event_by_id.dart';
@@ -8,21 +9,22 @@ import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_loc
 import 'package:flutter_cms/data_types/base_validator.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_double/cms_attribut_double.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_selection/cms_attribut_selection.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 
 final eventCmsObject = CmsObjectStructure(
   id: "event",
   displayName: "Event",
   canBeSortedById: true,
-  attributes: const [
-    CmsAttributString(
+  attributes: [
+    const CmsAttributString(
       id: "title",
       displayName: "Title",
       hint: "Enter a title",
       invalidValueErrorMessage: "You have to enter a title",
       canObjectBeSortedByThisAttribut: true,
     ),
-    CmsAttributDouble(
+    const CmsAttributDouble(
       id: "price",
       displayName: "Price",
       hint: "12.34",
@@ -30,7 +32,7 @@ final eventCmsObject = CmsObjectStructure(
       canObjectBeSortedByThisAttribut: true,
       validator: CmsBaseValidator.isPrice,
     ),
-    CmsAttributString(
+    const CmsAttributString(
       id: "phoneNumber",
       displayName: "Phone number",
       hint: "+49 123 456789",
@@ -38,7 +40,7 @@ final eventCmsObject = CmsObjectStructure(
       canObjectBeSortedByThisAttribut: true,
       validator: CmsBaseValidator.isPhoneNumber,
     ),
-    CmsAttributString(
+    const CmsAttributString(
       id: "email",
       displayName: "Email",
       hint: "user@test.com",
@@ -46,14 +48,20 @@ final eventCmsObject = CmsObjectStructure(
       canObjectBeSortedByThisAttribut: true,
       validator: CmsBaseValidator.isEmail,
     ),
-    CmsAttributLocation(
+    const CmsAttributLocation(
       id: "location",
       displayName: "Location",
       invalidValueErrorMessage: "You have to enter valid location",
     ),
-    // final EventType eventType;
+    CmsAttributSelection<EventType>(
+      id: "eventType",
+      displayName: "Typ",
+      invalidValueErrorMessage: "You have to enter a typ",
+      options: EventType.values,
+      optionToString: (option) => option.name,
+    ),
     // final List<String>? neededItems;
-    CmsAttributTime(
+    const CmsAttributTime(
       id: "startingTime",
       displayName: "Starting Time",
       invalidValueErrorMessage: "You have to enter starting time",

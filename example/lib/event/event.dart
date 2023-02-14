@@ -65,8 +65,7 @@ class Event {
       email: cmsObjectValue.getAttributValueByAttributId('email'),
       locationLatitude: (cmsObjectValue.getAttributValueByAttributId('location') as CmsLocation?)?.latitude,
       locationLongitude: (cmsObjectValue.getAttributValueByAttributId('location') as CmsLocation?)?.longitude,
-      // eventType: cmsObjectValue.getAttributValueByAttributId('eventType'), // TODO
-      eventType: EventType.workshop, // TODO
+      eventType: cmsObjectValue.getAttributValueByAttributId('eventType'),
       // neededItems: cmsObjectValue.getAttributValueByAttributId('neededItems'), // TODO
       neededItems: null, // TODO
       startingTime: cmsObjectValue.getAttributValueByAttributId('startingTime'),
