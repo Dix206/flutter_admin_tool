@@ -69,8 +69,7 @@ class Event {
       eventType: EventType.workshop, // TODO
       // neededItems: cmsObjectValue.getAttributValueByAttributId('neededItems'), // TODO
       neededItems: null, // TODO
-      // startingTime: cmsObjectValue.getAttributValueByAttributId('startingTime'), // TODO
-      startingTime: TimeOfDay.now(), // TODO
+      startingTime: cmsObjectValue.getAttributValueByAttributId('startingTime'),
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:example/event/use_cases/delete_event.dart';
 import 'package:example/event/use_cases/load_event_by_id.dart';
 import 'package:example/event/use_cases/load_events.dart';
 import 'package:example/event/use_cases/update_event.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_time/cms_attribut_time.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_location/cms_attribut_location.dart';
 import 'package:flutter_cms/data_types/base_validator.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
@@ -52,7 +53,11 @@ final eventCmsObject = CmsObjectStructure(
     ),
     // final EventType eventType;
     // final List<String>? neededItems;
-    // final TimeOfDay startingTime;
+    CmsAttributTime(
+      id: "startingTime",
+      displayName: "Starting Time",
+      invalidValueErrorMessage: "You have to enter starting time",
+    ),
   ],
   onCreateCmsObject: createEvent,
   onUpdateCmsObject: updateEvent,
