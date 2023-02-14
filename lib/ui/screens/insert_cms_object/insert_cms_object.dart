@@ -3,7 +3,7 @@ import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/routes.dart';
-import 'package:flutter_cms/ui/flutter_cms_widget.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:flutter_cms/ui/messages/error_message.dart';
 import 'package:flutter_cms/ui/screens/insert_cms_object/insert_cms_object_view_model.dart';
 import 'package:flutter_cms/ui/widgets/cms_button.dart';

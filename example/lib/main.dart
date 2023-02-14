@@ -4,27 +4,38 @@ import 'package:example/blog/blog_cms_object.dart';
 import 'package:example/event/event_cms_object.dart';
 import 'package:example/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
-import 'package:flutter_cms/ui/flutter_cms_widget.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
     FlutterCms(
-        cmsObjects: [
-          blogCmsObject,
-          articleCmsObject,
-          eventCmsObject,
-        ],
-        cmsAuthInfos: CmsAuthInfos(
-          isUserLoggedIn: authAppwriteService.isUserLoggedIn,
-          onLogout: authAppwriteService.logout,
-          loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
+      cmsObjects: [
+        blogCmsObject,
+        articleCmsObject,
+        eventCmsObject,
+      ],
+      cmsAuthInfos: CmsAuthInfos(
+        isUserLoggedIn: authAppwriteService.isUserLoggedIn,
+        onLogout: authAppwriteService.logout,
+        loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
+      ),
+      customMenuEntries: [
+        CmsCustomMenuEntry(
+          id: "text",
+          displayName: "Test",
+          contentBuilder: (context) => const Center(
+            child: Text("Hello, I am custom content!"),
+          ),
         ),
-        supportedLocales: const [
-          Locale('de'),
-          Locale('en'),
-        ]),
+      ],
+      supportedLocales: const [
+        Locale('de'),
+        Locale('en'),
+      ],
+    ),
   );
 }

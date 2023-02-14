@@ -40,7 +40,6 @@ class _CmsAttributListWidgetState extends State<CmsAttributListWidget> {
         SizedBox(
           key: ValueKey(widget.currentValue.length),
           child: widget.cmsAttributStructure.buildWidget(
-            context: context,
             currentValue: _currentValue,
             shouldDisplayValidationErrors: _shouldDisplayCurrentValueValidationErrors,
             onCmsTypeUpdated: (value) => setState(() => _currentValue = value),

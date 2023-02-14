@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/ui/screens/overview/cms_object_overview.dart';
-import 'package:flutter_cms/ui/flutter_cms_widget.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class OverviewScreen extends StatelessWidget {
   final String selectedCmsObjectId;

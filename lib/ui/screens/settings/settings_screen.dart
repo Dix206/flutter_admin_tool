@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/ui/flutter_cms_widget.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:flutter_cms/ui/theme_mode_handler.dart';
 
 class SettingsScreen extends StatelessWidget {
