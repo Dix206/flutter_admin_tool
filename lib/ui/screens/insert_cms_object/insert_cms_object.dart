@@ -268,7 +268,6 @@ class _AttributeWidgets extends StatelessWidget {
                     ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 1000),
                       child: cmsValue.buildWidget(
-                        context: context,
                         currentValue: currentCmsObjectValue.getAttributValueByAttributId(cmsValue.id),
                         shouldDisplayValidationErrors: shouldDisplayValidationErrors,
                         onCmsTypeUpdated: (newValue) {

@@ -5,7 +5,6 @@ import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_ima
 import 'package:flutter_cms/ui/widgets/cms_button.dart';
 
 class CmsAttributImageWidget extends StatefulWidget {
-  final BuildContext context;
   final ImageValue? currentValue;
   final CmsAttributImage cmsTypeString;
   final bool shouldDisplayValidationErrors;
@@ -13,7 +12,6 @@ class CmsAttributImageWidget extends StatefulWidget {
 
   const CmsAttributImageWidget({
     Key? key,
-    required this.context,
     required this.cmsTypeString,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,

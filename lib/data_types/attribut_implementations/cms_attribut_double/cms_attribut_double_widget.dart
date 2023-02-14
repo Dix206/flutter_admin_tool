@@ -4,7 +4,6 @@ import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_dou
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
 class CmsAttributDoubleWidget extends StatefulWidget {
-  final BuildContext context;
   final double? currentValue;
   final CmsAttributDouble cmsTypeDouble;
   final bool shouldDisplayValidationErrors;
@@ -12,7 +11,6 @@ class CmsAttributDoubleWidget extends StatefulWidget {
 
   const CmsAttributDoubleWidget({
     Key? key,
-    required this.context,
     required this.cmsTypeDouble,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,

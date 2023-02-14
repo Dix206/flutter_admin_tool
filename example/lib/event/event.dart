@@ -66,8 +66,7 @@ class Event {
       locationLatitude: (cmsObjectValue.getAttributValueByAttributId('location') as CmsLocation?)?.latitude,
       locationLongitude: (cmsObjectValue.getAttributValueByAttributId('location') as CmsLocation?)?.longitude,
       eventType: cmsObjectValue.getAttributValueByAttributId('eventType'),
-      // neededItems: cmsObjectValue.getAttributValueByAttributId('neededItems'), // TODO
-      neededItems: null, // TODO
+      neededItems: (cmsObjectValue.getAttributValueByAttributId('neededItems') as List<dynamic>?)?.cast(),
       startingTime: cmsObjectValue.getAttributValueByAttributId('startingTime'),
     );
   }

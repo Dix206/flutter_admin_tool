@@ -19,13 +19,11 @@ class CmsAttributDouble extends CmsAttributStructure<double> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required double? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<double> onCmsTypeUpdated,
   }) =>
       CmsAttributDoubleWidget(
-        context: context,
         cmsTypeDouble: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,

@@ -23,13 +23,11 @@ class CmsAttributDateTime extends CmsAttributStructure<DateTime> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required DateTime? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<DateTime> onCmsTypeUpdated,
   }) =>
       CmsAttributDateTimeWidget(
-        context: context,
         cmsTypeDateTime: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,

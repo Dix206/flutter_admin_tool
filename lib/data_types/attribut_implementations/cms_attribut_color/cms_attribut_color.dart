@@ -17,7 +17,6 @@ class CmsAttributColor extends CmsAttributStructure<Color> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required Color? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<Color> onCmsTypeUpdated,

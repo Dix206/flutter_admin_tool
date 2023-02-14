@@ -19,13 +19,11 @@ class CmsAttributInt extends CmsAttributStructure<int> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required int? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<int> onCmsTypeUpdated,
   }) =>
       CmsAttributIntWidget(
-        context: context,
         cmsTypeInt: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,

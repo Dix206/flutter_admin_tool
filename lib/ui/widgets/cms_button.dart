@@ -28,22 +28,26 @@ class CmsButton extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Center(
-            child: isLoading
-                ? const SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: CircularProgressIndicator(
-                      color: Colors.black,
+          // This stack is needed to center the content. We cant use a Center widget here because it would expand the button inside a ListView.
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              isLoading
+                  ? const SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    )
+                  : Text(
+                      text,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color:
+                                onPressed == null ? Colors.black : textColor ?? Theme.of(context).colorScheme.onPrimary,
+                          ),
                     ),
-                  )
-                : Text(
-                    text,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color:
-                              onPressed == null ? Colors.black : textColor ?? Theme.of(context).colorScheme.onPrimary,
-                        ),
-                  ),
+            ],
           ),
         ),
       ),

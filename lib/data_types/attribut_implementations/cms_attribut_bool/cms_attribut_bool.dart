@@ -17,7 +17,6 @@ class CmsAttributBool extends CmsAttributStructure<bool> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required bool? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<bool> onCmsTypeUpdated,

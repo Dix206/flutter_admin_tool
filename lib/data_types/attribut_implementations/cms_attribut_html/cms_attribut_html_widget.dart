@@ -6,7 +6,6 @@ import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
 class CmsAttributHtmlWidget extends StatefulWidget {
-  final BuildContext context;
   final String? currentValue;
   final CmsAttributHtml cmsTypeHtml;
   final bool shouldDisplayValidationErrors;
@@ -14,7 +13,6 @@ class CmsAttributHtmlWidget extends StatefulWidget {
 
   const CmsAttributHtmlWidget({
     Key? key,
-    required this.context,
     required this.cmsTypeHtml,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,

@@ -3,7 +3,6 @@ import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_dat
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 
 class CmsAttributDateWidget extends StatefulWidget {
-  final BuildContext context;
   final DateTime? currentValue;
   final CmsAttributDate cmsTypeDate;
   final bool shouldDisplayValidationErrors;
@@ -13,7 +12,6 @@ class CmsAttributDateWidget extends StatefulWidget {
 
   const CmsAttributDateWidget({
     Key? key,
-    required this.context,
     required this.cmsTypeDate,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,

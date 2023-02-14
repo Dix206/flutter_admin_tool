@@ -48,7 +48,6 @@ abstract class CmsAttributStructure<T extends Object> extends Equatable {
   });
 
   Widget buildWidget({
-    required BuildContext context,
     required T? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<T> onCmsTypeUpdated,

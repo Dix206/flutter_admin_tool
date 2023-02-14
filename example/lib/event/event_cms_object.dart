@@ -6,6 +6,7 @@ import 'package:example/event/use_cases/load_events.dart';
 import 'package:example/event/use_cases/update_event.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_time/cms_attribut_time.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_location/cms_attribut_location.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_list/cms_attribut_list.dart';
 import 'package:flutter_cms/data_types/base_validator.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_double/cms_attribut_double.dart';
@@ -60,7 +61,18 @@ final eventCmsObject = CmsObjectStructure(
       options: EventType.values,
       optionToString: (option) => option.name,
     ),
-    // final List<String>? neededItems;
+    const CmsAttributList(
+      id: "neededItems",
+      displayName: "Needed Items",
+      isOptional: true,
+      invalidValueErrorMessage: "You have to enter needed items",
+      cmsAttributStructure: CmsAttributString(
+        id: "item",
+        displayName: "Item",
+        hint: "Item",
+        invalidValueErrorMessage: "You have to enter item",
+      ),
+    ),
     const CmsAttributTime(
       id: "startingTime",
       displayName: "Starting Time",

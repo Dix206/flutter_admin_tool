@@ -17,13 +17,11 @@ class CmsAttributHtml extends CmsAttributStructure<String> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required String? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<String> onCmsTypeUpdated,
   }) =>
       CmsAttributHtmlWidget(
-        context: context,
         cmsTypeHtml: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,

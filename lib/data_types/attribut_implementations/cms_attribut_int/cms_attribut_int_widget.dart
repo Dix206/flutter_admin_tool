@@ -4,7 +4,6 @@ import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_int/cms_attribut_int.dart';
 
 class CmsAttributIntWidget extends StatefulWidget {
-  final BuildContext context;
   final int? currentValue;
   final CmsAttributInt cmsTypeInt;
   final bool shouldDisplayValidationErrors;
@@ -12,7 +11,6 @@ class CmsAttributIntWidget extends StatefulWidget {
 
   const CmsAttributIntWidget({
     Key? key,
-    required this.context,
     required this.cmsTypeInt,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,

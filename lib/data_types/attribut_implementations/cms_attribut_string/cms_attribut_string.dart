@@ -22,13 +22,11 @@ class CmsAttributString extends CmsAttributStructure<String> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required String? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<String> onCmsTypeUpdated,
   }) =>
       CmsAttributStringWidget(
-        context: context,
         cmsTypeString: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,

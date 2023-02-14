@@ -3,7 +3,6 @@ import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
 
 class CmsAttributStringWidget extends StatefulWidget {
-  final BuildContext context;
   final String? currentValue;
   final CmsAttributString cmsTypeString;
   final bool shouldDisplayValidationErrors;
@@ -11,7 +10,6 @@ class CmsAttributStringWidget extends StatefulWidget {
 
   const CmsAttributStringWidget({
     Key? key,
-    required this.context,
     required this.cmsTypeString,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,

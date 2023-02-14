@@ -38,13 +38,11 @@ class CmsAttributImage extends CmsAttributStructure<ImageValue> {
 
   @override
   Widget buildWidget({
-    required BuildContext context,
     required ImageValue? currentValue,
     required bool shouldDisplayValidationErrors,
     required OnCmsTypeUpdated<ImageValue> onCmsTypeUpdated,
   }) =>
       CmsAttributImageWidget(
-        context: context,
         cmsTypeString: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,
