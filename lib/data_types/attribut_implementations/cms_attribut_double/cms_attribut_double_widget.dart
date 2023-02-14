@@ -50,7 +50,6 @@ class _CmsAttributDoubleWidgetState extends State<CmsAttributDoubleWidget> {
         decimal: true,
       ),
       inputFormatters: [
-        // a FilteringTextInputFormatter which only allows input for double values
         FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*")),
       ],
       decoration: InputDecoration(

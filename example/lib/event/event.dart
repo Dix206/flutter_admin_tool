@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_location/cms_location.dart';
 import 'package:flutter_cms/data_types/cms_attribut_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 
@@ -36,8 +37,15 @@ class Event {
         CmsAttributValue(id: 'price', value: price),
         CmsAttributValue(id: 'phoneNumber', value: phoneNumber),
         CmsAttributValue(id: 'email', value: email),
-        CmsAttributValue(id: 'locationLatitude', value: locationLatitude),
-        CmsAttributValue(id: 'locationLongitude', value: locationLongitude),
+        CmsAttributValue(
+          id: 'location',
+          value: locationLatitude != null && locationLongitude != null
+              ? CmsLocation(
+                  latitude: locationLatitude!,
+                  longitude: locationLongitude!,
+                )
+              : null,
+        ),
         CmsAttributValue(id: 'eventType', value: eventType),
         CmsAttributValue(id: 'neededItems', value: neededItems),
         CmsAttributValue(id: 'startingTime', value: startingTime),
@@ -55,10 +63,8 @@ class Event {
       price: cmsObjectValue.getAttributValueByAttributId('price'),
       phoneNumber: cmsObjectValue.getAttributValueByAttributId('phoneNumber'),
       email: cmsObjectValue.getAttributValueByAttributId('email'),
-      // locationLatitude: cmsObjectValue.getAttributValueByAttributId('locationLatitude'), // TODO
-      // locationLongitude: cmsObjectValue.getAttributValueByAttributId('locationLongitude'), // TODO
-      locationLatitude: null, // TODO
-      locationLongitude: null, // TODO
+      locationLatitude: (cmsObjectValue.getAttributValueByAttributId('location') as CmsLocation?)?.latitude,
+      locationLongitude: (cmsObjectValue.getAttributValueByAttributId('location') as CmsLocation?)?.longitude,
       // eventType: cmsObjectValue.getAttributValueByAttributId('eventType'), // TODO
       eventType: EventType.workshop, // TODO
       // neededItems: cmsObjectValue.getAttributValueByAttributId('neededItems'), // TODO
