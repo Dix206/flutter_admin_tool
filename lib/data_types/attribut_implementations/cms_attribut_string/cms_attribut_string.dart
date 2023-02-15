@@ -6,6 +6,7 @@ import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 class CmsAttributString extends CmsAttributStructure<String> {
   final String? hint;
   final bool isMultiline;
+  final int? maxLength;
 
   const CmsAttributString({
     this.hint,
@@ -13,6 +14,7 @@ class CmsAttributString extends CmsAttributStructure<String> {
     required super.displayName,
     super.defaultValue,
     this.isMultiline = false,
+    this.maxLength,
     super.validator,
     super.invalidValueErrorMessage = "invalid input",
     super.isOptional = false,
@@ -31,6 +33,7 @@ class CmsAttributString extends CmsAttributStructure<String> {
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,
         onCmsTypeUpdated: onCmsTypeUpdated,
+        maxLength: maxLength,
       );
 
   @override
@@ -51,5 +54,6 @@ class CmsAttributString extends CmsAttributStructure<String> {
         ...super.props,
         hint,
         isMultiline,
+        maxLength,
       ];
 }

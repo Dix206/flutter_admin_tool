@@ -26,14 +26,6 @@ class CmsAttributHtmlWidget extends StatefulWidget {
 
 class _CmsAttributHtmlWidgetState extends State<CmsAttributHtmlWidget> {
   final controller = QuillEditorController();
-  @override
-  void initState() {
-    Future.delayed(
-      const Duration(milliseconds: 1000),
-      () => controller.setText(widget.currentValue ?? ''),
-    );
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -74,6 +66,7 @@ class _CmsAttributHtmlWidgetState extends State<CmsAttributHtmlWidget> {
           hintText: 'Hint text goes here',
           controller: controller,
           height: 400,
+          text: widget.currentValue,
           onTextChanged: widget.onCmsTypeUpdated,
           defaultFontColor: Theme.of(context).colorScheme.onBackground,
           backgroundColor: Theme.of(context).colorScheme.background,

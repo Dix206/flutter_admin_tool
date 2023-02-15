@@ -7,6 +7,7 @@ class CmsAttributStringWidget extends StatefulWidget {
   final CmsAttributString cmsTypeString;
   final bool shouldDisplayValidationErrors;
   final OnCmsTypeUpdated<String> onCmsTypeUpdated;
+  final int? maxLength;
 
   const CmsAttributStringWidget({
     Key? key,
@@ -14,6 +15,7 @@ class CmsAttributStringWidget extends StatefulWidget {
     required this.currentValue,
     required this.shouldDisplayValidationErrors,
     required this.onCmsTypeUpdated,
+    required this.maxLength,
   }) : super(key: key);
 
   @override
@@ -45,6 +47,7 @@ class _CmsAttributStringWidgetState extends State<CmsAttributStringWidget> {
       controller: _textEditingController,
       maxLines: widget.cmsTypeString.isMultiline ? 10 : 1,
       minLines: widget.cmsTypeString.isMultiline ? 3 : 1,
+      maxLength: widget.maxLength,
       decoration: InputDecoration(
         hintText: widget.cmsTypeString.hint,
         border: const OutlineInputBorder(),

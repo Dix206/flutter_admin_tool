@@ -12,7 +12,7 @@ Future<Result<CmsObjectValueList>> loadBlogs({
   required CmsObjectSortOptions? sortOptions,
 }) async {
   try {
-    const itemsToLoad = 3;
+    const itemsToLoad = 10;
 
     final databaseList = await databases.listDocuments(
       databaseId: databaseId,

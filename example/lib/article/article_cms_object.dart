@@ -28,6 +28,7 @@ final articleCmsObject = CmsObjectStructure(
       invalidValueErrorMessage: "You have to enter a description",
       canObjectBeSortedByThisAttribut: false,
       isMultiline: true,
+      maxLength: 24,
     ),
     const CmsAttributImage(
       id: "image",
