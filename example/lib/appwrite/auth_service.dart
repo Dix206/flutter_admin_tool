@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 import 'package:example/appwrite/client.dart';
 import 'package:flutter_cms/data_types/result.dart';
 
@@ -35,12 +36,12 @@ class AuthAppwriteService {
     }
   }
 
-  Future<bool> isUserLoggedIn() async {
+  Future<models.Account?> getLoggedInUser() async {
     try {
-      await _account.get();
-      return true;
+      final account = await _account.get();
+      return account;
     } catch (_) {
-      return false;
+      return null;
     }
   }
 }

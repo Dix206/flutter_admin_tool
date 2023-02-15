@@ -25,17 +25,18 @@ class CmsObjectOverviewActions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CmsButton(
-          text: "Neues Objekt",
-          onPressed: () => context.go(
-            Routes.createObject(
-              cmsObjectId: cmsObjectStructure.id,
-              page: page,
-              searchQuery: searchQuery,
-              sortOptions: sortOptions,
+        if (cmsObjectStructure.onCreateCmsObject != null)
+          CmsButton(
+            text: "Neues Objekt",
+            onPressed: () => context.go(
+              Routes.createObject(
+                cmsObjectId: cmsObjectStructure.id,
+                page: page,
+                searchQuery: searchQuery,
+                sortOptions: sortOptions,
+              ),
             ),
           ),
-        ),
         const SizedBox(width: 16),
         Flexible(
           child: _SearchBar(

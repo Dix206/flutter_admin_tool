@@ -19,12 +19,12 @@ class OverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedCmsObject = FlutterCms.getObjectById(
+    final selectedCmsObjectStructure = FlutterCms.getCmsObjectStructureById(
       context: context,
       cmsObjectId: selectedCmsObjectId,
     );
 
-    return selectedCmsObject == null
+    return selectedCmsObjectStructure == null
         ? Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -32,7 +32,7 @@ class OverviewScreen extends StatelessWidget {
             ),
           )
         : CmsObjectOverview(
-            cmsObject: selectedCmsObject,
+            cmsObject: selectedCmsObjectStructure,
             searchQuery: searchQuery,
             page: page,
             sortOptions: sortOptions,

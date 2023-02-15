@@ -4,6 +4,7 @@ import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
 import 'package:flutter_cms/ui/screens/main_screen.dart';
 import 'package:flutter_cms/ui/screens/overview/overview_screen.dart';
@@ -12,11 +13,19 @@ import 'package:flutter_cms/ui/screens/insert_cms_object/insert_cms_object_scree
 import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 import 'package:go_router/go_router.dart';
 
-GoRouter getGoRouter({
-  required CmsAuthInfos cmsAuthInfos,
-  required List<CmsObjectStructure> cmsObjects,
-  required AuthStateService authStateService,
+typedef ScreenBuilder = Widget Function({
+  required BuildContext context,
+  required List<CmsObjectStructure> cmsObjectStructures,
+  required Widget screen,
+});
+
+/// T is the type of the logged in user
+GoRouter getGoRouter<T extends Object>({
+  required CmsAuthInfos<T> cmsAuthInfos,
+  required GetCmsObjectStructures<T> getCmsObjectStructures,
+  required AuthStateService<T> authStateService,
   required List<CmsCustomMenuEntry> customMenuEntries,
+  required ScreenBuilder screenBuilder,
 }) {
   return GoRouter(
     initialLocation: Routes.login,
@@ -28,7 +37,7 @@ GoRouter getGoRouter({
         return null;
       } else if (authStateService.isLoggedIn && isLoginRoute) {
         return Routes.overview(
-          cmsObjectId: cmsObjects.first.id,
+          cmsObjectId: getCmsObjectStructures(authStateService.loggedInUser!).first.id,
           page: 1,
           searchQuery: null,
           sortOptions: null,
@@ -43,6 +52,8 @@ GoRouter getGoRouter({
       FadeRoute(
         path: Routes.login,
         authStateService: authStateService,
+        screenBuilder: screenBuilder,
+        getCmsObjectStructures: getCmsObjectStructures,
         childBuilder: (context, state) => cmsAuthInfos.loginScreenBuilder(
           authStateService.onUserLoggedIn,
         ),
@@ -57,17 +68,24 @@ GoRouter getGoRouter({
                   ? MainScreenTab.custom
                   : MainScreenTab.overview;
 
-          return MainScreen(
-            selectedCmsObjectId: cmsObjectId,
-            selectedCustomMenuEntryId: customMenuEntryId,
-            selectedTab: mainScreenTab,
-            child: child,
+          return _LoadingScreen(
+            authStateService: authStateService,
+            screenBuilder: screenBuilder,
+            getCmsObjectStructures: getCmsObjectStructures,
+            screen: MainScreen(
+              selectedCmsObjectId: cmsObjectId,
+              selectedCustomMenuEntryId: customMenuEntryId,
+              selectedTab: mainScreenTab,
+              child: child,
+            ),
           );
         },
         routes: [
           FadeRoute(
             path: Routes.settings,
             authStateService: authStateService,
+            screenBuilder: screenBuilder,
+            getCmsObjectStructures: getCmsObjectStructures,
             childBuilder: (context, state) {
               return const SettingsScreen();
             },
@@ -76,6 +94,8 @@ GoRouter getGoRouter({
             (customMenuEntry) => FadeRoute(
               path: "/custom/:customMenuEntryId",
               authStateService: authStateService,
+              screenBuilder: screenBuilder,
+              getCmsObjectStructures: getCmsObjectStructures,
               childBuilder: (context, state) {
                 final customMenuEntryId = state.params['customMenuEntryId'];
                 final customMenuEntry = customMenuEntries.firstWhereOrNull(
@@ -92,6 +112,8 @@ GoRouter getGoRouter({
           FadeRoute(
             path: "/overview/:cmsObjectId",
             authStateService: authStateService,
+            screenBuilder: screenBuilder,
+            getCmsObjectStructures: getCmsObjectStructures,
             childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
@@ -115,6 +137,8 @@ GoRouter getGoRouter({
           FadeRoute(
             path: "/overview/:cmsObjectId/create",
             authStateService: authStateService,
+            screenBuilder: screenBuilder,
+            getCmsObjectStructures: getCmsObjectStructures,
             childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
@@ -139,6 +163,8 @@ GoRouter getGoRouter({
           FadeRoute(
             path: "/overview/:cmsObjectId/update/:existingCmsObjectValueId",
             authStateService: authStateService,
+            screenBuilder: screenBuilder,
+            getCmsObjectStructures: getCmsObjectStructures,
             childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final existingCmsObjectValueId = state.params['existingCmsObjectValueId'];
@@ -213,14 +239,17 @@ class Routes {
   }
 }
 
-class FadeRoute extends GoRoute {
+/// T is the type of the logged in user
+class FadeRoute<T extends Object> extends GoRoute {
   FadeRoute({
     required super.path,
     super.name,
     required Widget Function(BuildContext, GoRouterState) childBuilder,
     List<GoRoute> super.routes = const [],
     Future<String?> Function(BuildContext, GoRouterState)? redirect,
-    required AuthStateService authStateService,
+    required AuthStateService<T> authStateService,
+    required GetCmsObjectStructures<T> getCmsObjectStructures,
+    required ScreenBuilder screenBuilder,
   }) : super(
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
@@ -228,31 +257,54 @@ class FadeRoute extends GoRoute {
               opacity: animation,
               child: child,
             ),
-            child: _LoadingScreen(
+            child: _LoadingScreen<T>(
               screen: childBuilder(context, state),
               authStateService: authStateService,
+              getCmsObjectStructures: getCmsObjectStructures,
+              screenBuilder: screenBuilder,
             ),
           ),
         );
 }
 
-class _LoadingScreen extends StatelessWidget {
+/// T is the type of the logged in user
+class _LoadingScreen<T extends Object> extends StatelessWidget {
   final Widget screen;
-  final AuthStateService authStateService;
+  final AuthStateService<T> authStateService;
+  final GetCmsObjectStructures<T> getCmsObjectStructures;
+  final ScreenBuilder screenBuilder;
 
   const _LoadingScreen({
     required this.screen,
     required this.authStateService,
+    required this.getCmsObjectStructures,
+    required this.screenBuilder,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (authStateService.isInitialized) {
-      return screen;
-    } else {
+    if (!authStateService.isInitialized) {
       return const Scaffold(
         body: CmsLoading(),
       );
     }
+
+    if (authStateService.loggedInUser == null) return screen;
+
+    final cmsObjects = getCmsObjectStructures(authStateService.loggedInUser!);
+    assert(
+      cmsObjects.every(
+        (object) => cmsObjects.every(
+          (otherObject) => object.id != otherObject.id || object == otherObject,
+        ),
+      ),
+      'There are two objects with the same id',
+    );
+
+    return screenBuilder(
+      context: context,
+      cmsObjectStructures: getCmsObjectStructures(authStateService.loggedInUser!),
+      screen: screen,
+    );
   }
 }

@@ -8,31 +8,27 @@ import 'package:flutter_cms/ui/theme_mode_handler.dart';
 import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-class FlutterCms extends StatelessWidget {
-  final List<CmsObjectStructure> cmsObjects;
-  final CmsAuthInfos cmsAuthInfos;
+/// This method will return a list of all cms object structures based on the passed user object which is of type T
+typedef GetCmsObjectStructures<T extends Object> = List<CmsObjectStructure> Function(T loggedInUser);
+
+/// T is the type of the logged in user
+class FlutterCms<T extends Object> extends StatelessWidget {
+  final GetCmsObjectStructures<T> getCmsObjectStructures;
+  final CmsAuthInfos<T> cmsAuthInfos;
   final List<Locale> supportedLocales;
   final List<CmsCustomMenuEntry> customMenuEntries;
   final ThemeData? lightTheme;
   final ThemeData? darkTheme;
 
-  FlutterCms({
-    Key? key,
-    required this.cmsObjects,
+  const FlutterCms({
+    super.key,
+    required this.getCmsObjectStructures,
     required this.cmsAuthInfos,
     required this.supportedLocales,
     this.customMenuEntries = const [],
     this.lightTheme,
     this.darkTheme,
-  })  : assert(
-          cmsObjects.every(
-            (object) => cmsObjects.every(
-              (otherObject) => object.id != otherObject.id || object == otherObject,
-            ),
-          ),
-          'There are two objects with the same id',
-        ),
-        super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +36,21 @@ class FlutterCms extends StatelessWidget {
 
     final router = getGoRouter(
       cmsAuthInfos: cmsAuthInfos,
-      cmsObjects: cmsObjects,
+      getCmsObjectStructures: getCmsObjectStructures,
       authStateService: authStateService,
       customMenuEntries: customMenuEntries,
+      screenBuilder: ({
+        required BuildContext context,
+        required List<CmsObjectStructure> cmsObjectStructures,
+        required Widget screen,
+      }) =>
+          _CmsObjectsInherited(
+        cmsObjectStructures: cmsObjectStructures,
+        cmsAuthInfos: cmsAuthInfos,
+        authStateService: authStateService,
+        customMenuEntries: customMenuEntries,
+        child: screen,
+      ),
     );
 
     return ThemeModeHandler(
@@ -69,13 +77,6 @@ class FlutterCms extends StatelessWidget {
             ),
         themeMode: themeMode,
         title: "flutter cms",
-        builder: (context, child) => _CmsObjectsInherited(
-          cmsObjects: cmsObjects,
-          cmsAuthInfos: cmsAuthInfos,
-          authStateService: authStateService,
-          customMenuEntries: customMenuEntries,
-          child: child!,
-        ),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -94,31 +95,31 @@ class FlutterCms extends StatelessWidget {
     return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsAuthInfos;
   }
 
-  static List<CmsObjectStructure> getAllObjects(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsObjects;
+  static List<CmsObjectStructure> getAllCmsObjectStructures(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsObjectStructures;
   }
 
   static List<CmsCustomMenuEntry> getCustomMenuEntries(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.customMenuEntries;
   }
 
-  static CmsObjectStructure? getObjectById({
+  static CmsObjectStructure? getCmsObjectStructureById({
     required BuildContext context,
     required String cmsObjectId,
   }) {
-    final allObjects = getAllObjects(context);
-    return allObjects.firstWhereOrNull((object) => object.id.toLowerCase() == cmsObjectId.toLowerCase());
+    final allCmsObjectStructures = getAllCmsObjectStructures(context);
+    return allCmsObjectStructures.firstWhereOrNull((object) => object.id.toLowerCase() == cmsObjectId.toLowerCase());
   }
 }
 
 class _CmsObjectsInherited extends InheritedWidget {
-  final List<CmsObjectStructure> cmsObjects;
+  final List<CmsObjectStructure> cmsObjectStructures;
   final List<CmsCustomMenuEntry> customMenuEntries;
   final CmsAuthInfos cmsAuthInfos;
   final AuthStateService authStateService;
 
   const _CmsObjectsInherited({
-    required this.cmsObjects,
+    required this.cmsObjectStructures,
     required this.customMenuEntries,
     required this.cmsAuthInfos,
     required this.authStateService,
@@ -127,7 +128,7 @@ class _CmsObjectsInherited extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_CmsObjectsInherited oldWidget) {
-    return cmsObjects != oldWidget.cmsObjects ||
+    return cmsObjectStructures != oldWidget.cmsObjectStructures ||
         cmsAuthInfos != oldWidget.cmsAuthInfos ||
         customMenuEntries != oldWidget.customMenuEntries ||
         authStateService != oldWidget.authStateService;

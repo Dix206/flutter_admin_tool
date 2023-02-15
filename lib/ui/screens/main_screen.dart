@@ -26,7 +26,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cmsObjects = FlutterCms.getAllObjects(context);
+    final cmsObjectStructures = FlutterCms.getAllCmsObjectStructures(context);
     final customMenuEntries = FlutterCms.getCustomMenuEntries(context);
 
     return Scaffold(
@@ -46,7 +46,7 @@ class MainScreen extends StatelessWidget {
               ),
               child: ListView(
                 children: [
-                  ...cmsObjects.map(
+                  ...cmsObjectStructures.map(
                     (cmsObject) => Material(
                       child: ListTile(
                         title: Text(cmsObject.displayName),

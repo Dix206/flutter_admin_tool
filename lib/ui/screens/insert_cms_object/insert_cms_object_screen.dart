@@ -30,12 +30,12 @@ class InsertCmsObjectScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cmsObject = FlutterCms.getObjectById(
+    final cmsObjectStructure = FlutterCms.getCmsObjectStructureById(
       context: context,
       cmsObjectId: cmsObjectId,
     );
 
-    if (cmsObject == null) {
+    if (cmsObjectStructure == null) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -44,7 +44,7 @@ class InsertCmsObjectScreen extends StatelessWidget {
       );
     } else {
       return InsertCmsObjectViewModelProvider(
-        cmsObject: cmsObject,
+        cmsObject: cmsObjectStructure,
         existingCmsObjectValueId: existingCmsObjectValueId,
         onStateUpdate: (state) {
           if (state is InsertCmsObjectInitState && state.failure != null) {
@@ -54,7 +54,7 @@ class InsertCmsObjectScreen extends StatelessWidget {
           if (state is InsertCmsObjectInitState && (state.isInsertSuccessfull || state.isDeletionSuccessfull)) {
             _onNavigateBack(
               context: context,
-              cmsObject: cmsObject,
+              cmsObject: cmsObjectStructure,
             );
           }
         },
@@ -64,14 +64,14 @@ class InsertCmsObjectScreen extends StatelessWidget {
           if (state is InsertCmsObjectInitState) {
             return _Content(
               existingCmsObjectValueId: existingCmsObjectValueId,
-              cmsObject: cmsObject,
+              cmsObject: cmsObjectStructure,
               currentCmsObjectValue: state.currentCmsObjectValue,
               shouldDisplayValidationErrors: state.shouldDisplayValidationErrors,
               isInserting: state.isInserting,
               isDeleting: state.isDeleting,
               onNavigateBack: () => _onNavigateBack(
                 context: context,
-                cmsObject: cmsObject,
+                cmsObject: cmsObjectStructure,
               ),
             );
           } else if (state is InsertCmsObjectLoadingState) {
@@ -244,7 +244,7 @@ class _AttributeWidgets extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: cmsObject.attributes.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 32),
+      separatorBuilder: (context, index) => const SizedBox(height: 16),
       itemBuilder: (context, index) {
         final cmsValue = cmsObject.attributes[index];
 

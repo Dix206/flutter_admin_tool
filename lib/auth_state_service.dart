@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/models/navigation_infos.dart';
 
-class AuthStateService with ChangeNotifier {
-  final CmsAuthInfos _cmsAuthInfos;
+/// T is the type of the logged in user
+class AuthStateService<T extends Object> with ChangeNotifier {
+  final CmsAuthInfos<T> _cmsAuthInfos;
 
-  bool _isLoggedIn = false;
+  T? _loggedInUser;
   bool _isInitialized = false;
 
   AuthStateService(
@@ -13,22 +14,23 @@ class AuthStateService with ChangeNotifier {
     _init();
   }
 
-  bool get isLoggedIn => _isLoggedIn;
+  T? get loggedInUser => _loggedInUser;
+  bool get isLoggedIn => _loggedInUser != null;
   bool get isInitialized => _isInitialized;
 
-  void onUserLoggedIn() {
-    _isLoggedIn = true;
+  Future<void> onUserLoggedIn() async {
+    _loggedInUser = await _cmsAuthInfos.getLoggedInUser();
     notifyListeners();
   }
 
   Future<void> onUserLoggedOut() async {
     await _cmsAuthInfos.onLogout();
-    _isLoggedIn = false;
+    _loggedInUser = null;
     notifyListeners();
   }
 
   Future<void> _init() async {
-    _isLoggedIn = await _cmsAuthInfos.isUserLoggedIn();
+    _loggedInUser = await _cmsAuthInfos.getLoggedInUser();
     _isInitialized = true;
     notifyListeners();
   }

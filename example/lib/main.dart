@@ -13,13 +13,13 @@ void main() {
 
   runApp(
     FlutterCms(
-      cmsObjects: [
-        blogCmsObject,
+      getCmsObjectStructures: (account) => [
+        getBlogCmsObject(account),
         articleCmsObject,
         eventCmsObject,
       ],
       cmsAuthInfos: CmsAuthInfos(
-        isUserLoggedIn: authAppwriteService.isUserLoggedIn,
+        getLoggedInUser: authAppwriteService.getLoggedInUser,
         onLogout: authAppwriteService.logout,
         loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
       ),
