@@ -4,19 +4,19 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_cms/ui/routes.dart';
 import 'package:flutter_cms/flutter_cms.dart';
 
-enum MainScreenTab {
+enum CmsMainScreenTab {
   overview,
   custom,
   settings,
 }
 
-class MainScreen extends StatelessWidget {
-  final MainScreenTab selectedTab;
+class CmsMainScreen extends StatelessWidget {
+  final CmsMainScreenTab selectedTab;
   final String? selectedCmsObjectId;
   final String? selectedCustomMenuEntryId;
   final Widget child;
 
-  const MainScreen({
+  const CmsMainScreen({
     Key? key,
     required this.selectedTab,
     required this.selectedCmsObjectId,
@@ -27,7 +27,8 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cmsObjectStructures = FlutterCms.getAllCmsObjectStructures(context);
-    final customMenuEntries = FlutterCms.getCustomMenuEntries(context);
+    final customMenuEntries = FlutterCms.getCmsCustomMenuEntries(context);
+    final cmsUserInfos = FlutterCms.getUserInfos(context);
 
     return Scaffold(
       body: Row(
@@ -46,6 +47,45 @@ class MainScreen extends StatelessWidget {
               ),
               child: ListView(
                 children: [
+                  if (cmsUserInfos?.hasAnyValue() ?? false) ...[
+                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 16),
+                        const Icon(
+                          Icons.person,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (cmsUserInfos?.name != null)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 4.0),
+                                child: Text(
+                                  cmsUserInfos!.name!,
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                ),
+                              ),
+                            if (cmsUserInfos?.email != null)
+                              Text(
+                                cmsUserInfos!.email!,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            if (cmsUserInfos?.role != null)
+                              Text(
+                                cmsUserInfos!.role!,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                          ],
+                        ),
+                        const SizedBox(width: 16),
+                      ],
+                    ),
+                    const Divider(),
+                  ],
                   ...cmsObjectStructures.map(
                     (cmsObject) => Material(
                       child: ListTile(
@@ -60,7 +100,7 @@ class MainScreen extends StatelessWidget {
                         ),
                         tileColor: Theme.of(context).colorScheme.surface,
                         selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                        selected: selectedTab == MainScreenTab.overview && cmsObject.id == selectedCmsObjectId,
+                        selected: selectedTab == CmsMainScreenTab.overview && cmsObject.id == selectedCmsObjectId,
                       ),
                     ),
                   ),
@@ -75,7 +115,7 @@ class MainScreen extends StatelessWidget {
                         tileColor: Theme.of(context).colorScheme.surface,
                         selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
                         selected:
-                            selectedTab == MainScreenTab.custom && customMenuEntry.id == selectedCustomMenuEntryId,
+                            selectedTab == CmsMainScreenTab.custom && customMenuEntry.id == selectedCustomMenuEntryId,
                       ),
                     ),
                   ),
@@ -86,7 +126,7 @@ class MainScreen extends StatelessWidget {
                       onTap: () => context.go(Routes.settings),
                       tileColor: Theme.of(context).colorScheme.surface,
                       selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                      selected: selectedTab == MainScreenTab.settings,
+                      selected: selectedTab == CmsMainScreenTab.settings,
                     ),
                   ),
                 ],

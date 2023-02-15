@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_unauthorized_route.dart';
+import 'package:flutter_cms/data_types/cms_user_infos.dart';
 import 'package:flutter_cms/ui/auth_state_service.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
@@ -12,13 +13,19 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 /// This method will return a list of all cms object structures based on the passed user object which is of type T
 typedef GetCmsObjectStructures<T extends Object> = List<CmsObjectStructure> Function(T loggedInUser);
 
+/// This method will return the [CmsUserInfos] based on the passed user object which is of type T
+typedef GetCmsUserInfos<T extends Object> = CmsUserInfos Function(T loggedInUser);
+
 /// T is the type of the logged in user
 class FlutterCms<T extends Object> extends StatelessWidget {
   final GetCmsObjectStructures<T> getCmsObjectStructures;
+
+  /// The returned [CmsUserInfos] will be displayed in the menu. If a value is null, no user informations will be displayed.
+  final GetCmsUserInfos<T>? getCmsUserInfos;
   final CmsAuthInfos<T> cmsAuthInfos;
   final List<Locale> supportedLocales;
   final List<CmsUnauthorizedRoute> cmsUnauthorizedRoutes;
-  final List<CmsCustomMenuEntry> customMenuEntries;
+  final List<CmsCustomMenuEntry> cmsCustomMenuEntries;
   final ThemeData? lightTheme;
   final ThemeData? darkTheme;
 
@@ -27,9 +34,10 @@ class FlutterCms<T extends Object> extends StatelessWidget {
     required this.getCmsObjectStructures,
     required this.cmsAuthInfos,
     required this.supportedLocales,
-    this.customMenuEntries = const [],
+    this.cmsCustomMenuEntries = const [],
     this.cmsUnauthorizedRoutes = const [],
     this.lightTheme,
+    this.getCmsUserInfos,
     this.darkTheme,
   });
 
@@ -37,22 +45,23 @@ class FlutterCms<T extends Object> extends StatelessWidget {
   Widget build(BuildContext context) {
     final authStateService = AuthStateService(cmsAuthInfos);
 
-    final router = getGoRouter(
+    final router = getGoRouter<T>(
       cmsAuthInfos: cmsAuthInfos,
       getCmsObjectStructures: getCmsObjectStructures,
       authStateService: authStateService,
-      cmsCustomMenuEntries: customMenuEntries,
+      cmsCustomMenuEntries: cmsCustomMenuEntries,
       cmsUnauthorizedRoutes: cmsUnauthorizedRoutes,
       screenBuilder: ({
         required BuildContext context,
-        required List<CmsObjectStructure> cmsObjectStructures,
+        required T loggedInUser,
         required Widget screen,
       }) =>
           _CmsObjectsInherited(
-        cmsObjectStructures: cmsObjectStructures,
+        cmsObjectStructures: getCmsObjectStructures(loggedInUser),
         cmsAuthInfos: cmsAuthInfos,
         authStateService: authStateService,
-        customMenuEntries: customMenuEntries,
+        cmsCustomMenuEntries: cmsCustomMenuEntries,
+        cmsUserInfos: getCmsUserInfos?.call(loggedInUser),
         child: screen,
       ),
     );
@@ -91,6 +100,10 @@ class FlutterCms<T extends Object> extends StatelessWidget {
     );
   }
 
+  static CmsUserInfos? getUserInfos(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsUserInfos;
+  }
+
   static AuthStateService getAuthStateService(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.authStateService;
   }
@@ -103,8 +116,8 @@ class FlutterCms<T extends Object> extends StatelessWidget {
     return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsObjectStructures;
   }
 
-  static List<CmsCustomMenuEntry> getCustomMenuEntries(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.customMenuEntries;
+  static List<CmsCustomMenuEntry> getCmsCustomMenuEntries(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsCustomMenuEntries;
   }
 
   static CmsObjectStructure? getCmsObjectStructureById({
@@ -118,23 +131,33 @@ class FlutterCms<T extends Object> extends StatelessWidget {
 
 class _CmsObjectsInherited extends InheritedWidget {
   final List<CmsObjectStructure> cmsObjectStructures;
-  final List<CmsCustomMenuEntry> customMenuEntries;
+  final List<CmsCustomMenuEntry> cmsCustomMenuEntries;
   final CmsAuthInfos cmsAuthInfos;
   final AuthStateService authStateService;
+  final CmsUserInfos? cmsUserInfos;
 
-  const _CmsObjectsInherited({
+  _CmsObjectsInherited({
     required this.cmsObjectStructures,
-    required this.customMenuEntries,
+    required this.cmsCustomMenuEntries,
     required this.cmsAuthInfos,
     required this.authStateService,
+    required this.cmsUserInfos,
     required super.child,
-  });
+  }) : assert(
+          cmsObjectStructures.every(
+            (object) => cmsObjectStructures.every(
+              (otherObject) => object.id != otherObject.id || object == otherObject,
+            ),
+          ),
+          'There are two objects with the same id',
+        );
 
   @override
   bool updateShouldNotify(_CmsObjectsInherited oldWidget) {
     return cmsObjectStructures != oldWidget.cmsObjectStructures ||
         cmsAuthInfos != oldWidget.cmsAuthInfos ||
-        customMenuEntries != oldWidget.customMenuEntries ||
+        cmsCustomMenuEntries != oldWidget.cmsCustomMenuEntries ||
+        cmsUserInfos != oldWidget.cmsUserInfos ||
         authStateService != oldWidget.authStateService;
   }
 }

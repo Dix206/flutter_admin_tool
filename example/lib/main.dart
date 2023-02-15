@@ -7,6 +7,7 @@ import 'package:example/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
 import 'package:flutter_cms/data_types/cms_unauthorized_route.dart';
+import 'package:flutter_cms/data_types/cms_user_infos.dart';
 import 'package:flutter_cms/data_types/navigation_infos.dart';
 import 'package:flutter_cms/flutter_cms.dart';
 
@@ -20,12 +21,17 @@ void main() {
         articleCmsObject,
         eventCmsObject,
       ],
+      getCmsUserInfos: (account) => CmsUserInfos(
+        name: account.name,
+        email: account.email,
+        role: account.prefs.data["role"] == "admin" ? "Admin" : "User",
+      ),
       cmsAuthInfos: CmsAuthInfos(
         getLoggedInUser: authAppwriteService.getLoggedInUser,
         onLogout: authAppwriteService.logout,
         loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
       ),
-      customMenuEntries: [
+      cmsCustomMenuEntries: [
         CmsCustomMenuEntry(
           id: "text",
           displayName: "Test",

@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_unauthorized_route.dart';
 import 'package:flutter_cms/ui/auth_state_service.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
-import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
 import 'package:flutter_cms/flutter_cms.dart';
 import 'package:flutter_cms/data_types/navigation_infos.dart';
-import 'package:flutter_cms/ui/screens/main_screen.dart';
+import 'package:flutter_cms/ui/screens/cms_main_screen.dart';
 import 'package:flutter_cms/ui/screens/overview/overview_screen.dart';
 import 'package:flutter_cms/ui/screens/settings/settings_screen.dart';
 import 'package:flutter_cms/ui/screens/insert_cms_object/insert_cms_object_screen.dart';
 import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 import 'package:go_router/go_router.dart';
 
-typedef ScreenBuilder = Widget Function({
+typedef ScreenBuilder<T extends Object> = Widget Function({
   required BuildContext context,
-  required List<CmsObjectStructure> cmsObjectStructures,
+  required T loggedInUser,
   required Widget screen,
 });
 
@@ -26,7 +25,7 @@ GoRouter getGoRouter<T extends Object>({
   required GetCmsObjectStructures<T> getCmsObjectStructures,
   required AuthStateService<T> authStateService,
   required List<CmsCustomMenuEntry> cmsCustomMenuEntries,
-  required ScreenBuilder screenBuilder,
+  required ScreenBuilder<T> screenBuilder,
   required List<CmsUnauthorizedRoute> cmsUnauthorizedRoutes,
 }) {
   return GoRouter(
@@ -58,7 +57,6 @@ GoRouter getGoRouter<T extends Object>({
           path: cmsUnauthorizedRoute.path,
           authStateService: authStateService,
           screenBuilder: screenBuilder,
-          getCmsObjectStructures: getCmsObjectStructures,
           childBuilder: cmsUnauthorizedRoute.childBuilder,
         ),
       ),
@@ -66,7 +64,6 @@ GoRouter getGoRouter<T extends Object>({
         path: Routes.login,
         authStateService: authStateService,
         screenBuilder: screenBuilder,
-        getCmsObjectStructures: getCmsObjectStructures,
         childBuilder: (context, state) => cmsAuthInfos.loginScreenBuilder(
           authStateService.onUserLoggedIn,
         ),
@@ -76,16 +73,15 @@ GoRouter getGoRouter<T extends Object>({
           final cmsObjectId = state.params['cmsObjectId'];
           final customMenuEntryId = state.params['customMenuEntryId'];
           final mainScreenTab = state.location == Routes.settings
-              ? MainScreenTab.settings
+              ? CmsMainScreenTab.settings
               : state.location.startsWith("/custom/")
-                  ? MainScreenTab.custom
-                  : MainScreenTab.overview;
+                  ? CmsMainScreenTab.custom
+                  : CmsMainScreenTab.overview;
 
           return _LoadingScreen(
             authStateService: authStateService,
             screenBuilder: screenBuilder,
-            getCmsObjectStructures: getCmsObjectStructures,
-            screen: MainScreen(
+            screen: CmsMainScreen(
               selectedCmsObjectId: cmsObjectId,
               selectedCustomMenuEntryId: customMenuEntryId,
               selectedTab: mainScreenTab,
@@ -98,7 +94,6 @@ GoRouter getGoRouter<T extends Object>({
             path: Routes.settings,
             authStateService: authStateService,
             screenBuilder: screenBuilder,
-            getCmsObjectStructures: getCmsObjectStructures,
             childBuilder: (context, state) {
               return const SettingsScreen();
             },
@@ -108,7 +103,6 @@ GoRouter getGoRouter<T extends Object>({
               path: "/custom/:customMenuEntryId",
               authStateService: authStateService,
               screenBuilder: screenBuilder,
-              getCmsObjectStructures: getCmsObjectStructures,
               childBuilder: (context, state) {
                 final customMenuEntryId = state.params['customMenuEntryId'];
                 final customMenuEntry = cmsCustomMenuEntries.firstWhereOrNull(
@@ -126,7 +120,6 @@ GoRouter getGoRouter<T extends Object>({
             path: "/overview/:cmsObjectId",
             authStateService: authStateService,
             screenBuilder: screenBuilder,
-            getCmsObjectStructures: getCmsObjectStructures,
             childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
@@ -151,7 +144,6 @@ GoRouter getGoRouter<T extends Object>({
             path: "/overview/:cmsObjectId/create",
             authStateService: authStateService,
             screenBuilder: screenBuilder,
-            getCmsObjectStructures: getCmsObjectStructures,
             childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
@@ -177,7 +169,6 @@ GoRouter getGoRouter<T extends Object>({
             path: "/overview/:cmsObjectId/update/:existingCmsObjectValueId",
             authStateService: authStateService,
             screenBuilder: screenBuilder,
-            getCmsObjectStructures: getCmsObjectStructures,
             childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final existingCmsObjectValueId = state.params['existingCmsObjectValueId'];
@@ -261,8 +252,7 @@ class FadeRoute<T extends Object> extends GoRoute {
     List<GoRoute> super.routes = const [],
     Future<String?> Function(BuildContext, GoRouterState)? redirect,
     required AuthStateService<T> authStateService,
-    required GetCmsObjectStructures<T> getCmsObjectStructures,
-    required ScreenBuilder screenBuilder,
+    required ScreenBuilder<T> screenBuilder,
   }) : super(
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
@@ -273,7 +263,6 @@ class FadeRoute<T extends Object> extends GoRoute {
             child: _LoadingScreen<T>(
               screen: childBuilder(context, state),
               authStateService: authStateService,
-              getCmsObjectStructures: getCmsObjectStructures,
               screenBuilder: screenBuilder,
             ),
           ),
@@ -284,13 +273,11 @@ class FadeRoute<T extends Object> extends GoRoute {
 class _LoadingScreen<T extends Object> extends StatelessWidget {
   final Widget screen;
   final AuthStateService<T> authStateService;
-  final GetCmsObjectStructures<T> getCmsObjectStructures;
-  final ScreenBuilder screenBuilder;
+  final ScreenBuilder<T> screenBuilder;
 
   const _LoadingScreen({
     required this.screen,
     required this.authStateService,
-    required this.getCmsObjectStructures,
     required this.screenBuilder,
   });
 
@@ -304,19 +291,9 @@ class _LoadingScreen<T extends Object> extends StatelessWidget {
 
     if (authStateService.loggedInUser == null) return screen;
 
-    final cmsObjects = getCmsObjectStructures(authStateService.loggedInUser!);
-    assert(
-      cmsObjects.every(
-        (object) => cmsObjects.every(
-          (otherObject) => object.id != otherObject.id || object == otherObject,
-        ),
-      ),
-      'There are two objects with the same id',
-    );
-
     return screenBuilder(
       context: context,
-      cmsObjectStructures: getCmsObjectStructures(authStateService.loggedInUser!),
+      loggedInUser: authStateService.loggedInUser!,
       screen: screen,
     );
   }
