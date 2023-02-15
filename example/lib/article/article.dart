@@ -1,4 +1,5 @@
 import 'package:example/constants.dart';
+
 import 'package:flutter_cms/data_types/cms_attribut_value.dart';
 import 'package:flutter_cms/data_types/cms_file_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
@@ -10,6 +11,7 @@ class Article {
   final String? imageId;
   final DateTime timestamp;
   final bool isActive;
+  final String? authorId;
 
   Article({
     required this.id,
@@ -18,9 +20,13 @@ class Article {
     required this.imageId,
     required this.timestamp,
     required this.isActive,
+    required this.authorId,
   });
 
-  CmsObjectValue toCmsObjectValue(Map<String, String> authHeaders) {
+  CmsObjectValue toCmsObjectValue({
+    required Map<String, String> authHeaders,
+    required Author? author,
+  }) {
     return CmsObjectValue(
       id: id,
       values: [
@@ -41,6 +47,7 @@ class Article {
         ),
         CmsAttributValue(id: 'timestamp', value: timestamp),
         CmsAttributValue(id: 'isActive', value: isActive),
+        CmsAttributValue(id: 'author', value: author),
       ],
     );
   }
@@ -52,11 +59,12 @@ class Article {
   }) {
     return Article(
       id: id ?? cmsObjectValue.id as String,
-      title: cmsObjectValue.getAttributValueByAttributId('Title'),
-      description: cmsObjectValue.getAttributValueByAttributId('Description'),
+      title: cmsObjectValue.getAttributValueByAttributId('title'),
+      description: cmsObjectValue.getAttributValueByAttributId('description'),
       imageId: imageId,
-      timestamp: cmsObjectValue.getAttributValueByAttributId('Timestamp'),
-      isActive: cmsObjectValue.getAttributValueByAttributId('IsActive'),
+      timestamp: cmsObjectValue.getAttributValueByAttributId('timestamp'),
+      isActive: cmsObjectValue.getAttributValueByAttributId('isActive'),
+      authorId: (cmsObjectValue.getAttributValueByAttributId('author') as Author?)?.id,
     );
   }
 
@@ -68,6 +76,7 @@ class Article {
       'imageId': imageId,
       'timestamp': timestamp.toIso8601String(),
       'isActive': isActive,
+      'authorId': authorId,
     };
   }
 
@@ -79,6 +88,7 @@ class Article {
       imageId: map['imageId'] as String?,
       timestamp: DateTime.parse(map['timestamp']),
       isActive: map['isActive'] as bool,
+      authorId: map['authorId'] as String?,
     );
   }
 
@@ -92,6 +102,7 @@ class Article {
         other.description == description &&
         other.imageId == imageId &&
         other.timestamp == timestamp &&
+        other.authorId == authorId &&
         other.isActive == isActive;
   }
 
@@ -102,6 +113,41 @@ class Article {
         description.hashCode ^
         imageId.hashCode ^
         timestamp.hashCode ^
+        authorId.hashCode ^
         isActive.hashCode;
+  }
+}
+
+class Author {
+  final String id;
+  final String name;
+
+  Author({
+    required this.id,
+    required this.name,
+  });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Author && other.id == id && other.name == name;
+  }
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
+
+  factory Author.fromJson(Map<String, dynamic> map) {
+    return Author(
+      id: map['id'] as String,
+      name: map['name'] as String,
+    );
   }
 }

@@ -97,7 +97,9 @@ class _CmsAttributListWidgetState extends State<CmsAttributListWidget> {
             ),
             child: Text(
               widget.cmsTypeList.invalidValueErrorMessage,
-              style: const TextStyle(color: Colors.red),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
             ),
           ),
       ],

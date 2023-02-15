@@ -13,11 +13,21 @@ Future<Result<CmsObjectValue>> loadArticleById(String articleId) async {
     );
 
     final article = Article.fromJson(document.data);
+
+    final authorDocument = article.authorId == null
+        ? null
+        : await databases.getDocument(
+            databaseId: databaseId,
+            collectionId: authorCollectionId,
+            documentId: article.authorId!,
+          );
+
     final jwt = await account.createJWT();
 
     return Result.success(
       article.toCmsObjectValue(
-        {"x-appwrite-jwt": jwt.jwt},
+        authHeaders: {"x-appwrite-jwt": jwt.jwt},
+        author: authorDocument == null ? null : Author.fromJson(authorDocument.data),
       ),
     );
   } catch (exception) {

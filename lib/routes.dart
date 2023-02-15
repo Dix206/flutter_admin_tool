@@ -5,7 +5,7 @@ import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
 import 'package:flutter_cms/flutter_cms.dart';
-import 'package:flutter_cms/models/navigation_infos.dart';
+import 'package:flutter_cms/data_types/navigation_infos.dart';
 import 'package:flutter_cms/ui/screens/main_screen.dart';
 import 'package:flutter_cms/ui/screens/overview/overview_screen.dart';
 import 'package:flutter_cms/ui/screens/settings/settings_screen.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/models/navigation_infos.dart';
+import 'package:flutter_cms/data_types/navigation_infos.dart';
 
 /// T is the type of the logged in user
 class AuthStateService<T extends Object> with ChangeNotifier {

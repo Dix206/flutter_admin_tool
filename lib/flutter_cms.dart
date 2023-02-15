@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cms/auth_state_service.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
-import 'package:flutter_cms/models/navigation_infos.dart';
+import 'package:flutter_cms/data_types/navigation_infos.dart';
 import 'package:flutter_cms/routes.dart';
 import 'package:flutter_cms/ui/theme_mode_handler.dart';
 import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';

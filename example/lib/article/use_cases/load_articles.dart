@@ -28,16 +28,30 @@ Future<Result<CmsObjectValueList>> loadArticles({
 
     final jwt = await account.createJWT();
 
+    final articles = databaseList.documents.map((document) => Article.fromJson(document.data));
+
+    final List<CmsObjectValue> cmsObjectValues = [];
+
+    for (final article in articles) {
+      final authorDocument = article.authorId == null
+          ? null
+          : await databases.getDocument(
+              databaseId: databaseId,
+              collectionId: authorCollectionId,
+              documentId: article.authorId!,
+            );
+
+      cmsObjectValues.add(
+        article.toCmsObjectValue(
+          authHeaders: {"x-appwrite-jwt": jwt.jwt},
+          author: authorDocument == null ? null : Author.fromJson(authorDocument.data),
+        ),
+      );
+    }
+
     return Result.success(
       CmsObjectValueList(
-        cmsObjectValues: databaseList.documents
-            .map((document) => Article.fromJson(document.data))
-            .map(
-              (article) => article.toCmsObjectValue(
-                {"x-appwrite-jwt": jwt.jwt},
-              ),
-            )
-            .toList(),
+        cmsObjectValues: cmsObjectValues,
         overallPageCount: (databaseList.total / itemsToLoad).ceil(),
       ),
     );

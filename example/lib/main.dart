@@ -5,7 +5,7 @@ import 'package:example/event/event_cms_object.dart';
 import 'package:example/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
-import 'package:flutter_cms/models/navigation_infos.dart';
+import 'package:flutter_cms/data_types/navigation_infos.dart';
 import 'package:flutter_cms/flutter_cms.dart';
 
 void main() {
