@@ -1,5 +1,6 @@
 import 'package:example/appwrite/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   final Function() onLoginSuccess;
@@ -61,6 +62,11 @@ class _LoginScreenState extends State<LoginScreen> {
               );
             },
             child: const Text("Login"),
+          ),
+          const SizedBox(height: 32),
+          ElevatedButton(
+            child: const Text("Register"),
+            onPressed: () => context.go("/register/LoginParameter"),
           ),
         ],
       ),

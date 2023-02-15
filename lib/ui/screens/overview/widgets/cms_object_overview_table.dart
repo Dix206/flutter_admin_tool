@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/routes.dart';
+import 'package:flutter_cms/ui/routes.dart';
 import 'package:flutter_cms/ui/messages/error_message.dart';
 import 'package:flutter_cms/ui/screens/overview/cms_object_overview_view_model.dart';
 import 'package:flutter_cms/ui/widgets/cms_error_widget.dart';

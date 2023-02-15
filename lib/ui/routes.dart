@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/auth_state_service.dart';
+import 'package:flutter_cms/data_types/cms_unauthorized_route.dart';
+import 'package:flutter_cms/ui/auth_state_service.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
@@ -24,31 +25,43 @@ GoRouter getGoRouter<T extends Object>({
   required CmsAuthInfos<T> cmsAuthInfos,
   required GetCmsObjectStructures<T> getCmsObjectStructures,
   required AuthStateService<T> authStateService,
-  required List<CmsCustomMenuEntry> customMenuEntries,
+  required List<CmsCustomMenuEntry> cmsCustomMenuEntries,
   required ScreenBuilder screenBuilder,
+  required List<CmsUnauthorizedRoute> cmsUnauthorizedRoutes,
 }) {
   return GoRouter(
     initialLocation: Routes.login,
     refreshListenable: authStateService,
     redirect: (context, state) async {
-      final isLoginRoute = state.subloc == Routes.login;
+      final isAuthRoute = state.location.startsWith(Routes.settings) == true ||
+          state.location.startsWith("/custom") == true ||
+          state.location.startsWith("/overview") == true;
 
       if (!authStateService.isInitialized) {
         return null;
-      } else if (authStateService.isLoggedIn && isLoginRoute) {
+      } else if (authStateService.isLoggedIn && !isAuthRoute) {
         return Routes.overview(
           cmsObjectId: getCmsObjectStructures(authStateService.loggedInUser!).first.id,
           page: 1,
           searchQuery: null,
           sortOptions: null,
         );
-      } else if (!authStateService.isLoggedIn) {
+      } else if (!authStateService.isLoggedIn && isAuthRoute) {
         return Routes.login;
       } else {
         return null;
       }
     },
     routes: [
+      ...cmsUnauthorizedRoutes.map(
+        (cmsUnauthorizedRoute) => FadeRoute(
+          path: cmsUnauthorizedRoute.path,
+          authStateService: authStateService,
+          screenBuilder: screenBuilder,
+          getCmsObjectStructures: getCmsObjectStructures,
+          childBuilder: cmsUnauthorizedRoute.childBuilder,
+        ),
+      ),
       FadeRoute(
         path: Routes.login,
         authStateService: authStateService,
@@ -90,7 +103,7 @@ GoRouter getGoRouter<T extends Object>({
               return const SettingsScreen();
             },
           ),
-          ...customMenuEntries.map(
+          ...cmsCustomMenuEntries.map(
             (customMenuEntry) => FadeRoute(
               path: "/custom/:customMenuEntryId",
               authStateService: authStateService,
@@ -98,7 +111,7 @@ GoRouter getGoRouter<T extends Object>({
               getCmsObjectStructures: getCmsObjectStructures,
               childBuilder: (context, state) {
                 final customMenuEntryId = state.params['customMenuEntryId'];
-                final customMenuEntry = customMenuEntries.firstWhereOrNull(
+                final customMenuEntry = cmsCustomMenuEntries.firstWhereOrNull(
                   (entry) => entry.id == customMenuEntryId,
                 );
 

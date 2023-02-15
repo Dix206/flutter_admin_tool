@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:flutter_cms/routes.dart';
+import 'package:flutter_cms/ui/routes.dart';
 import 'package:flutter_cms/flutter_cms.dart';
 
 enum MainScreenTab {

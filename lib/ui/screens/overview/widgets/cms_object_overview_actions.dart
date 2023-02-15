@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
-import 'package:flutter_cms/routes.dart';
+import 'package:flutter_cms/ui/routes.dart';
 import 'package:flutter_cms/ui/widgets/cms_button.dart';
 import 'package:go_router/go_router.dart';
 

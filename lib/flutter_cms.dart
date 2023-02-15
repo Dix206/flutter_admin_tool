@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/auth_state_service.dart';
+import 'package:flutter_cms/data_types/cms_unauthorized_route.dart';
+import 'package:flutter_cms/ui/auth_state_service.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
 import 'package:flutter_cms/data_types/navigation_infos.dart';
-import 'package:flutter_cms/routes.dart';
+import 'package:flutter_cms/ui/routes.dart';
 import 'package:flutter_cms/ui/theme_mode_handler.dart';
 import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,6 +17,7 @@ class FlutterCms<T extends Object> extends StatelessWidget {
   final GetCmsObjectStructures<T> getCmsObjectStructures;
   final CmsAuthInfos<T> cmsAuthInfos;
   final List<Locale> supportedLocales;
+  final List<CmsUnauthorizedRoute> cmsUnauthorizedRoutes;
   final List<CmsCustomMenuEntry> customMenuEntries;
   final ThemeData? lightTheme;
   final ThemeData? darkTheme;
@@ -26,6 +28,7 @@ class FlutterCms<T extends Object> extends StatelessWidget {
     required this.cmsAuthInfos,
     required this.supportedLocales,
     this.customMenuEntries = const [],
+    this.cmsUnauthorizedRoutes = const [],
     this.lightTheme,
     this.darkTheme,
   });
@@ -38,7 +41,8 @@ class FlutterCms<T extends Object> extends StatelessWidget {
       cmsAuthInfos: cmsAuthInfos,
       getCmsObjectStructures: getCmsObjectStructures,
       authStateService: authStateService,
-      customMenuEntries: customMenuEntries,
+      cmsCustomMenuEntries: customMenuEntries,
+      cmsUnauthorizedRoutes: cmsUnauthorizedRoutes,
       screenBuilder: ({
         required BuildContext context,
         required List<CmsObjectStructure> cmsObjectStructures,
