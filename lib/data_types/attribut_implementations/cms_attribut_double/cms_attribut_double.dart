@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_double/cms_attribut_double_widget.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributDouble extends CmsAttributStructure<double> {
   final String? hint;
@@ -11,7 +12,7 @@ class CmsAttributDouble extends CmsAttributStructure<double> {
     required super.displayName,
     super.defaultValue,
     super.validator,
-    super.invalidValueErrorMessage = "invalid input",
+    super.invalidValueErrorMessage,
     super.isOptional = false,
     super.canObjectBeSortedByThisAttribut = false,
     super.shouldBeDisplayedOnOverviewTable = true,
@@ -35,7 +36,7 @@ class CmsAttributDouble extends CmsAttributStructure<double> {
     required BuildContext context,
     required double? value,
   }) =>
-      value?.toString() ?? "---";
+      value?.toString() ?? FlutterCms.getCmsTexts(context).cmsAttributValueNull;
 
   @override
   List<Object?> get props => [

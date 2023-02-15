@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_time/cms_attribut_time_widget.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
@@ -10,7 +11,7 @@ class CmsAttributTime extends CmsAttributStructure<TimeOfDay> {
     required super.displayName,
     super.defaultValue,
     super.validator,
-    super.invalidValueErrorMessage = "invalid input",
+    super.invalidValueErrorMessage,
     super.isOptional = false,
     super.canObjectBeSortedByThisAttribut = false,
     super.shouldBeDisplayedOnOverviewTable = true,
@@ -35,7 +36,7 @@ class CmsAttributTime extends CmsAttributStructure<TimeOfDay> {
     required TimeOfDay? value,
   }) =>
       value == null
-          ? "---"
+          ? FlutterCms.getCmsTexts(context).cmsAttributValueNull
           : DateFormat.Hm(Localizations.localeOf(context).languageCode).format(
               DateTime(1, 1, 1, value.hour, value.minute),
             );

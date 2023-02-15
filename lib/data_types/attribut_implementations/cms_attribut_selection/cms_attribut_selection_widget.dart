@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_selection/cms_attribut_selection.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributSelectionWidget<T extends Object> extends StatelessWidget {
   final List<T> options;
@@ -20,6 +22,8 @@ class CmsAttributSelectionWidget<T extends Object> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,9 +38,9 @@ class CmsAttributSelectionWidget<T extends Object> extends StatelessWidget {
                 ),
               )
               .toList(),
-          decoration: const InputDecoration(
-            hintText: "No item selected",
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            hintText: FlutterCms.getCmsTexts(context).cmsAttributSelectionNoItemSelected,
+            border: const OutlineInputBorder(),
           ),
         ),
         if (shouldDisplayValidationErrors && !cmsTypeSelection.isValid(currentValue))
@@ -47,7 +51,7 @@ class CmsAttributSelectionWidget<T extends Object> extends StatelessWidget {
               right: 16,
             ),
             child: Text(
-              cmsTypeSelection.invalidValueErrorMessage,
+              cmsTypeSelection.invalidValueErrorMessage ?? cmsTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

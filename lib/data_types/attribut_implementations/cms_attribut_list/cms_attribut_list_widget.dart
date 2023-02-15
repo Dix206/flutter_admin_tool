@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_list/cms_attribut_list.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
-import 'package:flutter_cms/ui/messages/error_message.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:flutter_cms/ui/widgets/cms_button.dart';
 
 class CmsAttributListWidget<T extends Object, S extends CmsAttributStructure<T>> extends StatefulWidget {
@@ -30,6 +31,8 @@ class _CmsAttributListWidgetState extends State<CmsAttributListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
+
     final isValid = widget.cmsTypeList.isValid(
       widget.currentValue.isEmpty ? null : widget.currentValue,
     );
@@ -47,20 +50,14 @@ class _CmsAttributListWidgetState extends State<CmsAttributListWidget> {
         ),
         const SizedBox(height: 16),
         CmsButton(
-            text: "Add item",
+            text: FlutterCms.getCmsTexts(context).cmsAttributListAddItem,
             onPressed: () {
               if (!widget.cmsAttributStructure.isValid(_currentValue)) {
                 setState(() => _shouldDisplayCurrentValueValidationErrors = true);
                 return;
               }
 
-              if (_currentValue == null) {
-                showErrorMessage(
-                  context: context,
-                  errorMessage: "You have to set a value",
-                );
-                return;
-              }
+              if (_currentValue == null) return;
 
               widget.onCmsTypeUpdated(
                 List.of(widget.currentValue)..add(_currentValue!),
@@ -96,7 +93,7 @@ class _CmsAttributListWidgetState extends State<CmsAttributListWidget> {
               right: 16.0,
             ),
             child: Text(
-              widget.cmsTypeList.invalidValueErrorMessage,
+              widget.cmsTypeList.invalidValueErrorMessage ?? cmsTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

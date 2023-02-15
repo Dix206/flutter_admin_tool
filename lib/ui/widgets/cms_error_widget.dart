@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsErrorWidget extends StatelessWidget {
   final String errorMessage;
@@ -24,7 +25,7 @@ class CmsErrorWidget extends StatelessWidget {
           const SizedBox(height: 16),
           TextButton(
             onPressed: onRetry,
-            child: const Text("retry"),
+            child: Text(FlutterCms.getCmsTexts(context).errorMessageRetryButton),
           ),
         ],
       ),

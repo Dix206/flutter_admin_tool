@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_color/cms_attribut_color.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:flutter_cms/ui/widgets/cms_button.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
@@ -22,6 +24,8 @@ class CmsAttributColorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
+
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(
@@ -41,7 +45,7 @@ class CmsAttributColorWidget extends StatelessWidget {
       ),
       subtitle: shouldDisplayValidationErrors && !cmsAttributColor.isValid(currentValue)
           ? Text(
-              cmsAttributColor.invalidValueErrorMessage,
+              cmsAttributColor.invalidValueErrorMessage ?? cmsTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),
@@ -103,6 +107,8 @@ class _ColorPickerState extends State<_ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final cmsTexts = FlutterCms.getCmsTexts(context);
+
     return AlertDialog(
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -122,18 +128,18 @@ class _ColorPickerState extends State<_ColorPicker> {
             ),
           ),
           const SizedBox(height: 8),
-          const Text("Hex"),
+          Text(cmsTexts.cmsAttributColorHexTitle),
           const SizedBox(height: 4),
           TextField(
             controller: _hexController,
-            decoration: const InputDecoration(
-              hintText: 'Hex',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              hintText: cmsTexts.cmsAttributColorHexTitle,
+              border: const OutlineInputBorder(),
             ),
           ),
           const SizedBox(height: 16),
           CmsButton(
-            text: 'Select',
+            text: cmsTexts.select,
             onPressed: () {
               widget.onCmsTypeUpdated(_currentColor);
               Navigator.of(context).pop();

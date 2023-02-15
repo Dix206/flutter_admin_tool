@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as models;
 import 'package:example/appwrite/client.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 
 final authAppwriteService = AuthAppwriteService(account);
 
@@ -12,7 +12,7 @@ class AuthAppwriteService {
 
   AuthAppwriteService(this._account);
 
-  Future<Result<Unit>> login({
+  Future<CmsResult<Unit>> login({
     required String email,
     required String password,
   }) async {
@@ -22,9 +22,9 @@ class AuthAppwriteService {
         password: password,
       );
 
-      return Result.success(const Unit());
+      return CmsResult.success(const Unit());
     } catch (e) {
-      return Result.error("Login fehlgeschlagen");
+      return CmsResult.error("Login failed");
     }
   }
 

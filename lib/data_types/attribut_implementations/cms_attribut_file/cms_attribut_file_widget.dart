@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_file/cms_attribut_file.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/cms_file_value.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributFileWidget extends StatefulWidget {
   final CmsFileValue? currentValue;
@@ -25,6 +27,8 @@ class CmsAttributFileWidget extends StatefulWidget {
 class _CmsAttributFileWidgetState extends State<CmsAttributFileWidget> {
   @override
   Widget build(BuildContext context) {
+    final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -51,7 +55,7 @@ class _CmsAttributFileWidgetState extends State<CmsAttributFileWidget> {
             widget.currentValue?.fileName ??
                 (widget.currentValue?.wasDeleted != true && widget.currentValue?.url != null
                     ? widget.currentValue!.url!
-                    : "Select a file"),
+                    : FlutterCms.getCmsTexts(context).cmsAttributFileSelectFileMessage),
           ),
           leading: widget.currentValue?.data == null &&
                   widget.currentValue?.url != null &&
@@ -87,7 +91,7 @@ class _CmsAttributFileWidgetState extends State<CmsAttributFileWidget> {
               right: 16,
             ),
             child: Text(
-              widget.cmsTypeFile.invalidValueErrorMessage,
+              widget.cmsTypeFile.invalidValueErrorMessage ?? cmsTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

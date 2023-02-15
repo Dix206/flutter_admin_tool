@@ -1,3 +1,4 @@
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date_time/cms_attribut_date_time_widget.dart';
@@ -15,7 +16,7 @@ class CmsAttributDateTime extends CmsAttributStructure<DateTime> {
     this.maxDateTime,
     super.defaultValue,
     super.validator,
-    super.invalidValueErrorMessage = "invalid input",
+    super.invalidValueErrorMessage,
     super.isOptional = false,
     super.canObjectBeSortedByThisAttribut = false,
     super.shouldBeDisplayedOnOverviewTable = true,
@@ -42,7 +43,7 @@ class CmsAttributDateTime extends CmsAttributStructure<DateTime> {
     required DateTime? value,
   }) =>
       value == null
-          ? "---"
+          ? FlutterCms.getCmsTexts(context).cmsAttributValueNull
           : "${DateFormat.yMd(Localizations.localeOf(context).languageCode).format(value)} ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(value)}";
 
   @override

@@ -1,9 +1,9 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:example/appwrite/client.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 
-Future<Result<Unit>> uploadBlogFile({
+Future<CmsResult<Unit>> uploadBlogFile({
   required String fileId,
   required Uint8List data,
 }) async {
@@ -17,13 +17,13 @@ Future<Result<Unit>> uploadBlogFile({
       ),
     );
 
-    return Result.success(const Unit());
+    return CmsResult.success(const Unit());
   } catch (exception) {
-    return Result.error("Failed to upload media. Please try again");
+    return CmsResult.error("Failed to upload file. Please try again");
   }
 }
 
-Future<Result<Unit>> deleteBlogFile({
+Future<CmsResult<Unit>> deleteBlogFile({
   required String fileId,
 }) async {
   try {
@@ -32,8 +32,8 @@ Future<Result<Unit>> deleteBlogFile({
       fileId: fileId,
     );
 
-    return Result.success(const Unit());
+    return CmsResult.success(const Unit());
   } catch (exception) {
-    return Result.error("Failed to delete media. Please try again");
+    return CmsResult.error("Failed to delete file. Please try again");
   }
 }

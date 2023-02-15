@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_reference/cms_attribut_reference.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 /// T is the type of the reference
 class CmsAttributReferenceWidget<T extends Object> extends StatefulWidget {
@@ -26,6 +28,8 @@ class _CmsAttributReferenceWidgetState<T extends Object> extends State<CmsAttrib
 
   @override
   Widget build(BuildContext context) {
+    final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
+    
     final isValid = widget.cmsTypeReference.isValid(widget.currentValue);
 
     return Column(
@@ -78,7 +82,7 @@ class _CmsAttributReferenceWidgetState<T extends Object> extends State<CmsAttrib
               right: 16.0,
             ),
             child: Text(
-              widget.cmsTypeReference.invalidValueErrorMessage,
+              widget.cmsTypeReference.invalidValueErrorMessage ?? cmsTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

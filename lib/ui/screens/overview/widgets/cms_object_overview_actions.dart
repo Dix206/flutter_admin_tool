@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:flutter_cms/ui/routes.dart';
 import 'package:flutter_cms/ui/widgets/cms_button.dart';
 import 'package:go_router/go_router.dart';
@@ -27,7 +28,7 @@ class CmsObjectOverviewActions extends StatelessWidget {
       children: [
         if (cmsObjectStructure.onCreateCmsObject != null)
           CmsButton(
-            text: "Neues Objekt",
+            text: FlutterCms.getCmsTexts(context).createNewObjectButton,
             onPressed: () => context.go(
               Routes.createObject(
                 cmsObjectId: cmsObjectStructure.id,
@@ -98,7 +99,7 @@ class _SearchBarState extends State<_SearchBar> {
                 ),
               ),
               decoration: InputDecoration(
-                hintText: "Suche",
+                hintText: FlutterCms.getCmsTexts(context).searchObjectsTextFieldHint,
                 border: const OutlineInputBorder(),
                 prefixIcon: const Icon(Icons.search),
                 contentPadding: EdgeInsets.zero,
@@ -122,7 +123,7 @@ class _SearchBarState extends State<_SearchBar> {
         ),
         const SizedBox(width: 16),
         CmsButton(
-          text: "Suchen",
+          text: FlutterCms.getCmsTexts(context).searchObjectsButton,
           onPressed: () => context.go(
             Routes.overview(
               cmsObjectId: widget.cmsObject.id,

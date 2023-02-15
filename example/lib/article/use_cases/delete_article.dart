@@ -1,16 +1,16 @@
 import 'package:example/appwrite/client.dart';
 import 'package:example/constants.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 
-Future<Result<Unit>> deleteArticle(String articleId) async {
+Future<CmsResult<Unit>> deleteArticle(String articleId) async {
   try {
     await databases.deleteDocument(
       databaseId: databaseId,
       collectionId: articleCollectionId,
       documentId: articleId,
     );
-    return Result.success(const Unit());
+    return CmsResult.success(const Unit());
   } catch (exception) {
-    return Result.error("Failed to delete article. Please try again");
+    return CmsResult.error("Failed to delete article. Please try again");
   }
 }

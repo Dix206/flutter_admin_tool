@@ -4,9 +4,9 @@ import 'package:example/blog/blog.dart';
 import 'package:example/constants.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 
-Future<Result<CmsObjectValueList>> loadBlogs({
+Future<CmsResult<CmsObjectValueList>> loadBlogs({
   required int page,
   required String? searchQuery,
   required CmsObjectSortOptions? sortOptions,
@@ -28,7 +28,7 @@ Future<Result<CmsObjectValueList>> loadBlogs({
 
     final jwt = await account.createJWT();
 
-    return Result.success(
+    return CmsResult.success(
       CmsObjectValueList(
         cmsObjectValues: databaseList.documents
             .map((document) => Blog.fromJson(document.data))
@@ -42,6 +42,6 @@ Future<Result<CmsObjectValueList>> loadBlogs({
       ),
     );
   } catch (exception) {
-    return Result.error("Failed to load blogs. Please try again");
+    return CmsResult.error("Failed to load blogs. Please try again");
   }
 }

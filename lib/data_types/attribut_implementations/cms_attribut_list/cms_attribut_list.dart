@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_list/cms_attribut_list_widget.dart';
 
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributList<T extends Object, S extends CmsAttributStructure<T>> extends CmsAttributStructure<List> {
   final CmsAttributStructure<T> cmsAttributStructure;
@@ -11,7 +12,7 @@ class CmsAttributList<T extends Object, S extends CmsAttributStructure<T>> exten
     required super.id,
     required super.displayName,
     super.defaultValue,
-    super.invalidValueErrorMessage = "invalid input",
+    super.invalidValueErrorMessage,
     super.isOptional = false,
     super.validator,
     super.canObjectBeSortedByThisAttribut = false,
@@ -39,7 +40,7 @@ class CmsAttributList<T extends Object, S extends CmsAttributStructure<T>> exten
     required List? value,
   }) =>
       value == null
-          ? "---"
+          ? FlutterCms.getCmsTexts(context).cmsAttributValueNull
           : value
               .map(
                 (item) => cmsAttributStructure.valueToString(context: context, value: item),

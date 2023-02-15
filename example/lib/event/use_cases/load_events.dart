@@ -4,9 +4,9 @@ import 'package:example/constants.dart';
 import 'package:example/event/event.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 
-Future<Result<CmsObjectValueList>> loadEvents({
+Future<CmsResult<CmsObjectValueList>> loadEvents({
   required int page,
   required String? searchQuery,
   required CmsObjectSortOptions? sortOptions,
@@ -26,7 +26,7 @@ Future<Result<CmsObjectValueList>> loadEvents({
       ],
     );
 
-    return Result.success(
+    return CmsResult.success(
       CmsObjectValueList(
         cmsObjectValues: databaseList.documents
             .map((document) => Event.fromJson(document.data))
@@ -36,6 +36,6 @@ Future<Result<CmsObjectValueList>> loadEvents({
       ),
     );
   } catch (exception) {
-    return Result.error("Failed to load events. Please try again");
+    return CmsResult.error("Failed to load events. Please try again");
   }
 }

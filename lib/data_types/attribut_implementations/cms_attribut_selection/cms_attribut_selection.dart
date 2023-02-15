@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_selection/cms_attribut_selection_widget.dart';
 
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributSelection<T extends Object> extends CmsAttributStructure<T> {
   final List<T> options;
@@ -15,7 +16,7 @@ class CmsAttributSelection<T extends Object> extends CmsAttributStructure<T> {
     required super.id,
     required super.displayName,
     super.defaultValue,
-    super.invalidValueErrorMessage = "invalid input",
+    super.invalidValueErrorMessage,
     super.isOptional = false,
     super.canObjectBeSortedByThisAttribut = false,
     super.shouldBeDisplayedOnOverviewTable = true,
@@ -42,7 +43,7 @@ class CmsAttributSelection<T extends Object> extends CmsAttributStructure<T> {
     required BuildContext context,
     required T? value,
   }) =>
-      value == null ? "---" : optionToString(value);
+      value == null ? FlutterCms.getCmsTexts(context).cmsAttributValueNull : optionToString(value);
 
   @override
   List<Object?> get props => [

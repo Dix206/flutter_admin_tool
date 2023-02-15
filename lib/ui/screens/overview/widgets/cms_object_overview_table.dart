@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:flutter_cms/ui/routes.dart';
-import 'package:flutter_cms/ui/messages/error_message.dart';
 import 'package:flutter_cms/ui/screens/overview/cms_object_overview_view_model.dart';
 import 'package:flutter_cms/ui/widgets/cms_error_widget.dart';
 import 'package:flutter_cms/ui/widgets/cms_loading.dart';
@@ -83,7 +83,7 @@ class CmsObjectOverviewTable extends StatelessWidget {
                             } else if (state.cmsObjectValues!.isEmpty) {
                               return Center(
                                 child: Text(
-                                  "No items found",
+                                  FlutterCms.getCmsTexts(context).objectTableNoItemsMessage,
                                   style: Theme.of(context).textTheme.titleMedium,
                                 ),
                               );
@@ -139,7 +139,7 @@ class _TableTitle extends StatelessWidget {
           children: [
             const SizedBox(width: 16),
             _TableEntry(
-              text: "ID",
+              text: FlutterCms.getCmsTexts(context).objectTableIdTitle,
               textColor: Theme.of(context).colorScheme.onPrimaryContainer,
               width: _idTableEntryWidth,
               height: _tableTitleEntryHeight,
@@ -228,7 +228,7 @@ class _TableContent extends StatelessWidget {
             children: [
               const SizedBox(width: 16),
               _TableEntry(
-                text: cmsObjectValue.id ?? "---",
+                text: cmsObjectValue.id ?? FlutterCms.getCmsTexts(context).cmsAttributValueNull,
                 width: _idTableEntryWidth,
               ),
               ...cmsObjectValue.values
@@ -242,7 +242,7 @@ class _TableContent extends StatelessWidget {
                                 context: context,
                                 value: cmsAttributeValue.value,
                               ) ??
-                          "---",
+                          FlutterCms.getCmsTexts(context).cmsAttributValueNull,
                     ),
                   )
                   .toList(),
@@ -258,14 +258,6 @@ class _TableContent extends StatelessWidget {
     required BuildContext context,
     required CmsObjectValue cmsObjectValue,
   }) {
-    if (cmsObjectValue.id == null) {
-      showErrorMessage(
-        context: context,
-        errorMessage: "Das Objekt kann nicht bearbeitet werden, da es keine ID hat.",
-      );
-      return;
-    }
-
     context.go(
       Routes.updateObject(
         cmsObjectId: cmsObject.id,

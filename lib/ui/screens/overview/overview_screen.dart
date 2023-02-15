@@ -27,8 +27,11 @@ class OverviewScreen extends StatelessWidget {
     return selectedCmsObjectStructure == null
         ? Center(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("There is no Object with the id $selectedCmsObjectId"),
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                FlutterCms.getCmsTexts(context).noCmsObjectStructureObjectFoundWithPassedId(selectedCmsObjectId),
+                textAlign: TextAlign.center,
+              ),
             ),
           )
         : CmsObjectOverview(

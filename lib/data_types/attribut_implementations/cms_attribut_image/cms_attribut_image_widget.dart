@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_image/cms_attribut_image.dart';
 import 'package:flutter_cms/data_types/cms_file_value.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:flutter_cms/ui/widgets/cms_button.dart';
 
 class CmsAttributImageWidget extends StatefulWidget {
@@ -28,6 +30,8 @@ class _CmsAttributImageWidgetState extends State<CmsAttributImageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
+    
     return Column(
       children: [
         InkWell(
@@ -96,7 +100,7 @@ class _CmsAttributImageWidgetState extends State<CmsAttributImageWidget> {
                   authHeaders: widget.currentValue?.authHeaders,
                 ),
               ),
-              text: "Delete",
+              text: FlutterCms.getCmsTexts(context).delete,
               buttonColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.onError,
             ),
@@ -105,7 +109,7 @@ class _CmsAttributImageWidgetState extends State<CmsAttributImageWidget> {
         if (widget.shouldDisplayValidationErrors && !widget.cmsTypeImage.isValid(widget.currentValue)) ...[
           const SizedBox(height: 8),
           Text(
-            widget.cmsTypeImage.invalidValueErrorMessage,
+            widget.cmsTypeImage.invalidValueErrorMessage ?? cmsTexts.defaultInvalidDataMessage,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: Theme.of(context).colorScheme.error,
                 ),

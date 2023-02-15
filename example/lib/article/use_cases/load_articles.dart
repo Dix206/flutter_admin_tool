@@ -4,9 +4,9 @@ import 'package:example/article/article.dart';
 import 'package:example/constants.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 
-Future<Result<CmsObjectValueList>> loadArticles({
+Future<CmsResult<CmsObjectValueList>> loadArticles({
   required int page,
   required String? searchQuery,
   required CmsObjectSortOptions? sortOptions,
@@ -49,13 +49,13 @@ Future<Result<CmsObjectValueList>> loadArticles({
       );
     }
 
-    return Result.success(
+    return CmsResult.success(
       CmsObjectValueList(
         cmsObjectValues: cmsObjectValues,
         overallPageCount: (databaseList.total / itemsToLoad).ceil(),
       ),
     );
   } catch (exception) {
-    return Result.error("Failed to load articles. Please try again");
+    return CmsResult.error("Failed to load articles. Please try again");
   }
 }

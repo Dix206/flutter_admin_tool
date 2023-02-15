@@ -20,14 +20,14 @@ class SettingsScreen extends StatelessWidget {
             context: context,
             themeMode: value ? ThemeMode.dark : ThemeMode.light,
           ),
-          title: const Text("Dark Mode"),
+          title: Text(FlutterCms.getCmsTexts(context).darkMode),
         ),
         const SizedBox(height: 24),
         Align(
           alignment: Alignment.centerLeft,
           child: TextButton(
             onPressed: authStateService.onUserLoggedOut,
-            child: const Text("Logout"),
+            child: Text(FlutterCms.getCmsTexts(context).logout),
           ),
         ),
       ],

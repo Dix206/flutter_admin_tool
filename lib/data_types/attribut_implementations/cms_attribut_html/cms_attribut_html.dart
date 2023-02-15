@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_html/cms_attribut_html_widget.dart';
 
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributHtml extends CmsAttributStructure<String> {
   const CmsAttributHtml({
@@ -9,7 +10,7 @@ class CmsAttributHtml extends CmsAttributStructure<String> {
     required super.displayName,
     super.defaultValue,
     super.validator,
-    super.invalidValueErrorMessage = "invalid input",
+    super.invalidValueErrorMessage,
     super.isOptional = false,
     super.canObjectBeSortedByThisAttribut = false,
     super.shouldBeDisplayedOnOverviewTable = true,
@@ -39,5 +40,5 @@ class CmsAttributHtml extends CmsAttributStructure<String> {
     required BuildContext context,
     required String? value,
   }) =>
-      value ?? "---";
+      value ?? FlutterCms.getCmsTexts(context).cmsAttributValueNull;
 }

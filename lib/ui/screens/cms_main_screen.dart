@@ -84,6 +84,7 @@ class CmsMainScreen extends StatelessWidget {
                         const SizedBox(width: 16),
                       ],
                     ),
+                    const SizedBox(height: 8),
                     const Divider(),
                   ],
                   ...cmsObjectStructures.map(
@@ -122,7 +123,7 @@ class CmsMainScreen extends StatelessWidget {
                   const Divider(),
                   Material(
                     child: ListTile(
-                      title: const Text("Settings"),
+                      title: Text(FlutterCms.getCmsTexts(context).settings),
                       onTap: () => context.go(Routes.settings),
                       tileColor: Theme.of(context).colorScheme.surface,
                       selectedTileColor: Theme.of(context).scaffoldBackgroundColor,

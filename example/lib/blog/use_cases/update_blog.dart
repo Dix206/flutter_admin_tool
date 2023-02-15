@@ -4,10 +4,10 @@ import 'package:example/blog/use_cases/blog_file_service.dart';
 import 'package:example/constants.dart';
 import 'package:flutter_cms/data_types/cms_file_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 import 'package:uuid/uuid.dart';
 
-Future<Result<Unit>> updateBlog(CmsObjectValue cmsObjectValue) async {
+Future<CmsResult<Unit>> updateBlog(CmsObjectValue cmsObjectValue) async {
   try {
     final document = await databases.getDocument(
       databaseId: databaseId,
@@ -22,11 +22,11 @@ Future<Result<Unit>> updateBlog(CmsObjectValue cmsObjectValue) async {
       cmsObjectValue: cmsObjectValue,
     );
   } catch (exception) {
-    return Result.error("Failed to create blog. Please try again");
+    return CmsResult.error("Failed to create blog. Please try again");
   }
 }
 
-Future<Result<Unit>> _updateBlogFromExistingBlog({
+Future<CmsResult<Unit>> _updateBlogFromExistingBlog({
   required CmsObjectValue cmsObjectValue,
   required Blog blog,
 }) async {
@@ -46,7 +46,7 @@ Future<Result<Unit>> _updateBlogFromExistingBlog({
       );
 
       return result.fold(
-        onError: (error) => Result.error(error),
+        onError: (error) => CmsResult.error(error),
         onSuccess: (_) async {
           final newBlog = Blog.fromCmsObjectValue(
             cmsObjectValue: cmsObjectValue,
@@ -60,7 +60,7 @@ Future<Result<Unit>> _updateBlogFromExistingBlog({
             data: newBlog.toJson(),
             documentId: newBlog.id,
           );
-          return Result.success(const Unit());
+          return CmsResult.success(const Unit());
         },
       );
     } else if (file?.wasDeleted == true && blog.fileId != null) {
@@ -69,7 +69,7 @@ Future<Result<Unit>> _updateBlogFromExistingBlog({
       );
 
       return result.fold(
-        onError: (error) => Result.error(error),
+        onError: (error) => CmsResult.error(error),
         onSuccess: (url) async {
           final newBlog = Blog.fromCmsObjectValue(
             cmsObjectValue: cmsObjectValue,
@@ -83,7 +83,7 @@ Future<Result<Unit>> _updateBlogFromExistingBlog({
             data: newBlog.toJson(),
             documentId: newBlog.id,
           );
-          return Result.success(const Unit());
+          return CmsResult.success(const Unit());
         },
       );
     }
@@ -100,8 +100,8 @@ Future<Result<Unit>> _updateBlogFromExistingBlog({
       data: newBlog.toJson(),
       documentId: newBlog.id,
     );
-    return Result.success(const Unit());
+    return CmsResult.success(const Unit());
   } catch (exception) {
-    return Result.error("Failed to update article. Please try again");
+    return CmsResult.error("Failed to update article. Please try again");
   }
 }

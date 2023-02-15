@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_html/cms_attribut_html.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
 class CmsAttributHtmlWidget extends StatefulWidget {
@@ -35,6 +37,8 @@ class _CmsAttributHtmlWidgetState extends State<CmsAttributHtmlWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
+    
     if (!kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
       return const Center(
         child: Text('Not supported on this platform'),
@@ -63,7 +67,6 @@ class _CmsAttributHtmlWidgetState extends State<CmsAttributHtmlWidget> {
             ..remove(ToolBarStyle.strike),
         ),
         QuillHtmlEditor(
-          hintText: 'Hint text goes here',
           controller: controller,
           height: 400,
           text: widget.currentValue,
@@ -79,7 +82,7 @@ class _CmsAttributHtmlWidgetState extends State<CmsAttributHtmlWidget> {
               right: 16.0,
             ),
             child: Text(
-              widget.cmsTypeHtml.invalidValueErrorMessage,
+              widget.cmsTypeHtml.invalidValueErrorMessage ?? cmsTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

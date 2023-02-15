@@ -3,13 +3,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 import 'package:flutter_cms/extensions/iterable_extensions.dart';
 
-typedef LoadCmsObjectById = Future<Result<CmsObjectValue>> Function(String id);
-typedef OnManipulateCmsObject = Future<Result<Unit>> Function(CmsObjectValue);
-typedef OnDeleteCmsObject = Future<Result<Unit>> Function(String id);
-typedef OnLoadCmsObjects = Future<Result<CmsObjectValueList>> Function({
+typedef LoadCmsObjectById = Future<CmsResult<CmsObjectValue>> Function(String id);
+typedef OnManipulateCmsObject = Future<CmsResult<Unit>> Function(CmsObjectValue);
+typedef OnDeleteCmsObject = Future<CmsResult<Unit>> Function(String id);
+typedef OnLoadCmsObjects = Future<CmsResult<CmsObjectValueList>> Function({
   required int page,
   required String? searchQuery,
   required CmsObjectSortOptions? sortOptions,

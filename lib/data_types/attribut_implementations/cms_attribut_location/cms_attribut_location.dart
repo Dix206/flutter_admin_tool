@@ -2,19 +2,20 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_location/cms_attribut_location_widget.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_location/cms_location.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributLocation extends CmsAttributStructure<CmsLocation> {
-  final String latitudeHint;
-  final String longitudeHint;
+  final String? latitudeHint;
+  final String? longitudeHint;
 
   const CmsAttributLocation({
     required super.id,
     required super.displayName,
-    this.latitudeHint = "latitude",
-    this.longitudeHint = "longitude",
+    this.latitudeHint,
+    this.longitudeHint,
     super.defaultValue,
     super.validator,
-    super.invalidValueErrorMessage = "invalid input",
+    super.invalidValueErrorMessage,
     super.isOptional = false,
     super.canObjectBeSortedByThisAttribut = false,
     super.shouldBeDisplayedOnOverviewTable = true,
@@ -38,7 +39,7 @@ class CmsAttributLocation extends CmsAttributStructure<CmsLocation> {
     required BuildContext context,
     required CmsLocation? value,
   }) =>
-      value == null ? "---" : "${value.latitude} | ${value.longitude}";
+      value == null ? FlutterCms.getCmsTexts(context).cmsAttributValueNull : "${value.latitude} | ${value.longitude}";
 
   @override
   List<Object?> get props => [

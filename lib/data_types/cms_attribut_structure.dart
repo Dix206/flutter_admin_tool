@@ -24,7 +24,7 @@ abstract class CmsAttributStructure<T extends Object> extends Equatable {
   final Validator<T>? validator;
 
   /// If the validation of this attribute failes (based on the passed [validator]) this message will be displayd to the user.
-  final String invalidValueErrorMessage;
+  final String? invalidValueErrorMessage;
 
   /// If this value is true this attribut value will be displayed on the overview list. Otherwise the value will not be displayed.
   final bool shouldBeDisplayedOnOverviewTable;

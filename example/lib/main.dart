@@ -33,7 +33,7 @@ void main() {
       ),
       cmsCustomMenuEntries: [
         CmsCustomMenuEntry(
-          id: "text",
+          id: "test",
           displayName: "Test",
           contentBuilder: (context) => const Center(
             child: Text("Hello, I am custom content!"),

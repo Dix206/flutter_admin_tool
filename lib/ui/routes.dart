@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
 import 'package:flutter_cms/data_types/cms_unauthorized_route.dart';
 import 'package:flutter_cms/ui/auth_state_service.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
@@ -27,6 +28,7 @@ GoRouter getGoRouter<T extends Object>({
   required List<CmsCustomMenuEntry> cmsCustomMenuEntries,
   required ScreenBuilder<T> screenBuilder,
   required List<CmsUnauthorizedRoute> cmsUnauthorizedRoutes,
+  required CmsTexts cmsTexts,
 }) {
   return GoRouter(
     initialLocation: Routes.login,
@@ -110,8 +112,8 @@ GoRouter getGoRouter<T extends Object>({
                 );
 
                 return customMenuEntry?.contentBuilder(context) ??
-                    const Center(
-                      child: Text("There is no custom menu entry with id"),
+                    Center(
+                      child: Text(cmsTexts.noCmsCustomMenuEntryFoundWithId),
                     );
               },
             ),

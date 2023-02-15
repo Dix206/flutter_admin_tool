@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_location/cms_attribut_location.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_location/cms_location.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributLocationWidget extends StatefulWidget {
   final CmsLocation? currentValue;
@@ -50,6 +52,8 @@ class _CmsAttributLocationWidgetState extends State<CmsAttributLocationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -62,7 +66,7 @@ class _CmsAttributLocationWidgetState extends State<CmsAttributLocationWidget> {
             FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*")),
           ],
           decoration: InputDecoration(
-            hintText: widget.cmsTypeLocation.latitudeHint,
+            hintText: widget.cmsTypeLocation.latitudeHint ?? cmsTexts.cmsAttributLocationLatitude,
             border: const OutlineInputBorder(),
           ),
         ),
@@ -76,7 +80,7 @@ class _CmsAttributLocationWidgetState extends State<CmsAttributLocationWidget> {
             FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*")),
           ],
           decoration: InputDecoration(
-            hintText: widget.cmsTypeLocation.longitudeHint,
+            hintText: widget.cmsTypeLocation.longitudeHint ?? cmsTexts.cmsAttributLocationLongitude,
             border: const OutlineInputBorder(),
           ),
         ),
@@ -88,7 +92,7 @@ class _CmsAttributLocationWidgetState extends State<CmsAttributLocationWidget> {
               top: 8,
             ),
             child: Text(
-              widget.cmsTypeLocation.invalidValueErrorMessage,
+              widget.cmsTypeLocation.invalidValueErrorMessage ?? cmsTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:flutter_cms/ui/routes.dart';
 import 'package:go_router/go_router.dart';
 
@@ -96,7 +97,7 @@ class _PaginationState extends State<CmsObjectOverviewPagination> {
         ),
         const SizedBox(width: 4),
         Text(
-          "Page",
+          FlutterCms.getCmsTexts(context).objectTablePageText,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(width: 4),
@@ -124,7 +125,12 @@ class _PaginationState extends State<CmsObjectOverviewPagination> {
         ),
         const SizedBox(width: 4),
         Text(
-          "of ${widget.overallPages}",
+          FlutterCms.getCmsTexts(context).objectTablePageOfText,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          widget.overallPages.toString(),
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(width: 4),

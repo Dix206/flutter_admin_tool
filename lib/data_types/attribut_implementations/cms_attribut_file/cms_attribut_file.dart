@@ -3,6 +3,7 @@ import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_fil
 
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
 import 'package:flutter_cms/data_types/cms_file_value.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributFile extends CmsAttributStructure<CmsFileValue> {
   /// Set this method to allow the user to download the romte file
@@ -13,7 +14,7 @@ class CmsAttributFile extends CmsAttributStructure<CmsFileValue> {
     required super.displayName,
     this.onFileDownload,
     super.isOptional = false,
-    super.invalidValueErrorMessage = "invalid input",
+    super.invalidValueErrorMessage,
   }) : super(
           validator: null,
           defaultValue: null,
@@ -39,7 +40,7 @@ class CmsAttributFile extends CmsAttributStructure<CmsFileValue> {
     required BuildContext context,
     required CmsFileValue? value,
   }) =>
-      value?.url ?? "---";
+      value?.url ?? FlutterCms.getCmsTexts(context).cmsAttributValueNull;
 
   @override
   bool isValid(CmsFileValue? value) {

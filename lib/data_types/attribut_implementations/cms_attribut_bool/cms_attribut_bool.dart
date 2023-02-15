@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_bool/cms_attribut_bool_widget.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributBool extends CmsAttributStructure<bool> {
   const CmsAttributBool({
@@ -12,7 +13,7 @@ class CmsAttributBool extends CmsAttributStructure<bool> {
   }) : super(
           isOptional: false,
           validator: null,
-          invalidValueErrorMessage: "invalid input",
+          invalidValueErrorMessage: null,
         );
 
   @override
@@ -32,5 +33,5 @@ class CmsAttributBool extends CmsAttributStructure<bool> {
     required BuildContext context,
     required bool? value,
   }) =>
-      value?.toString() ?? "---";
+      value?.toString() ?? FlutterCms.getCmsTexts(context).cmsAttributValueNull;
 }

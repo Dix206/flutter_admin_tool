@@ -38,8 +38,11 @@ class InsertCmsObjectScreen extends StatelessWidget {
     if (cmsObjectStructure == null) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("There is no Object with the id $cmsObjectId"),
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            FlutterCms.getCmsTexts(context).updateCmsObjectNoObjectFoundWithPassedId(cmsObjectId),
+            textAlign: TextAlign.center,
+          ),
         ),
       );
     } else {
@@ -188,8 +191,8 @@ class _TopBar extends StatelessWidget {
           ),
         ),
         CmsButton(
-          onPressed: InsertCmsObjectViewModel.of(context).insertObject,
-          text: "Speichern",
+          onPressed: () => InsertCmsObjectViewModel.of(context).insertObject(context),
+          text: FlutterCms.getCmsTexts(context).save,
           isLoading: isInserting,
         ),
         if (cmsObject.onDeleteCmsObject != null && existingCmsObjectValueId != null)
@@ -198,16 +201,18 @@ class _TopBar extends StatelessWidget {
               final shouldDeleteBject = await showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text("Löschen"),
-                  content: const Text("Möchten Sie das Objekt wirklich löschen?"),
+                  title: Text(FlutterCms.getCmsTexts(context).delete),
+                  content: Text(
+                    FlutterCms.getCmsTexts(context).deleteCmsObjectValueConfirmationMessage,
+                  ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(false),
-                      child: const Text("Abbrechen"),
+                      child: Text(FlutterCms.getCmsTexts(context).cancel),
                     ),
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(true),
-                      child: const Text("Löschen"),
+                      child: Text(FlutterCms.getCmsTexts(context).delete),
                     ),
                   ],
                 ),
@@ -217,7 +222,7 @@ class _TopBar extends StatelessWidget {
                 InsertCmsObjectViewModel.of(context).deleteObject();
               }
             },
-            text: "Löschen",
+            text: FlutterCms.getCmsTexts(context).delete,
             isLoading: isDeleting,
             buttonColor: Theme.of(context).colorScheme.error,
             textColor: Theme.of(context).colorScheme.onError,

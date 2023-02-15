@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
 import 'package:flutter_cms/data_types/cms_unauthorized_route.dart';
 import 'package:flutter_cms/data_types/cms_user_infos.dart';
 import 'package:flutter_cms/ui/auth_state_service.dart';
@@ -26,6 +27,7 @@ class FlutterCms<T extends Object> extends StatelessWidget {
   final List<Locale> supportedLocales;
   final List<CmsUnauthorizedRoute> cmsUnauthorizedRoutes;
   final List<CmsCustomMenuEntry> cmsCustomMenuEntries;
+  final CmsTexts cmsTexts;
   final ThemeData? lightTheme;
   final ThemeData? darkTheme;
 
@@ -36,6 +38,7 @@ class FlutterCms<T extends Object> extends StatelessWidget {
     required this.supportedLocales,
     this.cmsCustomMenuEntries = const [],
     this.cmsUnauthorizedRoutes = const [],
+    this.cmsTexts = const CmsTexts(),
     this.lightTheme,
     this.getCmsUserInfos,
     this.darkTheme,
@@ -51,6 +54,7 @@ class FlutterCms<T extends Object> extends StatelessWidget {
       authStateService: authStateService,
       cmsCustomMenuEntries: cmsCustomMenuEntries,
       cmsUnauthorizedRoutes: cmsUnauthorizedRoutes,
+      cmsTexts: cmsTexts,
       screenBuilder: ({
         required BuildContext context,
         required T loggedInUser,
@@ -62,6 +66,7 @@ class FlutterCms<T extends Object> extends StatelessWidget {
         authStateService: authStateService,
         cmsCustomMenuEntries: cmsCustomMenuEntries,
         cmsUserInfos: getCmsUserInfos?.call(loggedInUser),
+        cmsTexts: cmsTexts,
         child: screen,
       ),
     );
@@ -89,7 +94,7 @@ class FlutterCms<T extends Object> extends StatelessWidget {
               ),
             ),
         themeMode: themeMode,
-        title: "flutter cms",
+        title: cmsTexts.appTitle,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -120,6 +125,10 @@ class FlutterCms<T extends Object> extends StatelessWidget {
     return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsCustomMenuEntries;
   }
 
+  static CmsTexts getCmsTexts(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_CmsObjectsInherited>()!.cmsTexts;
+  }
+
   static CmsObjectStructure? getCmsObjectStructureById({
     required BuildContext context,
     required String cmsObjectId,
@@ -135,6 +144,7 @@ class _CmsObjectsInherited extends InheritedWidget {
   final CmsAuthInfos cmsAuthInfos;
   final AuthStateService authStateService;
   final CmsUserInfos? cmsUserInfos;
+  final CmsTexts cmsTexts;
 
   _CmsObjectsInherited({
     required this.cmsObjectStructures,
@@ -142,6 +152,7 @@ class _CmsObjectsInherited extends InheritedWidget {
     required this.cmsAuthInfos,
     required this.authStateService,
     required this.cmsUserInfos,
+    required this.cmsTexts,
     required super.child,
   }) : assert(
           cmsObjectStructures.every(
@@ -158,6 +169,7 @@ class _CmsObjectsInherited extends InheritedWidget {
         cmsAuthInfos != oldWidget.cmsAuthInfos ||
         cmsCustomMenuEntries != oldWidget.cmsCustomMenuEntries ||
         cmsUserInfos != oldWidget.cmsUserInfos ||
+        cmsTexts != oldWidget.cmsTexts ||
         authStateService != oldWidget.authStateService;
   }
 }

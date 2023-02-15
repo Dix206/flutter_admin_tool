@@ -4,10 +4,10 @@ import 'package:example/blog/use_cases/blog_file_service.dart';
 import 'package:example/constants.dart';
 import 'package:flutter_cms/data_types/cms_file_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 import 'package:uuid/uuid.dart';
 
-Future<Result<Unit>> createBlog(CmsObjectValue cmsObjectValue) async {
+Future<CmsResult<Unit>> createBlog(CmsObjectValue cmsObjectValue) async {
   try {
     final id = const Uuid().v4();
 
@@ -21,7 +21,7 @@ Future<Result<Unit>> createBlog(CmsObjectValue cmsObjectValue) async {
       );
 
       return result.fold(
-          onError: (error) => Result.error(error),
+          onError: (error) => CmsResult.error(error),
           onSuccess: (url) async {
             final blog = Blog.fromCmsObjectValue(
               cmsObjectValue: cmsObjectValue,
@@ -35,7 +35,7 @@ Future<Result<Unit>> createBlog(CmsObjectValue cmsObjectValue) async {
               data: blog.toJson(),
               documentId: blog.id,
             );
-            return Result.success(const Unit());
+            return CmsResult.success(const Unit());
           });
     }
 
@@ -51,8 +51,8 @@ Future<Result<Unit>> createBlog(CmsObjectValue cmsObjectValue) async {
       data: blog.toJson(),
       documentId: blog.id,
     );
-    return Result.success(const Unit());
+    return CmsResult.success(const Unit());
   } catch (exception) {
-    return Result.error("Failed to create blog. Please try again");
+    return CmsResult.error("Failed to create blog. Please try again");
   }
 }

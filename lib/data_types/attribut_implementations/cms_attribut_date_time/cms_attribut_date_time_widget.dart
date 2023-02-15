@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date_time/cms_attribut_date_time.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributDateTimeWidget extends StatefulWidget {
   final DateTime? currentValue;
@@ -27,6 +29,8 @@ class CmsAttributDateTimeWidget extends StatefulWidget {
 class _CmsAttributDateTimeWidgetState extends State<CmsAttributDateTimeWidget> {
   @override
   Widget build(BuildContext context) {
+    final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -58,7 +62,7 @@ class _CmsAttributDateTimeWidgetState extends State<CmsAttributDateTimeWidget> {
               vertical: 4,
             ),
             child: Text(
-              widget.cmsTypeDateTime.invalidValueErrorMessage,
+              widget.cmsTypeDateTime.invalidValueErrorMessage ?? cmsTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

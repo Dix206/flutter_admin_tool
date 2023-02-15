@@ -1,4 +1,5 @@
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date/cms_attribute_date_widget.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,7 +16,7 @@ class CmsAttributDate extends CmsAttributStructure<DateTime> {
     this.maxDateTime,
     super.defaultValue,
     super.validator,
-    super.invalidValueErrorMessage = "invalid input",
+    super.invalidValueErrorMessage,
     super.isOptional = false,
     super.canObjectBeSortedByThisAttribut = false,
     super.shouldBeDisplayedOnOverviewTable = true,
@@ -41,7 +42,9 @@ class CmsAttributDate extends CmsAttributStructure<DateTime> {
     required BuildContext context,
     required DateTime? value,
   }) =>
-      value == null ? "---" : DateFormat.yMd(Localizations.localeOf(context).languageCode).format(value);
+      value == null
+          ? FlutterCms.getCmsTexts(context).cmsAttributValueNull
+          : DateFormat.yMd(Localizations.localeOf(context).languageCode).format(value);
 
   @override
   List<Object?> get props => [

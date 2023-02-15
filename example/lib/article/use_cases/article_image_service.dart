@@ -1,9 +1,9 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:example/appwrite/client.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 
-Future<Result<Unit>> uploadArticleImage({
+Future<CmsResult<Unit>> uploadArticleImage({
   required String imageId,
   required Uint8List data,
 }) async {
@@ -17,13 +17,13 @@ Future<Result<Unit>> uploadArticleImage({
       ),
     );
 
-    return Result.success(const Unit());
+    return CmsResult.success(const Unit());
   } catch (exception) {
-    return Result.error("Failed to upload media. Please try again");
+    return CmsResult.error("Failed to upload image. Please try again");
   }
 }
 
-Future<Result<Unit>> deleteArticleImage({
+Future<CmsResult<Unit>> deleteArticleImage({
   required String imageId,
 }) async {
   try {
@@ -32,8 +32,8 @@ Future<Result<Unit>> deleteArticleImage({
       fileId: imageId,
     );
 
-    return Result.success(const Unit());
+    return CmsResult.success(const Unit());
   } catch (exception) {
-    return Result.error("Failed to delete media. Please try again");
+    return CmsResult.error("Failed to delete image. Please try again");
   }
 }

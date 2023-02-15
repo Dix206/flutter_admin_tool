@@ -1,18 +1,18 @@
-class Result<T> {
+class CmsResult<T> {
   final T? data;
   final String? errorMessage;
 
-  const Result._({
+  const CmsResult._({
     required this.data,
     required this.errorMessage,
   });
 
-  factory Result.success(T data) => Result._(
+  factory CmsResult.success(T data) => CmsResult._(
         data: data,
         errorMessage: null,
       );
 
-  factory Result.error(String errorMessage) => Result._(
+  factory CmsResult.error(String errorMessage) => CmsResult._(
         data: null,
         errorMessage: errorMessage,
       );
@@ -32,19 +32,19 @@ class Result<T> {
     }
   }
 
-  Result<S> foldSuccess<S>({
+  CmsResult<S> foldSuccess<S>({
     required S Function(T data) onSuccess,
   }) =>
       fold(
-        onError: (errorMessage) => Result.error(errorMessage),
-        onSuccess: (data) => Result.success(onSuccess(data)),
+        onError: (errorMessage) => CmsResult.error(errorMessage),
+        onSuccess: (data) => CmsResult.success(onSuccess(data)),
       );
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Result<T> && other.data == data && other.errorMessage == errorMessage;
+    return other is CmsResult<T> && other.data == data && other.errorMessage == errorMessage;
   }
 
   @override

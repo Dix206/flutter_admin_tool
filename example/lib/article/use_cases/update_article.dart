@@ -4,10 +4,10 @@ import 'package:example/article/use_cases/article_image_service.dart';
 import 'package:example/constants.dart';
 import 'package:flutter_cms/data_types/cms_file_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
 import 'package:uuid/uuid.dart';
 
-Future<Result<Unit>> updateArticle(CmsObjectValue cmsObjectValue) async {
+Future<CmsResult<Unit>> updateArticle(CmsObjectValue cmsObjectValue) async {
   try {
     final document = await databases.getDocument(
       databaseId: databaseId,
@@ -22,11 +22,11 @@ Future<Result<Unit>> updateArticle(CmsObjectValue cmsObjectValue) async {
       cmsObjectValue: cmsObjectValue,
     );
   } catch (exception) {
-    return Result.error("Failed to update article. Please try again");
+    return CmsResult.error("Failed to update article. Please try again");
   }
 }
 
-Future<Result<Unit>> _updateArticleFromExistingArticle({
+Future<CmsResult<Unit>> _updateArticleFromExistingArticle({
   required CmsObjectValue cmsObjectValue,
   required Article article,
 }) async {
@@ -46,7 +46,7 @@ Future<Result<Unit>> _updateArticleFromExistingArticle({
       );
 
       return result.fold(
-        onError: (error) => Result.error(error),
+        onError: (error) => CmsResult.error(error),
         onSuccess: (url) async {
           final newArticle = Article.fromCmsObjectValue(
             cmsObjectValue: cmsObjectValue,
@@ -60,7 +60,7 @@ Future<Result<Unit>> _updateArticleFromExistingArticle({
             data: newArticle.toJson(),
             documentId: newArticle.id,
           );
-          return Result.success(const Unit());
+          return CmsResult.success(const Unit());
         },
       );
     } else if (imageData?.wasDeleted == true && article.imageId != null) {
@@ -69,7 +69,7 @@ Future<Result<Unit>> _updateArticleFromExistingArticle({
       );
 
       return result.fold(
-        onError: (error) => Result.error(error),
+        onError: (error) => CmsResult.error(error),
         onSuccess: (url) async {
           final newArticle = Article.fromCmsObjectValue(
             cmsObjectValue: cmsObjectValue,
@@ -83,7 +83,7 @@ Future<Result<Unit>> _updateArticleFromExistingArticle({
             data: newArticle.toJson(),
             documentId: newArticle.id,
           );
-          return Result.success(const Unit());
+          return CmsResult.success(const Unit());
         },
       );
     }
@@ -100,8 +100,8 @@ Future<Result<Unit>> _updateArticleFromExistingArticle({
       data: newArticle.toJson(),
       documentId: newArticle.id,
     );
-    return Result.success(const Unit());
+    return CmsResult.success(const Unit());
   } catch (exception) {
-    return Result.error("Failed to update article. Please try again");
+    return CmsResult.error("Failed to update article. Please try again");
   }
 }

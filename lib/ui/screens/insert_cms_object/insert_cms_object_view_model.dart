@@ -5,7 +5,8 @@ import 'package:flutter_cms/data_types/cms_attribut_value.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/data_types/nullable_object.dart';
-import 'package:flutter_cms/data_types/result.dart';
+import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class InsertCmsObjectViewModelProvider extends StatefulWidget {
   final CmsObjectStructure cmsObject;
@@ -147,13 +148,15 @@ class InsertCmsObjectViewModel extends InheritedWidget {
     );
   }
 
-  Future<void> insertObject() async {
+  Future<void> insertObject(BuildContext context) async {
     if (state is! InsertCmsObjectInitState) return;
     final initState = state as InsertCmsObjectInitState;
 
     if (!cmsObject.isCmsObjectValueValid(initState.currentCmsObjectValue)) {
       state = initState.copyWith(
-        failure: const NullableObject("Bitte überprüfe deine Eingaben"),
+        failure: NullableObject(
+          FlutterCms.getCmsTexts(context).insertCmsObjectInvalidDataMessage,
+        ),
       );
       onNotifyListener(state);
       state = initState.copyWith(
@@ -167,16 +170,16 @@ class InsertCmsObjectViewModel extends InheritedWidget {
     state = initState.copyWith(isInserting: true);
     onNotifyListener(state);
 
-    final Result result;
+    final CmsResult result;
 
     if (existingCmsObjectValueId != null) {
       result = cmsObject.onUpdateCmsObject != null
           ? await cmsObject.onUpdateCmsObject!(initState.currentCmsObjectValue)
-          : Result.success(const Unit());
+          : CmsResult.success(const Unit());
     } else {
       result = cmsObject.onCreateCmsObject != null
           ? await cmsObject.onCreateCmsObject!(initState.currentCmsObjectValue)
-          : Result.success(const Unit());
+          : CmsResult.success(const Unit());
     }
 
     result.fold(

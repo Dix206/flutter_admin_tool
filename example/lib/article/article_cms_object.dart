@@ -26,8 +26,8 @@ final articleCmsObject = CmsObjectStructure(
     ),
     const CmsAttributString(
       id: "description",
-      hint: "Enter a description",
       displayName: "Description",
+      hint: "Enter a description",
       invalidValueErrorMessage: "You have to enter a description",
       canObjectBeSortedByThisAttribut: false,
       isMultiline: true,

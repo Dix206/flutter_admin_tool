@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_int/cms_attribut_int_widget.dart';
 import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/flutter_cms.dart';
 
 class CmsAttributInt extends CmsAttributStructure<int> {
   final String? hint;
@@ -11,7 +12,7 @@ class CmsAttributInt extends CmsAttributStructure<int> {
     required super.displayName,
     super.defaultValue,
     super.validator,
-    super.invalidValueErrorMessage = "invalid input",
+    super.invalidValueErrorMessage,
     super.isOptional = false,
     super.canObjectBeSortedByThisAttribut = false,
     super.shouldBeDisplayedOnOverviewTable = true,
@@ -35,7 +36,7 @@ class CmsAttributInt extends CmsAttributStructure<int> {
     required BuildContext context,
     required int? value,
   }) =>
-      value?.toString() ?? "---";
+      value?.toString() ?? FlutterCms.getCmsTexts(context).cmsAttributValueNull;
 
   @override
   List<Object?> get props => [
