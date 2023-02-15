@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/constants.dart';
 
 class CmsTopBar extends StatelessWidget {
   final String? title;
@@ -12,6 +13,8 @@ class CmsTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width < mobileViewMaxWidth;
+
     return Container(
       decoration: BoxDecoration(
         boxShadow: const <BoxShadow>[
@@ -27,6 +30,13 @@ class CmsTopBar extends StatelessWidget {
       child: Row(
         children: [
           const SizedBox(width: 16),
+          if (isMobile) ...[
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
+            const SizedBox(width: 16),
+          ],
           ...actions.map(
             (action) => Padding(
               padding: const EdgeInsets.only(right: 16),

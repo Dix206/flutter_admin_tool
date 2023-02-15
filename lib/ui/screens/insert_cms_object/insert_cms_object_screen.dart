@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/constants.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
@@ -173,23 +174,26 @@ class _TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width < mobileViewMaxWidth;
+
     return CmsTopBar(
       actions: [
-        InkWell(
-          onTap: onNavigateBack,
-          child: Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            child: Icon(
-              Icons.arrow_back,
-              color: Theme.of(context).colorScheme.onPrimary,
+        if (!isMobile)
+          InkWell(
+            onTap: onNavigateBack,
+            child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: Icon(
+                Icons.arrow_back,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
           ),
-        ),
         CmsButton(
           onPressed: () => InsertCmsObjectViewModel.of(context).insertObject(context),
           text: FlutterCms.getCmsTexts(context).save,
@@ -270,18 +274,15 @@ class _AttributeWidgets extends StatelessWidget {
                           ),
                     ),
                     const SizedBox(height: 16),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 1000),
-                      child: cmsValue.buildWidget(
-                        currentValue: currentCmsObjectValue.getAttributValueByAttributId(cmsValue.id),
-                        shouldDisplayValidationErrors: shouldDisplayValidationErrors,
-                        onCmsTypeUpdated: (newValue) {
-                          InsertCmsObjectViewModel.of(context).updateAttributValue(
-                            id: cmsValue.id,
-                            value: newValue,
-                          );
-                        },
-                      ),
+                    cmsValue.buildWidget(
+                      currentValue: currentCmsObjectValue.getAttributValueByAttributId(cmsValue.id),
+                      shouldDisplayValidationErrors: shouldDisplayValidationErrors,
+                      onCmsTypeUpdated: (newValue) {
+                        InsertCmsObjectViewModel.of(context).updateAttributValue(
+                          id: cmsValue.id,
+                          value: newValue,
+                        );
+                      },
                     ),
                     const SizedBox(height: 16),
                   ],

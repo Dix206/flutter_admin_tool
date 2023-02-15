@@ -10,6 +10,7 @@ import 'package:flutter_cms/data_types/cms_unauthorized_route.dart';
 import 'package:flutter_cms/data_types/cms_user_infos.dart';
 import 'package:flutter_cms/data_types/navigation_infos.dart';
 import 'package:flutter_cms/flutter_cms.dart';
+import 'package:flutter_cms/ui/widgets/cms_top_bar.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,8 +36,17 @@ void main() {
         CmsCustomMenuEntry(
           id: "test",
           displayName: "Test",
-          contentBuilder: (context) => const Center(
-            child: Text("Hello, I am custom content!"),
+          contentBuilder: (context) => Column(
+            children: const [
+              CmsTopBar(
+                title: "Custom Content Title",
+              ),
+              Expanded(
+                child: Center(
+                  child: Text("Hello, I am custom content!"),
+                ),
+              ),
+            ],
           ),
         ),
       ],

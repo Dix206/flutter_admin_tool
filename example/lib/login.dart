@@ -30,50 +30,52 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 500),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  hintText: "Email",
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    hintText: "Email",
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  hintText: "Passwort",
+                const SizedBox(height: 16),
+                TextField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(
+                    hintText: "Passwort",
+                  ),
                 ),
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () async {
-                  final result = await authAppwriteService.login(
-                    email: emailController.text,
-                    password: passwordController.text,
-                  );
-              
-                  result.fold(
-                    onError: (error) => showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text(error),
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: () async {
+                    final result = await authAppwriteService.login(
+                      email: emailController.text,
+                      password: passwordController.text,
+                    );
+                
+                    result.fold(
+                      onError: (error) => showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(error),
+                        ),
                       ),
-                    ),
-                    onSuccess: (_) => widget.onLoginSuccess(),
-                  );
-                },
-                child: const Text("Login"),
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                child: const Text("Register"),
-                onPressed: () => context.go("/register/LoginParameter"),
-              ),
-            ],
+                      onSuccess: (_) => widget.onLoginSuccess(),
+                    );
+                  },
+                  child: const Text("Login"),
+                ),
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  child: const Text("Register"),
+                  onPressed: () => context.go("/register/LoginParameter"),
+                ),
+              ],
+            ),
           ),
         ),
       ),

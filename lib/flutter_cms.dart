@@ -48,27 +48,13 @@ class FlutterCms<T extends Object> extends StatelessWidget {
   Widget build(BuildContext context) {
     final authStateService = AuthStateService(cmsAuthInfos);
 
-    final router = getGoRouter<T>(
+    final router = getGoRouter(
       cmsAuthInfos: cmsAuthInfos,
       getCmsObjectStructures: getCmsObjectStructures,
       authStateService: authStateService,
       cmsCustomMenuEntries: cmsCustomMenuEntries,
       cmsUnauthorizedRoutes: cmsUnauthorizedRoutes,
       cmsTexts: cmsTexts,
-      screenBuilder: ({
-        required BuildContext context,
-        required T loggedInUser,
-        required Widget screen,
-      }) =>
-          _CmsObjectsInherited(
-        cmsObjectStructures: getCmsObjectStructures(loggedInUser),
-        cmsAuthInfos: cmsAuthInfos,
-        authStateService: authStateService,
-        cmsCustomMenuEntries: cmsCustomMenuEntries,
-        cmsUserInfos: getCmsUserInfos?.call(loggedInUser),
-        cmsTexts: cmsTexts,
-        child: screen,
-      ),
     );
 
     return ThemeModeHandler(
@@ -95,6 +81,27 @@ class FlutterCms<T extends Object> extends StatelessWidget {
             ),
         themeMode: themeMode,
         title: cmsTexts.appTitle,
+        builder: (context, child1) => AnimatedBuilder(
+          animation: authStateService,
+          child: child1,
+          builder: (context, child) {
+            if (!authStateService.isInitialized) {
+              return const SizedBox();
+            } else {
+              return authStateService.isLoggedIn
+                  ? _CmsObjectsInherited(
+                      cmsObjectStructures: getCmsObjectStructures(authStateService.loggedInUser!),
+                      cmsAuthInfos: cmsAuthInfos,
+                      authStateService: authStateService,
+                      cmsCustomMenuEntries: cmsCustomMenuEntries,
+                      cmsUserInfos: getCmsUserInfos?.call(authStateService.loggedInUser!),
+                      cmsTexts: cmsTexts,
+                      child: child!,
+                    )
+                  : child!;
+            }
+          },
+        ),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

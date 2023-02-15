@@ -11,14 +11,7 @@ import 'package:flutter_cms/ui/screens/cms_main_screen.dart';
 import 'package:flutter_cms/ui/screens/overview/overview_screen.dart';
 import 'package:flutter_cms/ui/screens/settings/settings_screen.dart';
 import 'package:flutter_cms/ui/screens/insert_cms_object/insert_cms_object_screen.dart';
-import 'package:flutter_cms/ui/widgets/cms_loading.dart';
 import 'package:go_router/go_router.dart';
-
-typedef ScreenBuilder<T extends Object> = Widget Function({
-  required BuildContext context,
-  required T loggedInUser,
-  required Widget screen,
-});
 
 /// T is the type of the logged in user
 GoRouter getGoRouter<T extends Object>({
@@ -26,7 +19,6 @@ GoRouter getGoRouter<T extends Object>({
   required GetCmsObjectStructures<T> getCmsObjectStructures,
   required AuthStateService<T> authStateService,
   required List<CmsCustomMenuEntry> cmsCustomMenuEntries,
-  required ScreenBuilder<T> screenBuilder,
   required List<CmsUnauthorizedRoute> cmsUnauthorizedRoutes,
   required CmsTexts cmsTexts,
 }) {
@@ -57,15 +49,11 @@ GoRouter getGoRouter<T extends Object>({
       ...cmsUnauthorizedRoutes.map(
         (cmsUnauthorizedRoute) => FadeRoute(
           path: cmsUnauthorizedRoute.path,
-          authStateService: authStateService,
-          screenBuilder: screenBuilder,
           childBuilder: cmsUnauthorizedRoute.childBuilder,
         ),
       ),
       FadeRoute(
         path: Routes.login,
-        authStateService: authStateService,
-        screenBuilder: screenBuilder,
         childBuilder: (context, state) => cmsAuthInfos.loginScreenBuilder(
           authStateService.onUserLoggedIn,
         ),
@@ -80,22 +68,16 @@ GoRouter getGoRouter<T extends Object>({
                   ? CmsMainScreenTab.custom
                   : CmsMainScreenTab.overview;
 
-          return _LoadingScreen(
-            authStateService: authStateService,
-            screenBuilder: screenBuilder,
-            screen: CmsMainScreen(
-              selectedCmsObjectId: cmsObjectId,
-              selectedCustomMenuEntryId: customMenuEntryId,
-              selectedTab: mainScreenTab,
-              child: child,
-            ),
+          return CmsMainScreen(
+            selectedCmsObjectId: cmsObjectId,
+            selectedCustomMenuEntryId: customMenuEntryId,
+            selectedTab: mainScreenTab,
+            child: child,
           );
         },
         routes: [
           FadeRoute(
             path: Routes.settings,
-            authStateService: authStateService,
-            screenBuilder: screenBuilder,
             childBuilder: (context, state) {
               return const SettingsScreen();
             },
@@ -103,8 +85,6 @@ GoRouter getGoRouter<T extends Object>({
           ...cmsCustomMenuEntries.map(
             (customMenuEntry) => FadeRoute(
               path: "/custom/:customMenuEntryId",
-              authStateService: authStateService,
-              screenBuilder: screenBuilder,
               childBuilder: (context, state) {
                 final customMenuEntryId = state.params['customMenuEntryId'];
                 final customMenuEntry = cmsCustomMenuEntries.firstWhereOrNull(
@@ -120,8 +100,6 @@ GoRouter getGoRouter<T extends Object>({
           ),
           FadeRoute(
             path: "/overview/:cmsObjectId",
-            authStateService: authStateService,
-            screenBuilder: screenBuilder,
             childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
@@ -144,8 +122,6 @@ GoRouter getGoRouter<T extends Object>({
           ),
           FadeRoute(
             path: "/overview/:cmsObjectId/create",
-            authStateService: authStateService,
-            screenBuilder: screenBuilder,
             childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
@@ -169,8 +145,6 @@ GoRouter getGoRouter<T extends Object>({
           ),
           FadeRoute(
             path: "/overview/:cmsObjectId/update/:existingCmsObjectValueId",
-            authStateService: authStateService,
-            screenBuilder: screenBuilder,
             childBuilder: (context, state) {
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final existingCmsObjectValueId = state.params['existingCmsObjectValueId'];
@@ -253,8 +227,6 @@ class FadeRoute<T extends Object> extends GoRoute {
     required Widget Function(BuildContext, GoRouterState) childBuilder,
     List<GoRoute> super.routes = const [],
     Future<String?> Function(BuildContext, GoRouterState)? redirect,
-    required AuthStateService<T> authStateService,
-    required ScreenBuilder<T> screenBuilder,
   }) : super(
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
@@ -262,41 +234,7 @@ class FadeRoute<T extends Object> extends GoRoute {
               opacity: animation,
               child: child,
             ),
-            child: _LoadingScreen<T>(
-              screen: childBuilder(context, state),
-              authStateService: authStateService,
-              screenBuilder: screenBuilder,
-            ),
+            child: childBuilder(context, state),
           ),
         );
-}
-
-/// T is the type of the logged in user
-class _LoadingScreen<T extends Object> extends StatelessWidget {
-  final Widget screen;
-  final AuthStateService<T> authStateService;
-  final ScreenBuilder<T> screenBuilder;
-
-  const _LoadingScreen({
-    required this.screen,
-    required this.authStateService,
-    required this.screenBuilder,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (!authStateService.isInitialized) {
-      return const Scaffold(
-        body: CmsLoading(),
-      );
-    }
-
-    if (authStateService.loggedInUser == null) return screen;
-
-    return screenBuilder(
-      context: context,
-      loggedInUser: authStateService.loggedInUser!,
-      screen: screen,
-    );
-  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cms/constants.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:flutter_cms/ui/routes.dart';
@@ -26,117 +27,163 @@ class CmsMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width < mobileViewMaxWidth;
+
+    return Scaffold(
+      drawer: isMobile
+          ? Drawer(
+              child: _Menu(
+                selectedTab: selectedTab,
+                selectedCmsObjectId: selectedCmsObjectId,
+                selectedCustomMenuEntryId: selectedCustomMenuEntryId,
+                isDrawer: true,
+              ),
+            )
+          : null,
+      body: Row(
+        children: [
+          if (!isMobile)
+            Expanded(
+              child: _Menu(
+                selectedTab: CmsMainScreenTab.overview,
+                selectedCmsObjectId: selectedCmsObjectId,
+                selectedCustomMenuEntryId: selectedCustomMenuEntryId,
+                isDrawer: false,
+              ),
+            ),
+          Expanded(
+            flex: 3,
+            child: ClipRect(child: child),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Menu extends StatelessWidget {
+  final CmsMainScreenTab selectedTab;
+  final String? selectedCmsObjectId;
+  final String? selectedCustomMenuEntryId;
+  final bool isDrawer;
+
+  const _Menu({
+    Key? key,
+    required this.selectedTab,
+    required this.selectedCmsObjectId,
+    required this.selectedCustomMenuEntryId,
+    required this.isDrawer,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     final cmsObjectStructures = FlutterCms.getAllCmsObjectStructures(context);
     final customMenuEntries = FlutterCms.getCmsCustomMenuEntries(context);
     final cmsUserInfos = FlutterCms.getUserInfos(context);
 
-    return Scaffold(
-      body: Row(
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        boxShadow: const <BoxShadow>[
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 4.0,
+            offset: Offset(0.75, 0.0),
+          ),
+        ],
+        color: Theme.of(context).colorScheme.surface,
+      ),
+      child: ListView(
         children: [
-          Expanded(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                boxShadow: const <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 4.0,
-                    offset: Offset(0.75, 0.0),
-                  ),
-                ],
-                color: Theme.of(context).colorScheme.surface,
-              ),
-              child: ListView(
-                children: [
-                  if (cmsUserInfos?.hasAnyValue() ?? false) ...[
-                    const SizedBox(height: 16),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 16),
-                        const Icon(
-                          Icons.person,
-                          size: 20,
+          if (cmsUserInfos?.hasAnyValue() ?? false) ...[
+            const SizedBox(height: 16),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(width: 16),
+                const Icon(
+                  Icons.person,
+                  size: 20,
+                ),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (cmsUserInfos?.name != null)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Text(
+                          cmsUserInfos!.name!,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (cmsUserInfos?.name != null)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 4.0),
-                                child: Text(
-                                  cmsUserInfos!.name!,
-                                  style: Theme.of(context).textTheme.titleMedium,
-                                ),
-                              ),
-                            if (cmsUserInfos?.email != null)
-                              Text(
-                                cmsUserInfos!.email!,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            if (cmsUserInfos?.role != null)
-                              Text(
-                                cmsUserInfos!.role!,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                          ],
-                        ),
-                        const SizedBox(width: 16),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    const Divider(),
+                      ),
+                    if (cmsUserInfos?.email != null)
+                      Text(
+                        cmsUserInfos!.email!,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    if (cmsUserInfos?.role != null)
+                      Text(
+                        cmsUserInfos!.role!,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                   ],
-                  ...cmsObjectStructures.map(
-                    (cmsObject) => Material(
-                      child: ListTile(
-                        title: Text(cmsObject.displayName),
-                        onTap: () => context.go(
-                          Routes.overview(
-                            cmsObjectId: cmsObject.id,
-                            page: 1,
-                            searchQuery: null,
-                            sortOptions: null,
-                          ),
-                        ),
-                        tileColor: Theme.of(context).colorScheme.surface,
-                        selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                        selected: selectedTab == CmsMainScreenTab.overview && cmsObject.id == selectedCmsObjectId,
-                      ),
+                ),
+                const SizedBox(width: 16),
+              ],
+            ),
+            const SizedBox(height: 8),
+            const Divider(),
+          ],
+          ...cmsObjectStructures.map(
+            (cmsObject) => Material(
+              child: ListTile(
+                title: Text(cmsObject.displayName),
+                onTap: () {
+                  if (isDrawer) Navigator.of(context).pop();
+                  context.go(
+                    Routes.overview(
+                      cmsObjectId: cmsObject.id,
+                      page: 1,
+                      searchQuery: null,
+                      sortOptions: null,
                     ),
-                  ),
-                  if (customMenuEntries.isNotEmpty) const Divider(),
-                  ...customMenuEntries.map(
-                    (customMenuEntry) => Material(
-                      child: ListTile(
-                        title: Text(customMenuEntry.displayName),
-                        onTap: () => context.go(
-                          Routes.customMenuEntry(customMenuEntry.id),
-                        ),
-                        tileColor: Theme.of(context).colorScheme.surface,
-                        selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                        selected:
-                            selectedTab == CmsMainScreenTab.custom && customMenuEntry.id == selectedCustomMenuEntryId,
-                      ),
-                    ),
-                  ),
-                  const Divider(),
-                  Material(
-                    child: ListTile(
-                      title: Text(FlutterCms.getCmsTexts(context).settings),
-                      onTap: () => context.go(Routes.settings),
-                      tileColor: Theme.of(context).colorScheme.surface,
-                      selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                      selected: selectedTab == CmsMainScreenTab.settings,
-                    ),
-                  ),
-                ],
+                  );
+                },
+                tileColor: Theme.of(context).colorScheme.surface,
+                selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
+                selected: selectedTab == CmsMainScreenTab.overview && cmsObject.id == selectedCmsObjectId,
               ),
             ),
           ),
-          Expanded(
-            flex: 3,
-            child: ClipRect(child: child),
+          if (customMenuEntries.isNotEmpty) const Divider(),
+          ...customMenuEntries.map(
+            (customMenuEntry) => Material(
+              child: ListTile(
+                title: Text(customMenuEntry.displayName),
+                onTap: () {
+                  if (isDrawer) Navigator.of(context).pop();
+                  context.go(
+                    Routes.customMenuEntry(customMenuEntry.id),
+                  );
+                },
+                tileColor: Theme.of(context).colorScheme.surface,
+                selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
+                selected: selectedTab == CmsMainScreenTab.custom && customMenuEntry.id == selectedCustomMenuEntryId,
+              ),
+            ),
+          ),
+          const Divider(),
+          Material(
+            child: ListTile(
+              title: Text(FlutterCms.getCmsTexts(context).settings),
+              onTap: () {
+                if (isDrawer) Navigator.of(context).pop();
+                context.go(Routes.settings);
+              },
+              tileColor: Theme.of(context).colorScheme.surface,
+              selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
+              selected: selectedTab == CmsMainScreenTab.settings,
+            ),
           ),
         ],
       ),
