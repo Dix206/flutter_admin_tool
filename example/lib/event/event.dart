@@ -58,7 +58,7 @@ class Event {
     String? id,
   }) {
     return Event(
-      id: id ?? cmsObjectValue.id as String,
+      id: id ?? cmsObjectValue.id!,
       title: cmsObjectValue.getAttributValueByAttributId('title'),
       price: cmsObjectValue.getAttributValueByAttributId('price'),
       phoneNumber: cmsObjectValue.getAttributValueByAttributId('phoneNumber'),

@@ -59,6 +59,7 @@ void main() {
           },
         ),
       ],
+      
       supportedLocales: const [
         Locale('de'),
         Locale('en'),

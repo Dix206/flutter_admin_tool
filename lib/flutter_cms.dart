@@ -36,11 +36,11 @@ class FlutterCms<T extends Object> extends StatelessWidget {
     required this.getCmsObjectStructures,
     required this.cmsAuthInfos,
     required this.supportedLocales,
+    this.getCmsUserInfos,
+    this.cmsTexts = const CmsTexts(),
     this.cmsCustomMenuEntries = const [],
     this.cmsUnauthorizedRoutes = const [],
-    this.cmsTexts = const CmsTexts(),
     this.lightTheme,
-    this.getCmsUserInfos,
     this.darkTheme,
   });
 
