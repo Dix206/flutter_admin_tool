@@ -57,7 +57,7 @@ final eventCmsObject = CmsObjectStructure(
     CmsAttributSelection<EventType>(
       id: "eventType",
       displayName: "Typ",
-      invalidValueErrorMessage: "You have to enter a typ",
+      invalidValueErrorMessage: "You have to select a typ",
       options: EventType.values,
       optionToString: (option) => option.name,
     ),

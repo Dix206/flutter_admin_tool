@@ -129,52 +129,142 @@ CmsAttributString(
 ```
 
 ### CmsAttributBool
-TODO
+The `CmsAttributBool` is by default required and cant be set optional. By default the `defaultValue` is false.
+
 Example:
+```dart
+CmsAttributBool(
+      id: "isActive",
+      displayName: "Is Article active",
+      canObjectBeSortedByThisAttribut: true,
+)
+```
 
 ### CmsAttributInt
-TODO
 Example:
+```dart
+CmsAttributInt(
+          id: "sortOrder",
+          displayName: "Sort Order",
+          defaultValue: 0,
+          canObjectBeSortedByThisAttribut: true,
+)
+```
 
 ### CmsAttributDouble
-TODO
 Example:
+```dart
+CmsAttributDouble(
+      id: "price",
+      displayName: "Price",
+      hint: "12.34",
+      invalidValueErrorMessage: "You have to enter valid a price",
+      canObjectBeSortedByThisAttribut: true,
+      validator: CmsBaseValidator.isPrice,
+)
+```
 
 ### CmsAttributColor
-TODO
+The color selection widget is build upon the [flutter_colorpicker](https://pub.dev/packages/flutter_colorpicker) package.
+
 Example:
+```dart
+const CmsAttributColor(
+        id: "color",
+        displayName: "Color",
+        isOptional: true,
+)
+```
 
 ### CmsAttributDateTime
-TODO
 Example:
+```dart
+CmsAttributDateTime(
+      id: "timestamp",
+      displayName: "Created at",
+      minDateTime: DateTime(2020),
+      maxDateTime: DateTime.now().add(const Duration(days: 365)),
+)
+```
 
 ### CmsAttributDate
-TODO
 Example:
+```dart
+CmsAttributDate(
+    id: "day",
+    displayName: "Day",
+    defaultValue: DateTime(2020, 12, 12),
+)
+```
 
 ### CmsAttributTime
-TODO
 Example:
+```dart
+const CmsAttributTime(
+      id: "startingTime",
+      displayName: "Starting Time",
+      invalidValueErrorMessage: "You have to enter starting time",
+    )
+```
 
 ### CmsAttributHtml
-TODO
+The html widget is build upon the [quill_html_editor](https://pub.dev/packages/quill_html_editor) package. Because it is an embadded web library, there could be some unwanted behavior in the UI.
+
 Example:
+```dart
+const CmsAttributHtml(
+        id: "content",
+        displayName: "Content",
+)
+```
 
 ### CmsAttributImage
-TODO
+The image selection is build upon the [file_picker](https://pub.dev/packages/file_picker) package.
+
 Example:
+```dart
+CmsAttributImage(
+    id: "image",
+    displayName: "Image",
+    isOptional: true,
+)
+```
 
 ### CmsAttributFile
-TODO
+The file selection is build upon the [file_picker](https://pub.dev/packages/file_picker) package.
+
 Example:
+```dart
+CmsAttributFile(
+    id: "file",
+    displayName: "File",
+    isOptional: true,
+)
+```
 
 ### CmsAttributLocation
-TODO
 Example:
+```dart
+CmsAttributLocation(
+    id: "location",
+    displayName: "Location",
+    invalidValueErrorMessage: "You have to enter valid location",
+)
+```
 
 ### CmsAttributSelection
-TODO
+The selected object could be of any type. 
+
 Example:
+```dart
+CmsAttributSelection<EventType>(
+    id: "eventType",
+    displayName: "Typ",
+    invalidValueErrorMessage: "You have to select a typ",
+    options: EventType.values,
+    optionToString: (option) => option.name,
+)
+```
 
 ### CmsAttributList
 TODO
