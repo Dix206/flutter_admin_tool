@@ -51,6 +51,12 @@ class CmsAttributColorWidget extends StatelessWidget {
                   ),
             )
           : null,
+      trailing: currentValue != null
+          ? InkWell(
+              child: const Icon(Icons.close),
+              onTap: () => onCmsTypeUpdated(null),
+            )
+          : null,
       onTap: () {
         showDialog(
           context: context,

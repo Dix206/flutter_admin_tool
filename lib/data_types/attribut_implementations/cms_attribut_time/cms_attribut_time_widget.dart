@@ -26,7 +26,7 @@ class _CmsAttributTimeWidgetState extends State<CmsAttributTimeWidget> {
   @override
   Widget build(BuildContext context) {
     final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,15 +38,22 @@ class _CmsAttributTimeWidgetState extends State<CmsAttributTimeWidget> {
               children: [
                 const Icon(Icons.timer),
                 const SizedBox(width: 16),
-                Text(
-                  widget.cmsTypeTime.valueToString(
-                    context: context,
-                    value: widget.currentValue,
+                Expanded(
+                  child: Text(
+                    widget.cmsTypeTime.valueToString(
+                      context: context,
+                      value: widget.currentValue,
+                    ),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
                 ),
+                if (widget.currentValue != null)
+                  InkWell(
+                    child: const Icon(Icons.close),
+                    onTap: () => widget.onCmsTypeUpdated(null),
+                  ),
               ],
             ),
           ),

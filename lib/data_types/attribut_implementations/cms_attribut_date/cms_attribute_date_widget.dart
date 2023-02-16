@@ -42,15 +42,22 @@ class _CmsAttributDateWidgetState extends State<CmsAttributDateWidget> {
               children: [
                 const Icon(Icons.calendar_today),
                 const SizedBox(width: 16),
-                Text(
-                  widget.cmsTypeDate.valueToString(
-                    context: context,
-                    value: widget.currentValue,
+                Expanded(
+                  child: Text(
+                    widget.cmsTypeDate.valueToString(
+                      context: context,
+                      value: widget.currentValue,
+                    ),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
                 ),
+                if (widget.currentValue != null)
+                  InkWell(
+                    child: const Icon(Icons.close),
+                    onTap: () => widget.onCmsTypeUpdated(null),
+                  ),
               ],
             ),
           ),

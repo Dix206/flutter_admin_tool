@@ -39,6 +39,12 @@ class CmsAttributSelectionWidget<T extends Object> extends StatelessWidget {
               )
               .toList(),
           decoration: InputDecoration(
+            prefixIcon: currentValue != null
+                ? InkWell(
+                    child: const Icon(Icons.close),
+                    onTap: () => onCmsTypeUpdated(null),
+                  )
+                : null,
             hintText: FlutterCms.getCmsTexts(context).cmsAttributSelectionNoItemSelected,
             border: const OutlineInputBorder(),
           ),
