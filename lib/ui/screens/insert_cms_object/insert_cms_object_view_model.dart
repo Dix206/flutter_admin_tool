@@ -35,28 +35,37 @@ class _InsertCmsObjectViewModelProviderState extends State<InsertCmsObjectViewMo
     super.dispose();
   }
 
-  Widget? _viewModel;
+  Widget? _oldViewModel;
+  String? _oldExistingCmsObjectValueId;
+  CmsObjectStructure? _oldCmsObject;
 
   @override
   Widget build(BuildContext context) {
-    if (_viewModel == null || _viewModel!.key != ValueKey(widget.cmsObject)) {
-      _viewModel = InsertCmsObjectViewModel(
-        key: ValueKey(widget.cmsObject),
-        cmsObject: widget.cmsObject,
-        existingCmsObjectValueId: widget.existingCmsObjectValueId,
-        onNotifyListener: (state) {
-          if (!mounted) return;
-          if (_state.value != state) widget.onStateUpdate(state);
-          _state.value = state;
-        },
-        child: ValueListenableBuilder(
-          valueListenable: _state,
-          builder: (context, value, child) => widget.childBuilder(context),
-        ),
-      );
+    if (_oldViewModel != null &&
+        _oldCmsObject?.id == widget.cmsObject.id &&
+        _oldExistingCmsObjectValueId == widget.existingCmsObjectValueId) {
+      return _oldViewModel!;
     }
 
-    return _viewModel!;
+    _oldExistingCmsObjectValueId = widget.existingCmsObjectValueId;
+    _oldCmsObject = widget.cmsObject;
+
+    _oldViewModel = InsertCmsObjectViewModel(
+      key: ValueKey(widget.cmsObject.id),
+      cmsObject: widget.cmsObject,
+      existingCmsObjectValueId: widget.existingCmsObjectValueId,
+      onNotifyListener: (state) {
+        if (!mounted) return;
+        if (_state.value != state) widget.onStateUpdate(state);
+        _state.value = state;
+      },
+      child: ValueListenableBuilder(
+        valueListenable: _state,
+        builder: (context, value, child) => widget.childBuilder(context),
+      ),
+    );
+
+    return _oldViewModel!;
   }
 }
 
