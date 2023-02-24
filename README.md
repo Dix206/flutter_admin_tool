@@ -1,3 +1,27 @@
+# Flutter CMS
+
+Flutter CMS is a package that helps you set up an admin tool to create content for your backend just by defining the structure of your objects and the methods to handle the crud operations.
+
+## Index
+
+- [Start the app](#Start-the-app)
+- [Handle authentication](#handle-authentication)
+- [Object Structures](#Object-Structures)
+- [Cms Attribute Structure](#Cms Attribute Structure)
+  - [CmsAttributeString](#CmsAttributeString)
+  - [CmsAttributeBool](#cmsAttributeBool)
+  - [CmsAttributeInt](#cms-attribute-int)
+
+## Features
+
+- List, filter and sort your elements
+- Create, update and delete elements
+- Many pre defined data types
+- Authentication support
+- Add custom screens
+- Responsive Design
+- Dark mode
+
 
 ## Start the app
 To start your cms app you just have to return the `FlutterCms` Widget in your `runApp` method. This will automatically setup all you need to run the app.
