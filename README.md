@@ -2,28 +2,40 @@
 
 Flutter CMS is a package that helps you set up an admin tool to create content for your backend just by defining the structure of your objects and the methods to handle the crud operations.
 
+IMPORTANT: This package is in early stages and not very well tested so far. Use it on your own risk.
+
 ## Index
 
-- [Start the app](#Start-the-app)
+- [Setup](#setup)
 - [Handle authentication](#handle-authentication)
-- [Object Structures](#Object-Structures)
-- [Cms Attribute Structure](#Cms Attribute Structure)
+- [Object Structures](#object-structures)
+- [Cms Attribute Structure](#cms-attribute-structure)
   - [CmsAttributeString](#CmsAttributeString)
-  - [CmsAttributeBool](#cmsAttributeBool)
-  - [CmsAttributeInt](#cms-attribute-int)
+  - [CmsAttributeBool](#CmsAttributeBool)
+  - [CmsAttributeInt](#CmsAttributeInt)
+  - [CmsAttributeDouble](#CmsAttributeDouble)
+  - [CmsAttributeColor](#CmsAttributeColor)
+  - [CmsAttributeDateTime](#CmsAttributeDateTime)
+  - [CmsAttributeDate](#CmsAttributeDate)
+  - [CmsAttributeTime](#CmsAttributeTime)
+  - [CmsAttributeHtml](#CmsAttributeHtml)
+  - [CmsAttributeImage](#CmsAttributeImage)
+  - [CmsAttributeFile](#CmsAttributeFile)
+  - [CmsAttributeLocation](#CmsAttributeLocation)
+  - [CmsAttributeSelection](#CmsAttributeSelection)
+  - [CmsAttributeList](#CmsAttributeList)
+  - [CmsAttributeReference](#CmsAttributeReference)
+- [Base Validator](#base-validator)
+- [CMS Object Structure CRUD Operations](#cms-object-structure-crud-operations)
+- [Load Cms Objects](#load-cms-objects)
+- [Custom Strings](#custom-strings)
+- [Custom Screens](#custom-screens)
+  - [Cms Custom Menu Entry](#cms-custom-menu-entry)
+  - [Cms Unauthorized Route](#cms-unauthorized-route)
+- [Theming](#theming)
 
-## Features
 
-- List, filter and sort your elements
-- Create, update and delete elements
-- Many pre defined data types
-- Authentication support
-- Add custom screens
-- Responsive Design
-- Dark mode
-
-
-## Start the app
+## Setup
 To start your cms app you just have to return the `FlutterCms` Widget in your `runApp` method. This will automatically setup all you need to run the app.
 
 ```dart
@@ -435,7 +447,7 @@ You can override every string which is used in Flutter CMS. To do that you need 
 ## Custom Screens
 You can define two kinds of custom screens. One is a custom menu entry which is displayed in the main menu and the other one is a public screen which can be reached before the user is logged in.
  
-### Custom Menu Entry
+### Cms Custom Menu Entry
 To define custom menu entries you need to pass a list of `CmsCustomMenuEntry` to the `FlutterCms` widget. The `id` of a `CmsCustomMenuEntry` will be used for navigation and will be shown in the url. The `displayName` will be visible in the menu and the `contentBuilder` has to return the widget which should be shown if the menu entry is selected.
 
 These menu entries can only be reached if the user is logged in. So it is possible to display content there based on the logged in user.
