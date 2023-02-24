@@ -1,20 +1,4 @@
 
-# Flutter CMS
-
-Flutter CMS is a package that helps you set up an admin tool to create content for your backend really quickly.
-
-
-## Features
-
-- List, filter and sort your elements
-- Create, update and delete elements
-- Many pre defined data types
-- Authentication support
-- Custom screens can be added
-- Responsive Design
-- Dark mode
-
-
 ## Start the app
 To start your cms app you just have to return the `FlutterCms` Widget in your `runApp` method. This will automatically setup all you need to run the app.
 
@@ -116,6 +100,7 @@ By default every `CmsAttributStructure` is required. You can set the parameter `
 Flutter CMS has many pre defined `CmsAttributStructure` elements. Here is a list of every existing element:
 
 ### CmsAttributString
+![Alt text](doc/CmsAttributString.png "CmsAttributString")
 
 Example:
 ```dart
@@ -267,12 +252,49 @@ CmsAttributSelection<EventType>(
 ```
 
 ### CmsAttributList
-TODO
+You can use `CmsAttributList`to add a list of attributes to your object. The type of the attributes will be defined by the parameter `cmsAttributStructure`. There you have to pass a `CmsAttributStructure`. You can use any `CmsAttributStructure` you want. The behaviour for adding a new attribut instance to the list will be defined in there.
+
 Example:
+```dart
+CmsAttributList(
+    id: "neededItems",
+    displayName: "Needed Items",
+    cmsAttributStructure: CmsAttributString(
+        id: "item",
+        displayName: "Item",
+        hint: "Item",
+        invalidValueErrorMessage: "You have to enter item",
+    ),
+)
+```
 
 ### CmsAttributReference
-TODO
+This attribut gives you the possibility to search for an option which will be selected. You can define that function and return a list of possible items which can be selected. You also have to pass a function for the parameter `getReferenceDisplayString`. This function has to return the display string for a passed item.
+
+A common use case is to add a reference to another object. 
+
 Example:
+```dart
+CmsAttributReference<Author>(
+    id: "author",
+    displayName: "Author",
+    searchFunction: loadAuthors,
+    getReferenceDisplayString: (author) => author.name,
+    isOptional: true,
+)
+
+Future<CmsResult<List<Author>>> loadAuthors(String searchQuery) async {
+    final authors = [
+        Author(id: 1, name: "Jan"),
+        Author(id: 1, name: "Fritz"),
+        Author(id: 1, name: "Janosch"),
+    ];
+
+    final filteredAuthors = authors.where((author) => author.name.startsWith(searchQuery)).toList();
+
+    return CmsResult.success(filteredAuthors);
+}
+```
 
 
 ## Base Validator
