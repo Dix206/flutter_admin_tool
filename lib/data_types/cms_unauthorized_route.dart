@@ -6,13 +6,13 @@ class CmsUnauthorizedRoute extends Equatable {
   /// This is the path of the route. It shouldnt start with one of the following "/settings" "/overview", "/custom" and "/login".
   /// Otherwise there could be conflicts whith already existing routes.
   final String path;
-  final Widget Function(BuildContext, GoRouterState) childBuilder;
+  final Widget Function(BuildContext, GoRouterState) pageBuilder;
 
   const CmsUnauthorizedRoute({
     required this.path,
-    required this.childBuilder,
+    required this.pageBuilder,
   });
 
   @override
-  List<Object?> get props => [path, childBuilder];
+  List<Object?> get props => [path, pageBuilder];
 }

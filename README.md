@@ -164,7 +164,7 @@ const CmsAttributeColor(
 )
 ```
 ![Alt text](doc/CmsAttributeColor.png "CmsAttributeColor")
-![Alt text](doc/CmsAttributeColorSelection.png "CmsAttributeColorPicker")
+![Alt text](doc/CmsAttributeColorPicker.png "CmsAttributeColorPicker")
 
 ### CmsAttributeDateTime
 Example:
@@ -405,11 +405,19 @@ The only search parameter for now is `searchQuery`. That optional parameter cont
 
 For sort functionality an optional value of `CmsObjectSortOptions` will be passed. That object contains the attributeId of the attribute according to which sorting is to take place. If the value `ascending` is set to true, the attribute should be sorted ascending, otherwise descending. The objects can only be sorted by attributes where the values `shouldBeDisplayedOnOverviewTable` and `canObjectBeSortedByThisAttribute` both where set to true. 
 
-## Localization
-TODO
+## Custom Strings
+You can override every string which is used in Flutter CMS. To do that you need to pass a `CmsTexts` object to the `FlutterCms` widget. That object contains all strings which are used in Flutter CMS. You can find the default strings in the constructor of the `CmsTexts` class.
 
 ## Custom Screens
-TODO
+You can define two kinds of custom screens. One is a custom menu entry which is displayed in the main menu and the other one is a public screen which can be reached before the user is logged in.
+ 
+### Custom Menu Entry
+To define custom menu entries you need to pass a list of `CmsCustomMenuEntry` to the `FlutterCms` widget. The `id` of a `CmsCustomMenuEntry` will be used for navigation and will be shown in the url. The `displayName` will be visible in the menu and the `contentBuilder` has to return the widget which should be shown if the menu entry is selected.
+
+These menu entries can only be reached if the user is logged in. So it is possible to display content there based on the logged in user.
+
+### Cms Unauthorized Route
+A `CmsUnauthorizedRoute` is a route which can be reached before the user logged in. You can pass a list of `CmsUnauthorizedRoute` to the `FlutterCms` widget to define these routes. As Flutter CMS uses GoRouter for navigation you can reach your passed routes simply by using the GoRouter and navigate with it to your passed `path`. You also have to pass a `pageBuilder` to the `CmsUnauthorizedRoute`. This is the same pageBuilder you would pass to the `GoRouter`. So it is also possible to work with parameters. It is not possible to navigate to these routes if the user is logged in. Examples for using these routes could be a registration or a forgot password screen.
 
 ## Theming
-TODO
+To customize the look and feel of Flutter CMS you can use just pass your own `lightTheme`and `darkTheme` to `FlutterCms` widget. The mainly used colors are `background`, `surface` and `primary`. So you can get a good result by just changing these colors.

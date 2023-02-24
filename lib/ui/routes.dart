@@ -49,7 +49,7 @@ GoRouter getGoRouter<T extends Object>({
       ...cmsUnauthorizedRoutes.map(
         (cmsUnauthorizedRoute) => FadeRoute(
           path: cmsUnauthorizedRoute.path,
-          childBuilder: cmsUnauthorizedRoute.childBuilder,
+          childBuilder: cmsUnauthorizedRoute.pageBuilder,
         ),
       ),
       FadeRoute(

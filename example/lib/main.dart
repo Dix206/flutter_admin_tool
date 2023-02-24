@@ -53,7 +53,7 @@ void main() {
       cmsUnauthorizedRoutes: [
         CmsUnauthorizedRoute(
           path: "/register/:parameter",
-          childBuilder: (context, state) {
+          pageBuilder: (context, state) {
             final parameter = state.params["parameter"] ?? "";
             return RegisterScreen(parameter: parameter);
           },
