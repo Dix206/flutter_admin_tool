@@ -35,21 +35,28 @@ class _InsertCmsObjectViewModelProviderState extends State<InsertCmsObjectViewMo
     super.dispose();
   }
 
+  Widget? _viewModel;
+
   @override
   Widget build(BuildContext context) {
-    return InsertCmsObjectViewModel(
-      cmsObject: widget.cmsObject,
-      existingCmsObjectValueId: widget.existingCmsObjectValueId,
-      onNotifyListener: (state) {
-        if (!mounted) return;
-        if (_state.value != state) widget.onStateUpdate(state);
-        _state.value = state;
-      },
-      child: ValueListenableBuilder(
-        valueListenable: _state,
-        builder: (context, value, child) => widget.childBuilder(context),
-      ),
-    );
+    if (_viewModel == null || _viewModel!.key != ValueKey(widget.cmsObject)) {
+      _viewModel = InsertCmsObjectViewModel(
+        key: ValueKey(widget.cmsObject),
+        cmsObject: widget.cmsObject,
+        existingCmsObjectValueId: widget.existingCmsObjectValueId,
+        onNotifyListener: (state) {
+          if (!mounted) return;
+          if (_state.value != state) widget.onStateUpdate(state);
+          _state.value = state;
+        },
+        child: ValueListenableBuilder(
+          valueListenable: _state,
+          builder: (context, value, child) => widget.childBuilder(context),
+        ),
+      );
+    }
+
+    return _viewModel!;
   }
 }
 

@@ -37,23 +37,30 @@ class _CmsObjectOverviewViewModelProviderState extends State<CmsObjectOverviewVi
     super.dispose();
   }
 
+  Widget? _oldViewModel;
+
   @override
   Widget build(BuildContext context) {
-    return CmsObjectOverviewViewModel(
-      cmsObject: widget.cmsObject,
-      searchQuery: widget.searchQuery,
-      page: widget.page,
-      onNotifyListener: (state) {
-        if (!mounted || state == _state.value) return;
-        widget.onStateUpdate(state);
-        _state.value = state;
-      },
-      sortOptions: widget.sortOptions,
-      child: ValueListenableBuilder(
-        valueListenable: _state,
-        builder: (context, value, child) => widget.childBuilder(context),
-      ),
-    );
+    if (_oldViewModel == null || _oldViewModel!.key != ValueKey(widget.cmsObject)) {
+      _oldViewModel = CmsObjectOverviewViewModel(
+        key: ValueKey(widget.cmsObject),
+        cmsObject: widget.cmsObject,
+        searchQuery: widget.searchQuery,
+        page: widget.page,
+        onNotifyListener: (state) {
+          if (!mounted || state == _state.value) return;
+          widget.onStateUpdate(state);
+          _state.value = state;
+        },
+        sortOptions: widget.sortOptions,
+        child: ValueListenableBuilder(
+          valueListenable: _state,
+          builder: (context, value, child) => widget.childBuilder(context),
+        ),
+      );
+    }
+
+    return _oldViewModel!;
   }
 }
 
