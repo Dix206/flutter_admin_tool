@@ -4,13 +4,13 @@ import 'package:example/event/use_cases/delete_event.dart';
 import 'package:example/event/use_cases/load_event_by_id.dart';
 import 'package:example/event/use_cases/load_events.dart';
 import 'package:example/event/use_cases/update_event.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_time/cms_attribut_time.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_location/cms_attribut_location.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_list/cms_attribut_list.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_time/cms_attribute_time.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_location/cms_attribute_location.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_list/cms_attribute_list.dart';
 import 'package:flutter_cms/data_types/cms_base_validator.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_double/cms_attribut_double.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_selection/cms_attribut_selection.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_string/cms_attribute_string.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_double/cms_attribute_double.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_selection/cms_attribute_selection.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 
 final eventCmsObject = CmsObjectStructure(
@@ -18,62 +18,62 @@ final eventCmsObject = CmsObjectStructure(
   displayName: "Event",
   canBeSortedById: true,
   attributes: [
-    const CmsAttributString(
+    const CmsAttributeString(
       id: "title",
       displayName: "Title",
       hint: "Enter a title",
       invalidValueErrorMessage: "You have to enter a title",
-      canObjectBeSortedByThisAttribut: true,
+      canObjectBeSortedByThisAttribute: true,
     ),
-    const CmsAttributDouble(
+    const CmsAttributeDouble(
       id: "price",
       displayName: "Price",
       hint: "12.34",
       invalidValueErrorMessage: "You have to enter valid a price",
-      canObjectBeSortedByThisAttribut: true,
+      canObjectBeSortedByThisAttribute: true,
       validator: CmsBaseValidator.isPrice,
     ),
-    const CmsAttributString(
+    const CmsAttributeString(
       id: "phoneNumber",
       displayName: "Phone number",
       hint: "+49 123 456789",
       invalidValueErrorMessage: "You have to enter valid phone number",
-      canObjectBeSortedByThisAttribut: true,
+      canObjectBeSortedByThisAttribute: true,
       validator: CmsBaseValidator.isPhoneNumber,
     ),
-    const CmsAttributString(
+    const CmsAttributeString(
       id: "email",
       displayName: "Email",
       hint: "user@test.com",
       invalidValueErrorMessage: "You have to enter valid email address",
-      canObjectBeSortedByThisAttribut: true,
+      canObjectBeSortedByThisAttribute: true,
       validator: CmsBaseValidator.isEmail,
     ),
-    const CmsAttributLocation(
+    const CmsAttributeLocation(
       id: "location",
       displayName: "Location",
       invalidValueErrorMessage: "You have to enter valid location",
     ),
-    CmsAttributSelection<EventType>(
+    CmsAttributeSelection<EventType>(
       id: "eventType",
       displayName: "Typ",
       invalidValueErrorMessage: "You have to select a typ",
       options: EventType.values,
       optionToString: (option) => option.name,
     ),
-    const CmsAttributList(
+    const CmsAttributeList(
       id: "neededItems",
       displayName: "Needed Items",
       isOptional: true,
       invalidValueErrorMessage: "You have to enter needed items",
-      cmsAttributStructure: CmsAttributString(
+      cmsAttributeStructure: CmsAttributeString(
         id: "item",
         displayName: "Item",
         hint: "Item",
         invalidValueErrorMessage: "You have to enter item",
       ),
     ),
-    const CmsAttributTime(
+    const CmsAttributeTime(
       id: "startingTime",
       displayName: "Starting Time",
       invalidValueErrorMessage: "You have to enter starting time",

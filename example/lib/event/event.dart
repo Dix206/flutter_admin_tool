@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_location/cms_location.dart';
-import 'package:flutter_cms/data_types/cms_attribut_value.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_location/cms_location.dart';
+import 'package:flutter_cms/data_types/cms_attribute_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 
 class Event {
@@ -32,12 +32,12 @@ class Event {
     return CmsObjectValue(
       id: id,
       values: [
-        CmsAttributValue(id: 'id', value: id),
-        CmsAttributValue(id: 'title', value: title),
-        CmsAttributValue(id: 'price', value: price),
-        CmsAttributValue(id: 'phoneNumber', value: phoneNumber),
-        CmsAttributValue(id: 'email', value: email),
-        CmsAttributValue(
+        CmsAttributeValue(id: 'id', value: id),
+        CmsAttributeValue(id: 'title', value: title),
+        CmsAttributeValue(id: 'price', value: price),
+        CmsAttributeValue(id: 'phoneNumber', value: phoneNumber),
+        CmsAttributeValue(id: 'email', value: email),
+        CmsAttributeValue(
           id: 'location',
           value: locationLatitude != null && locationLongitude != null
               ? CmsLocation(
@@ -46,9 +46,9 @@ class Event {
                 )
               : null,
         ),
-        CmsAttributValue(id: 'eventType', value: eventType),
-        CmsAttributValue(id: 'neededItems', value: neededItems),
-        CmsAttributValue(id: 'startingTime', value: startingTime),
+        CmsAttributeValue(id: 'eventType', value: eventType),
+        CmsAttributeValue(id: 'neededItems', value: neededItems),
+        CmsAttributeValue(id: 'startingTime', value: startingTime),
       ],
     );
   }
@@ -59,15 +59,15 @@ class Event {
   }) {
     return Event(
       id: id ?? cmsObjectValue.id!,
-      title: cmsObjectValue.getAttributValueByAttributId('title'),
-      price: cmsObjectValue.getAttributValueByAttributId('price'),
-      phoneNumber: cmsObjectValue.getAttributValueByAttributId('phoneNumber'),
-      email: cmsObjectValue.getAttributValueByAttributId('email'),
-      locationLatitude: (cmsObjectValue.getAttributValueByAttributId('location') as CmsLocation?)?.latitude,
-      locationLongitude: (cmsObjectValue.getAttributValueByAttributId('location') as CmsLocation?)?.longitude,
-      eventType: cmsObjectValue.getAttributValueByAttributId('eventType'),
-      neededItems: (cmsObjectValue.getAttributValueByAttributId('neededItems') as List<dynamic>?)?.cast(),
-      startingTime: cmsObjectValue.getAttributValueByAttributId('startingTime'),
+      title: cmsObjectValue.getAttributeValueByAttributeId('title'),
+      price: cmsObjectValue.getAttributeValueByAttributeId('price'),
+      phoneNumber: cmsObjectValue.getAttributeValueByAttributeId('phoneNumber'),
+      email: cmsObjectValue.getAttributeValueByAttributeId('email'),
+      locationLatitude: (cmsObjectValue.getAttributeValueByAttributeId('location') as CmsLocation?)?.latitude,
+      locationLongitude: (cmsObjectValue.getAttributeValueByAttributeId('location') as CmsLocation?)?.longitude,
+      eventType: cmsObjectValue.getAttributeValueByAttributeId('eventType'),
+      neededItems: (cmsObjectValue.getAttributeValueByAttributeId('neededItems') as List<dynamic>?)?.cast(),
+      startingTime: cmsObjectValue.getAttributeValueByAttributeId('startingTime'),
     );
   }
 

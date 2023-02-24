@@ -4,12 +4,12 @@ import 'package:example/blog/use_cases/delete_blog.dart';
 import 'package:example/blog/use_cases/load_blog_by_id.dart';
 import 'package:example/blog/use_cases/load_blogs.dart';
 import 'package:example/blog/use_cases/update_blog.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_color/cms_attribut_color.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_file/cms_attribut_file.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_html/cms_attribut_html.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_int/cms_attribut_int.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date/cms_attribut_date.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_color/cms_attribute_color.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_file/cms_attribute_file.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_html/cms_attribute_html.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_int/cms_attribute_int.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_string/cms_attribute_string.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_date/cms_attribute_date.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 
 CmsObjectStructure getBlogCmsObject(Account account) => CmsObjectStructure(
@@ -17,38 +17,38 @@ CmsObjectStructure getBlogCmsObject(Account account) => CmsObjectStructure(
       displayName: "Blog",
       canBeSortedById: false,
       attributes: [
-        const CmsAttributString(
+        const CmsAttributeString(
           id: "title",
           displayName: "Title",
           hint: "Enter a title",
           invalidValueErrorMessage: "You have to enter a title",
-          canObjectBeSortedByThisAttribut: true,
+          canObjectBeSortedByThisAttribute: true,
         ),
-        const CmsAttributHtml(
+        const CmsAttributeHtml(
           id: "content",
           displayName: "Content",
           invalidValueErrorMessage: "You have to enter content",
         ),
-        CmsAttributDate(
+        CmsAttributeDate(
           id: "day",
           displayName: "Day",
           defaultValue: DateTime.now(),
-          canObjectBeSortedByThisAttribut: true,
+          canObjectBeSortedByThisAttribute: true,
         ),
-        const CmsAttributInt(
+        const CmsAttributeInt(
           id: "sortOrder",
           displayName: "Sort Order",
           invalidValueErrorMessage: "You have to enter a sort order number",
           defaultValue: 0,
-          canObjectBeSortedByThisAttribut: true,
+          canObjectBeSortedByThisAttribute: true,
         ),
-        const CmsAttributColor(
+        const CmsAttributeColor(
           id: "color",
           displayName: "Color",
           invalidValueErrorMessage: "You have to select a color",
           isOptional: true,
         ),
-        const CmsAttributFile(
+        const CmsAttributeFile(
           id: "file",
           displayName: "File",
           isOptional: true,

@@ -31,7 +31,7 @@ Future<CmsResult<Unit>> _updateArticleFromExistingArticle({
   required Article article,
 }) async {
   try {
-    final imageData = cmsObjectValue.getAttributValueByAttributId<CmsFileValue?>('image');
+    final imageData = cmsObjectValue.getAttributeValueByAttributeId<CmsFileValue?>('image');
 
     if (imageData?.data != null) {
       final imageId = const Uuid().v4();

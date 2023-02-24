@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_cms/data_types/cms_attribut_value.dart';
+import 'package:flutter_cms/data_types/cms_attribute_value.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/data_types/nullable_object.dart';
@@ -97,7 +97,7 @@ class InsertCmsObjectViewModel extends InheritedWidget {
     onNotifyListener(state);
   }
 
-  void updateAttributValue({
+  void updateAttributeValue({
     required String id,
     required Object? value,
   }) {
@@ -106,7 +106,7 @@ class InsertCmsObjectViewModel extends InheritedWidget {
 
     state = initState.copyWith(
       currentCmsObjectValue: initState.currentCmsObjectValue.copyWithNewValue(
-        CmsAttributValue(
+        CmsAttributeValue(
           id: id,
           value: value,
         ),

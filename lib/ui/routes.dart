@@ -104,17 +104,17 @@ GoRouter getGoRouter<T extends Object>({
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
               final pageString = state.queryParams['page'] ?? "1";
-              final sortAttributId = state.queryParams['sortAttribut'];
+              final sortAttributeId = state.queryParams['sortAttribute'];
               final sortAscending = state.queryParams['sortAscending'] == "true";
 
               return OverviewScreen(
                 selectedCmsObjectId: cmsObjectId,
                 searchQuery: searchQuery,
                 page: int.tryParse(pageString) ?? 1,
-                sortOptions: sortAttributId == null
+                sortOptions: sortAttributeId == null
                     ? null
                     : CmsObjectSortOptions(
-                        attributId: sortAttributId,
+                        attributeId: sortAttributeId,
                         ascending: sortAscending,
                       ),
               );
@@ -126,7 +126,7 @@ GoRouter getGoRouter<T extends Object>({
               final cmsObjectId = state.params['cmsObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
               final pageString = state.queryParams['page'] ?? "";
-              final sortAttributId = state.queryParams['sortAttribut'];
+              final sortAttributeId = state.queryParams['sortAttribute'];
               final sortAscending = state.queryParams['sortAscending'] == "true";
 
               return InsertCmsObjectScreen(
@@ -134,10 +134,10 @@ GoRouter getGoRouter<T extends Object>({
                 existingCmsObjectValueId: null,
                 searchQuery: searchQuery,
                 page: int.tryParse(pageString),
-                sortOptions: sortAttributId == null
+                sortOptions: sortAttributeId == null
                     ? null
                     : CmsObjectSortOptions(
-                        attributId: sortAttributId,
+                        attributeId: sortAttributeId,
                         ascending: sortAscending,
                       ),
               );
@@ -150,7 +150,7 @@ GoRouter getGoRouter<T extends Object>({
               final existingCmsObjectValueId = state.params['existingCmsObjectValueId'];
               final searchQuery = state.queryParams['searchQuery'];
               final pageString = state.queryParams['page'] ?? "";
-              final sortAttributId = state.queryParams['sortAttribut'];
+              final sortAttributeId = state.queryParams['sortAttribute'];
               final sortAscending = state.queryParams['sortAscending'] == "true";
 
               return InsertCmsObjectScreen(
@@ -158,10 +158,10 @@ GoRouter getGoRouter<T extends Object>({
                 existingCmsObjectValueId: existingCmsObjectValueId,
                 searchQuery: searchQuery,
                 page: int.tryParse(pageString),
-                sortOptions: sortAttributId == null
+                sortOptions: sortAttributeId == null
                     ? null
                     : CmsObjectSortOptions(
-                        attributId: sortAttributId,
+                        attributeId: sortAttributeId,
                         ascending: sortAscending,
                       ),
               );
@@ -185,7 +185,7 @@ class Routes {
   }) {
     final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
     final sortOptionsPath =
-        sortOptions == null ? "" : "&sortAttribut=${sortOptions.attributId}&sortAscending=${sortOptions.ascending}";
+        sortOptions == null ? "" : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
     return "/overview/$cmsObjectId?page=$page$searchQueryPath$sortOptionsPath";
   }
 
@@ -199,7 +199,7 @@ class Routes {
     final pagePath = "?page=$page";
     final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
     final sortOptionsPath =
-        sortOptions == null ? "" : "&sortAttribut=${sortOptions.attributId}&sortAscending=${sortOptions.ascending}";
+        sortOptions == null ? "" : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
 
     return "/overview/$cmsObjectId/update/$existingCmsObjectValueId$pagePath$searchQueryPath$sortOptionsPath";
   }
@@ -213,7 +213,7 @@ class Routes {
     final pagePath = "?page=$page";
     final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
     final sortOptionsPath =
-        sortOptions == null ? "" : "&sortAttribut=${sortOptions.attributId}&sortAscending=${sortOptions.ascending}";
+        sortOptions == null ? "" : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
 
     return "/overview/$cmsObjectId/create$pagePath$searchQueryPath$sortOptionsPath";
   }

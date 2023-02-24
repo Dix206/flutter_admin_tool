@@ -31,7 +31,7 @@ Future<CmsResult<Unit>> _updateBlogFromExistingBlog({
   required Blog blog,
 }) async {
   try {
-    final file = cmsObjectValue.getAttributValueByAttributId<CmsFileValue?>('file');
+    final file = cmsObjectValue.getAttributeValueByAttributeId<CmsFileValue?>('file');
 
     if (file?.data != null) {
       final fileId = const Uuid().v4();

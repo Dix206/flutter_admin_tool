@@ -5,11 +5,11 @@ import 'package:example/article/use_cases/load_article_by_id.dart';
 import 'package:example/article/use_cases/load_articles.dart';
 import 'package:example/article/use_cases/load_authors.dart';
 import 'package:example/article/use_cases/update_article.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_string/cms_attribut_string.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_image/cms_attribut_image.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_bool/cms_attribut_bool.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_date_time/cms_attribut_date_time.dart';
-import 'package:flutter_cms/data_types/attribut_implementations/cms_attribut_reference/cms_attribut_reference.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_string/cms_attribute_string.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_image/cms_attribute_image.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_bool/cms_attribute_bool.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_date_time/cms_attribute_date_time.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_reference/cms_attribute_reference.dart';
 import 'package:flutter_cms/data_types/cms_object_structure.dart';
 
 final articleCmsObject = CmsObjectStructure(
@@ -17,43 +17,43 @@ final articleCmsObject = CmsObjectStructure(
   displayName: "Article",
   canBeSortedById: false,
   attributes: [
-    const CmsAttributString(
+    const CmsAttributeString(
       id: "title",
       displayName: "Title",
       hint: "Enter a title",
       invalidValueErrorMessage: "You have to enter a title",
-      canObjectBeSortedByThisAttribut: true,
+      canObjectBeSortedByThisAttribute: true,
     ),
-    const CmsAttributString(
+    const CmsAttributeString(
       id: "description",
       displayName: "Description",
       hint: "Enter a description",
       invalidValueErrorMessage: "You have to enter a description",
-      canObjectBeSortedByThisAttribut: false,
+      canObjectBeSortedByThisAttribute: false,
       isMultiline: true,
       maxLength: 24,
     ),
-    const CmsAttributImage(
+    const CmsAttributeImage(
       id: "image",
       displayName: "Image",
       isOptional: true,
     ),
-    CmsAttributDateTime(
+    CmsAttributeDateTime(
       id: "timestamp",
       displayName: "Created at",
-      canObjectBeSortedByThisAttribut: true,
+      canObjectBeSortedByThisAttribute: true,
       shouldBeDisplayedOnOverviewTable: true,
       invalidValueErrorMessage: "You have to enter a date time",
       minDateTime: DateTime(2020),
       maxDateTime: DateTime.now().add(const Duration(days: 365)),
     ),
-    const CmsAttributBool(
+    const CmsAttributeBool(
       id: "isActive",
       displayName: "Is Article active",
-      canObjectBeSortedByThisAttribut: true,
+      canObjectBeSortedByThisAttribute: true,
       shouldBeDisplayedOnOverviewTable: true,
     ),
-    CmsAttributReference<Author>(
+    CmsAttributeReference<Author>(
       id: "author",
       displayName: "Author",
       searchFunction: loadAuthors,

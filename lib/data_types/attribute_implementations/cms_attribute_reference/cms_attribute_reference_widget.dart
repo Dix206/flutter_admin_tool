@@ -1,0 +1,94 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_reference/cms_attribute_reference.dart';
+import 'package:flutter_cms/data_types/cms_attribute_structure.dart';
+import 'package:flutter_cms/data_types/cms_texts.dart';
+import 'package:flutter_cms/flutter_cms.dart';
+
+/// T is the type of the reference
+class CmsAttributeReferenceWidget<T extends Object> extends StatefulWidget {
+  final T? currentValue;
+  final bool shouldDisplayValidationErrors;
+  final OnCmsTypeUpdated<T> onCmsTypeUpdated;
+  final CmsAttributeReference<T> cmsTypeReference;
+
+  const CmsAttributeReferenceWidget({
+    Key? key,
+    required this.currentValue,
+    required this.shouldDisplayValidationErrors,
+    required this.onCmsTypeUpdated,
+    required this.cmsTypeReference,
+  }) : super(key: key);
+
+  @override
+  State<CmsAttributeReferenceWidget<T>> createState() => _CmsAttributeReferenceWidgetState<T>();
+}
+
+class _CmsAttributeReferenceWidgetState<T extends Object> extends State<CmsAttributeReferenceWidget<T>> {
+  Map<String, T> _optionsToSelect = {};
+
+  @override
+  Widget build(BuildContext context) {
+    final CmsTexts cmsTexts = FlutterCms.getCmsTexts(context);
+    
+    final isValid = widget.cmsTypeReference.isValid(widget.currentValue);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Autocomplete<String>(
+          fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) => TextField(
+            controller: textEditingController,
+            focusNode: focusNode,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.search),
+            ),
+            onSubmitted: (_) => onFieldSubmitted(),
+          ),
+          optionsBuilder: (textEditingValue) async {
+            if (textEditingValue.text.trim().isEmpty) return const [];
+
+            final result = await widget.cmsTypeReference.searchFunction(textEditingValue.text);
+            return result.fold(
+              onError: (error) => <String>[],
+              onSuccess: (data) {
+                _optionsToSelect = {
+                  for (final reference in data) widget.cmsTypeReference.getReferenceDisplayString(reference): reference
+                };
+
+                return _optionsToSelect.keys.toList();
+              },
+            );
+          },
+          onSelected: (selection) => widget.onCmsTypeUpdated(_optionsToSelect[selection]),
+        ),
+        const SizedBox(height: 16),
+        ListTile(
+          title: Text(
+            widget.cmsTypeReference.valueToString(context: context, value: widget.currentValue),
+          ),
+          trailing: widget.currentValue == null
+              ? null
+              : IconButton(
+                  onPressed: () => widget.onCmsTypeUpdated(null),
+                  icon: const Icon(Icons.delete),
+                ),
+        ),
+        if (!isValid && widget.shouldDisplayValidationErrors)
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 8.0,
+              left: 16.0,
+              right: 16.0,
+            ),
+            child: Text(
+              widget.cmsTypeReference.invalidValueErrorMessage ?? cmsTexts.defaultInvalidDataMessage,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+            ),
+          ),
+      ],
+    );
+  }
+}

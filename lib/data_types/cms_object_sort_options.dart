@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 
 class CmsObjectSortOptions extends Equatable {
-  final String attributId;
+  final String attributeId;
   final bool ascending;
 
   const CmsObjectSortOptions({
-    required this.attributId,
+    required this.attributeId,
     required this.ascending,
   });
 
   @override
   List<Object?> get props => [
-        attributId,
+        attributeId,
         ascending,
       ];
 }

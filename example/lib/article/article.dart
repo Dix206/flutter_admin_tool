@@ -1,6 +1,6 @@
 import 'package:example/constants.dart';
 
-import 'package:flutter_cms/data_types/cms_attribut_value.dart';
+import 'package:flutter_cms/data_types/cms_attribute_value.dart';
 import 'package:flutter_cms/data_types/cms_file_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 
@@ -30,10 +30,10 @@ class Article {
     return CmsObjectValue(
       id: id,
       values: [
-        CmsAttributValue(id: 'id', value: id),
-        CmsAttributValue(id: 'title', value: title),
-        CmsAttributValue(id: 'description', value: description),
-        CmsAttributValue(
+        CmsAttributeValue(id: 'id', value: id),
+        CmsAttributeValue(id: 'title', value: title),
+        CmsAttributeValue(id: 'description', value: description),
+        CmsAttributeValue(
           id: 'image',
           value: CmsFileValue(
             url: imageId != null
@@ -45,9 +45,9 @@ class Article {
             wasDeleted: false,
           ),
         ),
-        CmsAttributValue(id: 'timestamp', value: timestamp),
-        CmsAttributValue(id: 'isActive', value: isActive),
-        CmsAttributValue(id: 'author', value: author),
+        CmsAttributeValue(id: 'timestamp', value: timestamp),
+        CmsAttributeValue(id: 'isActive', value: isActive),
+        CmsAttributeValue(id: 'author', value: author),
       ],
     );
   }
@@ -59,12 +59,12 @@ class Article {
   }) {
     return Article(
       id: id ?? cmsObjectValue.id as String,
-      title: cmsObjectValue.getAttributValueByAttributId('title'),
-      description: cmsObjectValue.getAttributValueByAttributId('description'),
+      title: cmsObjectValue.getAttributeValueByAttributeId('title'),
+      description: cmsObjectValue.getAttributeValueByAttributeId('description'),
       imageId: imageId,
-      timestamp: cmsObjectValue.getAttributValueByAttributId('timestamp'),
-      isActive: cmsObjectValue.getAttributValueByAttributId('isActive'),
-      authorId: (cmsObjectValue.getAttributValueByAttributId('author') as Author?)?.id,
+      timestamp: cmsObjectValue.getAttributeValueByAttributeId('timestamp'),
+      isActive: cmsObjectValue.getAttributeValueByAttributeId('isActive'),
+      authorId: (cmsObjectValue.getAttributeValueByAttributeId('author') as Author?)?.id,
     );
   }
 

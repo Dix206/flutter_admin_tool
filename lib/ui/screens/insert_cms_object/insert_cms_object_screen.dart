@@ -275,10 +275,10 @@ class _AttributeWidgets extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     cmsValue.buildWidget(
-                      currentValue: currentCmsObjectValue.getAttributValueByAttributId(cmsValue.id),
+                      currentValue: currentCmsObjectValue.getAttributeValueByAttributeId(cmsValue.id),
                       shouldDisplayValidationErrors: shouldDisplayValidationErrors,
                       onCmsTypeUpdated: (newValue) {
-                        InsertCmsObjectViewModel.of(context).updateAttributValue(
+                        InsertCmsObjectViewModel.of(context).updateAttributeValue(
                           id: cmsValue.id,
                           value: newValue,
                         );

@@ -21,8 +21,8 @@ Future<CmsResult<CmsObjectValueList>> loadBlogs({
         Query.limit(itemsToLoad),
         Query.offset((page - 1) * itemsToLoad),
         if (searchQuery != null) Query.search("title", searchQuery),
-        if (sortOptions?.ascending == true) Query.orderAsc(sortOptions!.attributId),
-        if (sortOptions?.ascending == false) Query.orderDesc(sortOptions!.attributId),
+        if (sortOptions?.ascending == true) Query.orderAsc(sortOptions!.attributeId),
+        if (sortOptions?.ascending == false) Query.orderDesc(sortOptions!.attributeId),
       ],
     );
 

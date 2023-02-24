@@ -51,7 +51,7 @@ void main() {
 ## Object Structures
 The main part of Flutter CMS is the content management. You can easely display, create, update and delete objects. All Flutter CMS needs for that is the data structure of your object and the methods to handle these crud operations.
 
-To define the data structure you have to pass a method to `getCmsObjectStructures` which returns a list of `CmsObjectStructure`. The method gives you the currently logged in user so you can change the functionality based on the logged in user. The `CmsObjectStructure` needs to have a list of attributes. Every attribute must extends the `CmsAttributStructure`. Flutter CMS gives you a number of pre defined attributes but if you need a specific new attribut, you can define it by yourself.
+To define the data structure you have to pass a method to `getCmsObjectStructures` which returns a list of `CmsObjectStructure`. The method gives you the currently logged in user so you can change the functionality based on the logged in user. The `CmsObjectStructure` needs to have a list of attributes. Every attribute must extends the `CmsAttributeStructure`. Flutter CMS gives you a number of pre defined attributes but if you need a specific new attribute, you can define it by yourself.
 
 Not every of crud function needs to be set. If you dont pass a specific method, that functionality will automatically be disabled. As you get the current logged in user, it is possible to disable some of these crud functions for specific user.
 
@@ -65,17 +65,17 @@ void main() {
                 id: "event",
                 displayName: "Event",
                 attributes: [
-                    CmsAttributString(
+                    CmsAttributeString(
                         id: "title",
                         displayName: "Title",
                         hint: "Enter a title",
                     ),
-                    CmsAttributLocation(
+                    CmsAttributeLocation(
                         id: "location",
                         displayName: "Location",
                         invalidValueErrorMessage: "You have to enter valid location",
                     ),
-                    CmsAttributTime(
+                    CmsAttributeTime(
                         id: "startingTime",
                         displayName: "Starting Time",
                         isOptional: true,
@@ -93,17 +93,17 @@ void main() {
 }
 ```
 
-## Cms Attribut Structure
-The `id` of every `CmsAttributStructure` inside a `CmsObjectStructure` has to be unique. Its needed to identify a `CmsAttributValue` inside a `CmsObjectValue` which are needed in the crud functions of a `CmsObjectStructure`.
-Every `CmsAttributStructure` can be validated so that it will only be possible to pass a valid value. Just set the `validator` for that. If the user passed value is not valid the `invalidValueErrorMessage` will be displayed. So you can also handle the error message.
-By default every `CmsAttributStructure` is required. You can set the parameter `isOptional` to true if also null values should be possible. If the attribut is required and not set, the `invalidValueErrorMessage` will be displayed.
-Flutter CMS has many pre defined `CmsAttributStructure` elements. Here is a list of every existing element:
+## Cms Attribute Structure
+The `id` of every `CmsAttributeStructure` inside a `CmsObjectStructure` has to be unique. Its needed to identify a `CmsAttributeValue` inside a `CmsObjectValue` which are needed in the crud functions of a `CmsObjectStructure`.
+Every `CmsAttributeStructure` can be validated so that it will only be possible to pass a valid value. Just set the `validator` for that. If the user passed value is not valid the `invalidValueErrorMessage` will be displayed. So you can also handle the error message.
+By default every `CmsAttributeStructure` is required. You can set the parameter `isOptional` to true if also null values should be possible. If the attribute is required and not set, the `invalidValueErrorMessage` will be displayed.
+Flutter CMS has many pre defined `CmsAttributeStructure` elements. Here is a list of every existing element:
 
-### CmsAttributString
+### CmsAttributeString
 
 Example:
 ```dart
-CmsAttributString(
+CmsAttributeString(
     id: "title",
     displayName: "Title",
     hint: "Enter a title",
@@ -111,150 +111,150 @@ CmsAttributString(
     maxLength: 15,
 )
 ```
-![Alt text](doc/CmsAttributString.png "CmsAttributString")
+![Alt text](doc/CmsAttributeString.png "CmsAttributeString")
 
-### CmsAttributBool
-The `CmsAttributBool` is by default required and cant be set optional. By default the `defaultValue` is false.
+### CmsAttributeBool
+The `CmsAttributeBool` is by default required and cant be set optional. By default the `defaultValue` is false.
 
 Example:
 ```dart
-CmsAttributBool(
+CmsAttributeBool(
       id: "isActive",
       displayName: "Is Article active",
-      canObjectBeSortedByThisAttribut: true,
+      canObjectBeSortedByThisAttribute: true,
 )
 ```
-![Alt text](doc/CmsAttributBool.png "CmsAttributBool")
+![Alt text](doc/CmsAttributeBool.png "CmsAttributeBool")
 
-### CmsAttributInt
+### CmsAttributeInt
 Example:
 ```dart
-CmsAttributInt(
+CmsAttributeInt(
           id: "sortOrder",
           displayName: "Sort Order",
           defaultValue: 0,
-          canObjectBeSortedByThisAttribut: true,
+          canObjectBeSortedByThisAttribute: true,
 )
 ```
-![Alt text](doc/CmsAttributInt.png "CmsAttributInt")
+![Alt text](doc/CmsAttributeInt.png "CmsAttributeInt")
 
-### CmsAttributDouble
+### CmsAttributeDouble
 Example:
 ```dart
-CmsAttributDouble(
+CmsAttributeDouble(
       id: "price",
       displayName: "Price",
       hint: "12.34",
       invalidValueErrorMessage: "You have to enter valid a price",
-      canObjectBeSortedByThisAttribut: true,
+      canObjectBeSortedByThisAttribute: true,
       validator: CmsBaseValidator.isPrice,
 )
 ```
-![Alt text](doc/CmsAttributDouble.png "CmsAttributDouble")
+![Alt text](doc/CmsAttributeDouble.png "CmsAttributeDouble")
 
-### CmsAttributColor
+### CmsAttributeColor
 The color selection widget is build upon the [flutter_colorpicker](https://pub.dev/packages/flutter_colorpicker) package.
 
 Example:
 ```dart
-const CmsAttributColor(
+const CmsAttributeColor(
         id: "color",
         displayName: "Color",
         isOptional: true,
 )
 ```
-![Alt text](doc/CmsAttributColor.png "CmsAttributColor")
-![Alt text](doc/CmsAttributColorSelection.png "CmsAttributColorSelection")
+![Alt text](doc/CmsAttributeColor.png "CmsAttributeColor")
+![Alt text](doc/CmsAttributeColorSelection.png "CmsAttributeColorPicker")
 
-### CmsAttributDateTime
+### CmsAttributeDateTime
 Example:
 ```dart
-CmsAttributDateTime(
+CmsAttributeDateTime(
       id: "timestamp",
       displayName: "Created at",
       minDateTime: DateTime(2020),
       maxDateTime: DateTime.now().add(const Duration(days: 365)),
 )
 ```
-![Alt text](doc/CmsAttributDateTime.png "CmsAttributDateTime")
+![Alt text](doc/CmsAttributeDateTime.png "CmsAttributeDateTime")
 
-### CmsAttributDate
+### CmsAttributeDate
 Example:
 ```dart
-CmsAttributDate(
+CmsAttributeDate(
     id: "day",
     displayName: "Day",
     defaultValue: DateTime(2020, 12, 12),
 )
 ```
-![Alt text](doc/CmsAttributDate.png "CmsAttributDate")
+![Alt text](doc/CmsAttributeDate.png "CmsAttributeDate")
 
-### CmsAttributTime
+### CmsAttributeTime
 Example:
 ```dart
-const CmsAttributTime(
+const CmsAttributeTime(
       id: "startingTime",
       displayName: "Starting Time",
       invalidValueErrorMessage: "You have to enter starting time",
     )
 ```
-![Alt text](doc/CmsAttributTime.png "CmsAttributTime")
+![Alt text](doc/CmsAttributeTime.png "CmsAttributeTime")
 
-### CmsAttributHtml
+### CmsAttributeHtml
 The html widget is build upon the [quill_html_editor](https://pub.dev/packages/quill_html_editor) package. Because it is an embadded web library, there could be some unwanted behavior in the UI.
 
 Example:
 ```dart
-const CmsAttributHtml(
+const CmsAttributeHtml(
         id: "content",
         displayName: "Content",
 )
 ```
-![Alt text](doc/CmsAttributHtml.png "CmsAttributHtml")
+![Alt text](doc/CmsAttributeHtml.png "CmsAttributeHtml")
 
-### CmsAttributImage
+### CmsAttributeImage
 The image selection is build upon the [file_picker](https://pub.dev/packages/file_picker) package.
 
 Example:
 ```dart
-CmsAttributImage(
+CmsAttributeImage(
     id: "image",
     displayName: "Image",
     isOptional: true,
 )
 ```
-![Alt text](doc/CmsAttributImage.png "CmsAttributImage")
+![Alt text](doc/CmsAttributeImage.png "CmsAttributeImage")
 
-### CmsAttributFile
+### CmsAttributeFile
 The file selection is build upon the [file_picker](https://pub.dev/packages/file_picker) package.
 
 Example:
 ```dart
-CmsAttributFile(
+CmsAttributeFile(
     id: "file",
     displayName: "File",
     isOptional: true,
 )
 ```
-![Alt text](doc/CmsAttributFile.png "CmsAttributFile")
+![Alt text](doc/CmsAttributeFile.png "CmsAttributeFile")
 
-### CmsAttributLocation
+### CmsAttributeLocation
 Example:
 ```dart
-CmsAttributLocation(
+CmsAttributeLocation(
     id: "location",
     displayName: "Location",
     invalidValueErrorMessage: "You have to enter valid location",
 )
 ```
-![Alt text](doc/CmsAttributLocation.png "CmsAttributLocation")
+![Alt text](doc/CmsAttributeLocation.png "CmsAttributeLocation")
 
-### CmsAttributSelection
+### CmsAttributeSelection
 The selected object could be of any type. 
 
 Example:
 ```dart
-CmsAttributSelection<EventType>(
+CmsAttributeSelection<EventType>(
     id: "eventType",
     displayName: "Typ",
     invalidValueErrorMessage: "You have to select a typ",
@@ -262,17 +262,17 @@ CmsAttributSelection<EventType>(
     optionToString: (option) => option.name,
 )
 ```
-![Alt text](doc/CmsAttributSelection.png "CmsAttributSelection")
+![Alt text](doc/CmsAttributeSelection.png "CmsAttributeSelection")
 
-### CmsAttributList
-You can use `CmsAttributList`to add a list of attributes to your object. The type of the attributes will be defined by the parameter `cmsAttributStructure`. There you have to pass a `CmsAttributStructure`. You can use any `CmsAttributStructure` you want. The behaviour for adding a new attribut instance to the list will be defined in there.
+### CmsAttributeList
+You can use `CmsAttributeList`to add a list of attributes to your object. The type of the attributes will be defined by the parameter `CmsAttributeStructure`. There you have to pass a `CmsAttributeStructure`. You can use any `CmsAttributeStructure` you want. The behaviour for adding a new attribute instance to the list will be defined in there.
 
 Example:
 ```dart
-CmsAttributList(
+CmsAttributeList(
     id: "neededItems",
     displayName: "Needed Items",
-    cmsAttributStructure: CmsAttributString(
+    CmsAttributeStructure: CmsAttributeString(
         id: "item",
         displayName: "Item",
         hint: "Item",
@@ -280,17 +280,17 @@ CmsAttributList(
     ),
 )
 ```
-![Alt text](doc/CmsAttributList.png "CmsAttributList")
-![Alt text](doc/CmsAttributListSelectedItems.png "CmsAttributListSelectedItems")
+![Alt text](doc/CmsAttributeList.png "CmsAttributeList")
+![Alt text](doc/CmsAttributeListSelectedItems.png "CmsAttributeListSelectedItems")
 
-### CmsAttributReference
-This attribut gives you the possibility to search for an option which will be selected. You can define that function and return a list of possible items which can be selected. You also have to pass a function for the parameter `getReferenceDisplayString`. This function has to return the display string for a passed item.
+### CmsAttributeReference
+This attribute gives you the possibility to search for an option which will be selected. You can define that function and return a list of possible items which can be selected. You also have to pass a function for the parameter `getReferenceDisplayString`. This function has to return the display string for a passed item.
 
 A common use case is to add a reference to another object. 
 
 Example:
 ```dart
-CmsAttributReference<Author>(
+CmsAttributeReference<Author>(
     id: "author",
     displayName: "Author",
     searchFunction: loadAuthors,
@@ -311,11 +311,11 @@ Future<CmsResult<List<Author>>> loadAuthors(String searchQuery) async {
 }
 ```
 
-![Alt text](doc/CmsAttributReference.png "CmsAttributReference")
+![Alt text](doc/CmsAttributeReference.png "CmsAttributeReference")
 
 
 ## Base Validator
-Flutter CMS offers you some base validation methods that you can use inside your `CmsAttributStructure`. You can find them inside the `CmsBaseValidator` class.
+Flutter CMS offers you some base validation methods that you can use inside your `CmsAttributeStructure`. You can find them inside the `CmsBaseValidator` class.
 
 ## CMS Object Structure CRUD Operations
 In an `CmsObjectStructure` you need to define CRUD functions which connects Flutter CMS with your backend. Every of these functions returns a Future of `CmsResult`. The `CmsResult` has two constructors `CmsResult.success` and `CmsResult.error`. If your function succeeds you can use the `CmsResult.success` constructor and pass the required data. If a function shouldnt return any data you need to pass a new `Unit` object: `CmsResult.success(Unit())`. This is for example the case in the delete function. There we only need the information if the action was successful. So you could emagine `Unit()` as `void`. If the action wasnt successful you should use the `CmsResult.error` constructor and pass an error message string. That string will be displayed to the user.
@@ -338,7 +338,7 @@ Future<CmsResult<Unit>> deleteEvent(String eventId) async {
 }
 ```
 
-To get and pass instances of the pre defined `CmsObjectStructure` there will be used the object `CmsObjectValue`. That object gets an `id` which is the id of the instance, not the id of the `CmsObjectStructure`. Also it has a list of `CmsAttributValue`. That list should contain a value for every `CmsAttributStructure` defined in the `CmsObjectStructure`. Its important that the `id` which is set in an `CmsAttributValue` is the same as the `id` in the defined `CmsAttributStructure` to which it belongs to. Thats neccessary to load the value of the attribute in a `CmsObjectValue` with the method `getAttributValueByAttributId`.
+To get and pass instances of the pre defined `CmsObjectStructure` there will be used the object `CmsObjectValue`. That object gets an `id` which is the id of the instance, not the id of the `CmsObjectStructure`. Also it has a list of `CmsAttributeValue`. That list should contain a value for every `CmsAttributeStructure` defined in the `CmsObjectStructure`. Its important that the `id` which is set in an `CmsAttributeValue` is the same as the `id` in the defined `CmsAttributeStructure` to which it belongs to. Thats neccessary to load the value of the attribute in a `CmsObjectValue` with the method `getAttributeValueByAttributeId`.
 
 It is a good practice to define a seperate model for the `CmsObjectStructure` with `fromCmsObjectValue` and `toCmsObjectValue` methods. Similar to the `fromJson` and `toJson` methods. That makes it possible to work with that model in a typesave way. 
 
@@ -363,9 +363,9 @@ class Event {
     return CmsObjectValue(
       id: id,
       values: [
-        CmsAttributValue(id: 'id', value: id),
-        CmsAttributValue(id: 'title', value: title),
-        CmsAttributValue(
+        CmsAttributeValue(id: 'id', value: id),
+        CmsAttributeValue(id: 'title', value: title),
+        CmsAttributeValue(
           id: 'location',
           value: locationLatitude != null && locationLongitude != null
               ? CmsLocation(
@@ -374,7 +374,7 @@ class Event {
                 )
               : null,
         ),
-        CmsAttributValue(id: 'startingTime', value: startingTime),
+        CmsAttributeValue(id: 'startingTime', value: startingTime),
       ],
     );
   }
@@ -385,10 +385,10 @@ class Event {
   }) {
     return Event(
       id: id ?? cmsObjectValue.id!,
-      title: cmsObjectValue.getAttributValueByAttributId('title'),
-      locationLatitude: (cmsObjectValue.getAttributValueByAttributId('location') as CmsLocation?)?.latitude,
-      locationLongitude: (cmsObjectValue.getAttributValueByAttributId('location') as CmsLocation?)?.longitude,
-      startingTime: cmsObjectValue.getAttributValueByAttributId('startingTime'),
+      title: cmsObjectValue.getAttributeValueByAttributeId('title'),
+      locationLatitude: (cmsObjectValue.getAttributeValueByAttributeId('location') as CmsLocation?)?.latitude,
+      locationLongitude: (cmsObjectValue.getAttributeValueByAttributeId('location') as CmsLocation?)?.longitude,
+      startingTime: cmsObjectValue.getAttributeValueByAttributeId('startingTime'),
     );
   }
 }
@@ -403,7 +403,7 @@ The `OnLoadCmsObjects` function gets an `page` value. Thats the value of the pag
 
 The only search parameter for now is `searchQuery`. That optional parameter contains the search text which was entered by the user to filter the objects. How implement that filter is up to you.
 
-For sort functionality an optional value of `CmsObjectSortOptions` will be passed. That object contains the attributId of the attribut according to which sorting is to take place. If the value `ascending` is set to true, the attribut should be sorted ascending, otherwise descending. The objects can only be sorted by attributes where the values `shouldBeDisplayedOnOverviewTable` and `canObjectBeSortedByThisAttribut` both where set to true. 
+For sort functionality an optional value of `CmsObjectSortOptions` will be passed. That object contains the attributeId of the attribute according to which sorting is to take place. If the value `ascending` is set to true, the attribute should be sorted ascending, otherwise descending. The objects can only be sorted by attributes where the values `shouldBeDisplayedOnOverviewTable` and `canObjectBeSortedByThisAttribute` both where set to true. 
 
 ## Localization
 TODO

@@ -5,15 +5,15 @@ class CmsTexts extends Equatable {
   final String defaultInvalidDataMessage;
 
   /// This string will be displayed for an attribute value with a value of null
-  final String cmsAttributValueNull;
+  final String cmsAttributeValueNull;
   final String select;
-  final String cmsAttributColorHexTitle;
-  final String cmsAttributFileSelectFileMessage;
+  final String cmsAttributeColorHexTitle;
+  final String cmsAttributeFileSelectFileMessage;
   final String delete;
-  final String cmsAttributListAddItem;
-  final String cmsAttributLocationLatitude;
-  final String cmsAttributLocationLongitude;
-  final String cmsAttributSelectionNoItemSelected;
+  final String cmsAttributeListAddItem;
+  final String cmsAttributeLocationLatitude;
+  final String cmsAttributeLocationLongitude;
+  final String cmsAttributeSelectionNoItemSelected;
   final String noCmsCustomMenuEntryFoundWithId;
   final String settings;
   final String cancel;
@@ -38,15 +38,15 @@ class CmsTexts extends Equatable {
   const CmsTexts({
     this.appTitle = "Flutter CMS",
     this.defaultInvalidDataMessage = "Invalid data",
-    this.cmsAttributValueNull = "---",
+    this.cmsAttributeValueNull = "---",
     this.select = "Select",
-    this.cmsAttributColorHexTitle = "Hex",
-    this.cmsAttributFileSelectFileMessage = "Select a file",
+    this.cmsAttributeColorHexTitle = "Hex",
+    this.cmsAttributeFileSelectFileMessage = "Select a file",
     this.delete = "Delete",
-    this.cmsAttributListAddItem = "Add item",
-    this.cmsAttributLocationLatitude = "Latitude",
-    this.cmsAttributLocationLongitude = "Longitude",
-    this.cmsAttributSelectionNoItemSelected = "No item selected",
+    this.cmsAttributeListAddItem = "Add item",
+    this.cmsAttributeLocationLatitude = "Latitude",
+    this.cmsAttributeLocationLongitude = "Longitude",
+    this.cmsAttributeSelectionNoItemSelected = "No item selected",
     this.noCmsCustomMenuEntryFoundWithId = "This menu entry doesnt exist",
     this.settings = "Settings",
     this.cancel = "Cancel",

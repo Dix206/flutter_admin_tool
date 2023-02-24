@@ -34,7 +34,7 @@ class CmsObjectOverviewTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final minWidth = cmsObject.attributes
                 .where(
-                  (attribut) => attribut.shouldBeDisplayedOnOverviewTable,
+                  (attribute) => attribute.shouldBeDisplayedOnOverviewTable,
                 )
                 .length *
             _tableEntryWidth +
@@ -144,14 +144,14 @@ class _TableTitle extends StatelessWidget {
               width: _idTableEntryWidth,
               height: _tableTitleEntryHeight,
               canBeSorted: cmsObject.canBeSortedById,
-              isSortedAscending: sortOptions?.attributId == "id" ? sortOptions?.ascending == true : null,
+              isSortedAscending: sortOptions?.attributeId == "id" ? sortOptions?.ascending == true : null,
               onSort: (isSortedAscending) => context.go(
                 Routes.overview(
                   cmsObjectId: cmsObject.id,
                   page: page,
                   searchQuery: searchQuery,
                   sortOptions: CmsObjectSortOptions(
-                    attributId: "id",
+                    attributeId: "id",
                     ascending: isSortedAscending,
                   ),
                 ),
@@ -159,22 +159,22 @@ class _TableTitle extends StatelessWidget {
             ),
             ...cmsObject.attributes
                 .where(
-                  (attribut) => attribut.shouldBeDisplayedOnOverviewTable,
+                  (attribute) => attribute.shouldBeDisplayedOnOverviewTable,
                 )
                 .map(
                   (attribute) => _TableEntry(
                     text: attribute.displayName,
                     textColor: Theme.of(context).colorScheme.onPrimaryContainer,
                     height: _tableTitleEntryHeight,
-                    canBeSorted: attribute.canObjectBeSortedByThisAttribut,
-                    isSortedAscending: sortOptions?.attributId == attribute.id ? sortOptions?.ascending == true : null,
+                    canBeSorted: attribute.canObjectBeSortedByThisAttribute,
+                    isSortedAscending: sortOptions?.attributeId == attribute.id ? sortOptions?.ascending == true : null,
                     onSort: (isSortedAscending) => context.go(
                       Routes.overview(
                         cmsObjectId: cmsObject.id,
                         page: page,
                         searchQuery: searchQuery,
                         sortOptions: CmsObjectSortOptions(
-                          attributId: attribute.id,
+                          attributeId: attribute.id,
                           ascending: isSortedAscending,
                         ),
                       ),
@@ -228,21 +228,21 @@ class _TableContent extends StatelessWidget {
             children: [
               const SizedBox(width: 16),
               _TableEntry(
-                text: cmsObjectValue.id ?? FlutterCms.getCmsTexts(context).cmsAttributValueNull,
+                text: cmsObjectValue.id ?? FlutterCms.getCmsTexts(context).cmsAttributeValueNull,
                 width: _idTableEntryWidth,
               ),
               ...cmsObjectValue.values
                   .where(
                     (cmsAttributeValue) =>
-                        cmsObject.getAttributById(cmsAttributeValue.id)?.shouldBeDisplayedOnOverviewTable ?? false,
+                        cmsObject.getAttributeById(cmsAttributeValue.id)?.shouldBeDisplayedOnOverviewTable ?? false,
                   )
                   .map(
                     (cmsAttributeValue) => _TableEntry(
-                      text: cmsObject.getAttributById(cmsAttributeValue.id)?.valueToString(
+                      text: cmsObject.getAttributeById(cmsAttributeValue.id)?.valueToString(
                                 context: context,
                                 value: cmsAttributeValue.value,
                               ) ??
-                          FlutterCms.getCmsTexts(context).cmsAttributValueNull,
+                          FlutterCms.getCmsTexts(context).cmsAttributeValueNull,
                     ),
                   )
                   .toList(),

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:flutter_cms/data_types/cms_attribut_structure.dart';
+import 'package:flutter_cms/data_types/cms_attribute_structure.dart';
 import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 import 'package:flutter_cms/data_types/cms_result.dart';
@@ -31,7 +31,7 @@ class CmsObjectStructure extends Equatable {
   /// The attributes define the properties of an object.
   /// They are used to create and update objects.
   /// In the UI they will be displayed in the order they are defined.
-  final List<CmsAttributStructure> attributes;
+  final List<CmsAttributeStructure> attributes;
 
   /// This method should return values of this cms object based on passed filters and pagination.
   /// If there are no more items to load, the [CmsObjectValueList.hasMoreItems] should be set to false.
@@ -68,8 +68,8 @@ class CmsObjectStructure extends Equatable {
     required this.loadCmsObjectById,
   }) : assert(
           attributes.every(
-            (attribut) => attributes.every(
-              (otherAttribut) => attribut.id != otherAttribut.id || attribut == otherAttribut,
+            (attribute) => attributes.every(
+              (otherAttribute) => attribute.id != otherAttribute.id || attribute == otherAttribute,
             ),
           ),
           'There are two attributes with the same id in the cms object structure with id $id.',
@@ -80,19 +80,19 @@ class CmsObjectStructure extends Equatable {
       id: null,
       values: attributes
           .map(
-            (cmsValue) => cmsValue.toEmptyAttributValue(),
+            (cmsValue) => cmsValue.toEmptyAttributeValue(),
           )
           .toList(),
     );
   }
 
   /// Returns true if every attribute is valid.
-  /// An attribute is valid if it is not required and null or if it is required and valid based on the attribut validator.
+  /// An attribute is valid if it is not required and null or if it is required and valid based on the attribute validator.
   bool isCmsObjectValueValid(CmsObjectValue cmsObjectValue) {
     for (final attribute in attributes) {
-      final attributValue = cmsObjectValue.getAttributValueByAttributId(attribute.id);
+      final attributeValue = cmsObjectValue.getAttributeValueByAttributeId(attribute.id);
 
-      if (!attribute.isValid(attributValue)) {
+      if (!attribute.isValid(attributeValue)) {
         return false;
       }
     }
@@ -100,8 +100,8 @@ class CmsObjectStructure extends Equatable {
     return true;
   }
 
-  CmsAttributStructure? getAttributById(String attributId) => attributes.firstWhereOrNull(
-        (attribut) => attribut.id.toLowerCase() == attributId.toLowerCase(),
+  CmsAttributeStructure? getAttributeById(String attributeId) => attributes.firstWhereOrNull(
+        (attribute) => attribute.id.toLowerCase() == attributeId.toLowerCase(),
       );
 
   @override

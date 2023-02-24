@@ -1,7 +1,7 @@
 import 'package:example/constants.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_cms/data_types/cms_attribut_value.dart';
+import 'package:flutter_cms/data_types/cms_attribute_value.dart';
 import 'package:flutter_cms/data_types/cms_file_value.dart';
 import 'package:flutter_cms/data_types/cms_object_value.dart';
 
@@ -28,13 +28,13 @@ class Blog {
     return CmsObjectValue(
       id: id,
       values: [
-        CmsAttributValue(id: 'id', value: id),
-        CmsAttributValue(id: 'title', value: title),
-        CmsAttributValue(id: 'content', value: content),
-        CmsAttributValue(id: 'day', value: day),
-        CmsAttributValue(id: 'sortOrder', value: sortOrder),
-        CmsAttributValue(id: 'color', value: color),
-        CmsAttributValue(
+        CmsAttributeValue(id: 'id', value: id),
+        CmsAttributeValue(id: 'title', value: title),
+        CmsAttributeValue(id: 'content', value: content),
+        CmsAttributeValue(id: 'day', value: day),
+        CmsAttributeValue(id: 'sortOrder', value: sortOrder),
+        CmsAttributeValue(id: 'color', value: color),
+        CmsAttributeValue(
           id: 'file',
           value: CmsFileValue(
             url: fileId != null
@@ -57,11 +57,11 @@ class Blog {
   }) {
     return Blog(
       id: id ?? cmsObjectValue.id as String,
-      title: cmsObjectValue.getAttributValueByAttributId('title'),
-      content: cmsObjectValue.getAttributValueByAttributId('content'),
-      day: cmsObjectValue.getAttributValueByAttributId('day'),
-      sortOrder: cmsObjectValue.getAttributValueByAttributId('sortOrder'),
-      color: cmsObjectValue.getAttributValueByAttributId('color'),
+      title: cmsObjectValue.getAttributeValueByAttributeId('title'),
+      content: cmsObjectValue.getAttributeValueByAttributeId('content'),
+      day: cmsObjectValue.getAttributeValueByAttributeId('day'),
+      sortOrder: cmsObjectValue.getAttributeValueByAttributeId('sortOrder'),
+      color: cmsObjectValue.getAttributeValueByAttributeId('color'),
       fileId: fileId,
     );
   }

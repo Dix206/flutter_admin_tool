@@ -11,7 +11,7 @@ Future<CmsResult<Unit>> createBlog(CmsObjectValue cmsObjectValue) async {
   try {
     final id = const Uuid().v4();
 
-    final file = cmsObjectValue.getAttributValueByAttributId<CmsFileValue?>('file');
+    final file = cmsObjectValue.getAttributeValueByAttributeId<CmsFileValue?>('file');
 
     if (file?.data != null) {
       final fileId = const Uuid().v4();

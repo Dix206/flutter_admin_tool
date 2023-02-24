@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:flutter_cms/data_types/cms_attribut_value.dart';
+import 'package:flutter_cms/data_types/cms_attribute_value.dart';
 
 class CmsObjectValueList extends Equatable {
   final List<CmsObjectValue> cmsObjectValues;
@@ -20,23 +20,23 @@ class CmsObjectValueList extends Equatable {
 
 class CmsObjectValue extends Equatable {
   final String? id;
-  final List<CmsAttributValue> values;
+  final List<CmsAttributeValue> values;
 
   const CmsObjectValue({
     required this.id,
     required this.values,
   });
 
-  S getAttributValueByAttributId<S extends Object?>(String id) {
+  S getAttributeValueByAttributeId<S extends Object?>(String id) {
     return values
         .firstWhere(
           (value) => value.id.toLowerCase() == id.toLowerCase(),
-          orElse: () => throw Exception('CmsAttributValue with id $id not found'),
+          orElse: () => throw Exception('CmsAttributeValue with id $id not found'),
         )
         .value as S;
   }
 
-  CmsObjectValue copyWithNewValue(CmsAttributValue newValue) {
+  CmsObjectValue copyWithNewValue(CmsAttributeValue newValue) {
     return CmsObjectValue(
       id: id,
       values: values
