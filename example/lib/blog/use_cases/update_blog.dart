@@ -2,36 +2,34 @@ import 'package:example/appwrite/client.dart';
 import 'package:example/blog/blog.dart';
 import 'package:example/blog/use_cases/blog_file_service.dart';
 import 'package:example/constants.dart';
-import 'package:flutter_cms/data_types/cms_file_value.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flat/flat.dart';
 import 'package:uuid/uuid.dart';
 
-Future<CmsResult<Unit>> updateBlog(CmsObjectValue cmsObjectValue) async {
+Future<FlatResult<Unit>> updateBlog(FlatObjectValue flatObjectValue) async {
   try {
     final document = await databases.getDocument(
       databaseId: databaseId,
       collectionId: blogCollectionId,
-      documentId: cmsObjectValue.id!,
+      documentId: flatObjectValue.id!,
     );
 
     final blog = Blog.fromJson(document.data);
 
     return _updateBlogFromExistingBlog(
       blog: blog,
-      cmsObjectValue: cmsObjectValue,
+      flatObjectValue: flatObjectValue,
     );
   } catch (exception) {
-    return CmsResult.error("Failed to create blog. Please try again");
+    return FlatResult.error("Failed to create blog. Please try again");
   }
 }
 
-Future<CmsResult<Unit>> _updateBlogFromExistingBlog({
-  required CmsObjectValue cmsObjectValue,
+Future<FlatResult<Unit>> _updateBlogFromExistingBlog({
+  required FlatObjectValue flatObjectValue,
   required Blog blog,
 }) async {
   try {
-    final file = cmsObjectValue.getAttributeValueByAttributeId<CmsFileValue?>('file');
+    final file = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('file');
 
     if (file?.data != null) {
       final fileId = const Uuid().v4();
@@ -46,11 +44,11 @@ Future<CmsResult<Unit>> _updateBlogFromExistingBlog({
       );
 
       return result.fold(
-        onError: (error) => CmsResult.error(error),
+        onError: (error) => FlatResult.error(error),
         onSuccess: (_) async {
-          final newBlog = Blog.fromCmsObjectValue(
-            cmsObjectValue: cmsObjectValue,
-            id: cmsObjectValue.id!,
+          final newBlog = Blog.fromFlatObjectValue(
+            flatObjectValue: flatObjectValue,
+            id: flatObjectValue.id!,
             fileId: fileId,
           );
 
@@ -60,7 +58,7 @@ Future<CmsResult<Unit>> _updateBlogFromExistingBlog({
             data: newBlog.toJson(),
             documentId: newBlog.id,
           );
-          return CmsResult.success(const Unit());
+          return FlatResult.success(const Unit());
         },
       );
     } else if (file?.wasDeleted == true && blog.fileId != null) {
@@ -69,11 +67,11 @@ Future<CmsResult<Unit>> _updateBlogFromExistingBlog({
       );
 
       return result.fold(
-        onError: (error) => CmsResult.error(error),
+        onError: (error) => FlatResult.error(error),
         onSuccess: (url) async {
-          final newBlog = Blog.fromCmsObjectValue(
-            cmsObjectValue: cmsObjectValue,
-            id: cmsObjectValue.id!,
+          final newBlog = Blog.fromFlatObjectValue(
+            flatObjectValue: flatObjectValue,
+            id: flatObjectValue.id!,
             fileId: null,
           );
 
@@ -83,14 +81,14 @@ Future<CmsResult<Unit>> _updateBlogFromExistingBlog({
             data: newBlog.toJson(),
             documentId: newBlog.id,
           );
-          return CmsResult.success(const Unit());
+          return FlatResult.success(const Unit());
         },
       );
     }
 
-    final newBlog = Blog.fromCmsObjectValue(
-      cmsObjectValue: cmsObjectValue,
-      id: cmsObjectValue.id!,
+    final newBlog = Blog.fromFlatObjectValue(
+      flatObjectValue: flatObjectValue,
+      id: flatObjectValue.id!,
       fileId: blog.fileId,
     );
 
@@ -100,8 +98,8 @@ Future<CmsResult<Unit>> _updateBlogFromExistingBlog({
       data: newBlog.toJson(),
       documentId: newBlog.id,
     );
-    return CmsResult.success(const Unit());
+    return FlatResult.success(const Unit());
   } catch (exception) {
-    return CmsResult.error("Failed to update article. Please try again");
+    return FlatResult.error("Failed to update article. Please try again");
   }
 }

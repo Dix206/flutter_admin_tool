@@ -2,9 +2,9 @@ import 'package:appwrite/appwrite.dart';
 import 'package:example/appwrite/client.dart';
 import 'package:example/article/article.dart';
 import 'package:example/constants.dart';
-import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flat/flat.dart';
 
-Future<CmsResult<List<Author>>> loadAuthors(String searchQuery) async {
+Future<FlatResult<List<Author>>> loadAuthors(String searchQuery) async {
   try {
     final databaseList = await databases.listDocuments(
       databaseId: databaseId,
@@ -14,10 +14,10 @@ Future<CmsResult<List<Author>>> loadAuthors(String searchQuery) async {
         Query.search("name", searchQuery),
       ],
     );
-    return CmsResult.success(
+    return FlatResult.success(
       databaseList.documents.map((document) => Author.fromJson(document.data)).toList(),
     );
   } catch (exception) {
-    return CmsResult.error("Failed to load authors. Please try again");
+    return FlatResult.error("Failed to load authors. Please try again");
   }
 }

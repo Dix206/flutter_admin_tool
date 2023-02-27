@@ -1,16 +1,16 @@
 import 'package:example/appwrite/client.dart';
 import 'package:example/constants.dart';
-import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flat/flat.dart';
 
-Future<CmsResult<Unit>> deleteBlog(String blogId) async {
+Future<FlatResult<Unit>> deleteBlog(String blogId) async {
   try {
     await databases.deleteDocument(
       databaseId: databaseId,
       collectionId: blogCollectionId,
       documentId: blogId,
     );
-    return CmsResult.success(const Unit());
+    return FlatResult.success(const Unit());
   } catch (exception) {
-    return CmsResult.error("Failed to delete blog. Please try again");
+    return FlatResult.error("Failed to delete blog. Please try again");
   }
 }

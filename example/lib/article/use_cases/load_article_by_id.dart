@@ -1,10 +1,9 @@
 import 'package:example/appwrite/client.dart';
 import 'package:example/article/article.dart';
 import 'package:example/constants.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flat/flat.dart';
 
-Future<CmsResult<CmsObjectValue>> loadArticleById(String articleId) async {
+Future<FlatResult<FlatObjectValue>> loadArticleById(String articleId) async {
   try {
     final document = await databases.getDocument(
       databaseId: databaseId,
@@ -24,13 +23,13 @@ Future<CmsResult<CmsObjectValue>> loadArticleById(String articleId) async {
 
     final jwt = await account.createJWT();
 
-    return CmsResult.success(
-      article.toCmsObjectValue(
+    return FlatResult.success(
+      article.toFlatObjectValue(
         authHeaders: {"x-appwrite-jwt": jwt.jwt},
         author: authorDocument == null ? null : Author.fromJson(authorDocument.data),
       ),
     );
   } catch (exception) {
-    return CmsResult.error("Failed to load article with ID $articleId.");
+    return FlatResult.error("Failed to load article with ID $articleId.");
   }
 }

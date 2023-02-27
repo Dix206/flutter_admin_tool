@@ -1,44 +1,39 @@
 import 'package:example/appwrite/auth_service.dart';
-import 'package:example/article/article_cms_object.dart';
-import 'package:example/blog/blog_cms_object.dart';
-import 'package:example/event/event_cms_object.dart';
+import 'package:example/article/article_flat_object.dart';
+import 'package:example/blog/blog_flat_object.dart';
+import 'package:example/event/event_flat_object.dart';
 import 'package:example/login.dart';
 import 'package:example/register.dart';
+import 'package:flat/flat.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
-import 'package:flutter_cms/data_types/cms_unauthorized_route.dart';
-import 'package:flutter_cms/data_types/cms_user_infos.dart';
-import 'package:flutter_cms/data_types/navigation_infos.dart';
-import 'package:flutter_cms/flutter_cms.dart';
-import 'package:flutter_cms/ui/widgets/cms_top_bar.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
-    FlutterCms(
-      getCmsObjectStructures: (account) => [
-        getBlogCmsObject(account),
-        articleCmsObject,
-        eventCmsObject,
+    FlatApp(
+      getFlatObjectStructures: (account) => [
+        getBlogFlatObject(account),
+        articleFlatObject,
+        eventFlatObject,
       ],
-      getCmsUserInfos: (account) => CmsUserInfos(
+      getFlatUserInfos: (account) => FlatUserInfos(
         name: account.name,
         email: account.email,
         role: account.prefs.data["role"] == "admin" ? "Admin" : "User",
       ),
-      cmsAuthInfos: CmsAuthInfos(
+      flatAuthInfos: FlatAuthInfos(
         getLoggedInUser: authAppwriteService.getLoggedInUser,
         onLogout: authAppwriteService.logout,
         loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
       ),
-      cmsCustomMenuEntries: [
-        CmsCustomMenuEntry(
+      flatCustomMenuEntries: [
+        FlatCustomMenuEntry(
           id: "test",
           displayName: "Test",
           contentBuilder: (context) => Column(
             children: const [
-              CmsTopBar(
+              FlatTopBar(
                 title: "Custom Content Title",
               ),
               Expanded(
@@ -50,8 +45,8 @@ void main() {
           ),
         ),
       ],
-      cmsUnauthorizedRoutes: [
-        CmsUnauthorizedRoute(
+      flatUnauthorizedRoutes: [
+        FlatUnauthorizedRoute(
           path: "/register/:parameter",
           pageBuilder: (context, state) {
             final parameter = state.params["parameter"] ?? "";

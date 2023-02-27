@@ -2,36 +2,34 @@ import 'package:example/appwrite/client.dart';
 import 'package:example/article/article.dart';
 import 'package:example/article/use_cases/article_image_service.dart';
 import 'package:example/constants.dart';
-import 'package:flutter_cms/data_types/cms_file_value.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flat/flat.dart';
 import 'package:uuid/uuid.dart';
 
-Future<CmsResult<Unit>> updateArticle(CmsObjectValue cmsObjectValue) async {
+Future<FlatResult<Unit>> updateArticle(FlatObjectValue flatObjectValue) async {
   try {
     final document = await databases.getDocument(
       databaseId: databaseId,
       collectionId: articleCollectionId,
-      documentId: cmsObjectValue.id!,
+      documentId: flatObjectValue.id!,
     );
 
     final article = Article.fromJson(document.data);
 
     return _updateArticleFromExistingArticle(
       article: article,
-      cmsObjectValue: cmsObjectValue,
+      flatObjectValue: flatObjectValue,
     );
   } catch (exception) {
-    return CmsResult.error("Failed to update article. Please try again");
+    return FlatResult.error("Failed to update article. Please try again");
   }
 }
 
-Future<CmsResult<Unit>> _updateArticleFromExistingArticle({
-  required CmsObjectValue cmsObjectValue,
+Future<FlatResult<Unit>> _updateArticleFromExistingArticle({
+  required FlatObjectValue flatObjectValue,
   required Article article,
 }) async {
   try {
-    final imageData = cmsObjectValue.getAttributeValueByAttributeId<CmsFileValue?>('image');
+    final imageData = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('image');
 
     if (imageData?.data != null) {
       final imageId = const Uuid().v4();
@@ -46,11 +44,11 @@ Future<CmsResult<Unit>> _updateArticleFromExistingArticle({
       );
 
       return result.fold(
-        onError: (error) => CmsResult.error(error),
+        onError: (error) => FlatResult.error(error),
         onSuccess: (url) async {
-          final newArticle = Article.fromCmsObjectValue(
-            cmsObjectValue: cmsObjectValue,
-            id: cmsObjectValue.id!,
+          final newArticle = Article.fromFlatObjectValue(
+            flatObjectValue: flatObjectValue,
+            id: flatObjectValue.id!,
             imageId: imageId,
           );
 
@@ -60,7 +58,7 @@ Future<CmsResult<Unit>> _updateArticleFromExistingArticle({
             data: newArticle.toJson(),
             documentId: newArticle.id,
           );
-          return CmsResult.success(const Unit());
+          return FlatResult.success(const Unit());
         },
       );
     } else if (imageData?.wasDeleted == true && article.imageId != null) {
@@ -69,11 +67,11 @@ Future<CmsResult<Unit>> _updateArticleFromExistingArticle({
       );
 
       return result.fold(
-        onError: (error) => CmsResult.error(error),
+        onError: (error) => FlatResult.error(error),
         onSuccess: (url) async {
-          final newArticle = Article.fromCmsObjectValue(
-            cmsObjectValue: cmsObjectValue,
-            id: cmsObjectValue.id!,
+          final newArticle = Article.fromFlatObjectValue(
+            flatObjectValue: flatObjectValue,
+            id: flatObjectValue.id!,
             imageId: null,
           );
 
@@ -83,14 +81,14 @@ Future<CmsResult<Unit>> _updateArticleFromExistingArticle({
             data: newArticle.toJson(),
             documentId: newArticle.id,
           );
-          return CmsResult.success(const Unit());
+          return FlatResult.success(const Unit());
         },
       );
     }
 
-    final newArticle = Article.fromCmsObjectValue(
-      cmsObjectValue: cmsObjectValue,
-      id: cmsObjectValue.id!,
+    final newArticle = Article.fromFlatObjectValue(
+      flatObjectValue: flatObjectValue,
+      id: flatObjectValue.id!,
       imageId: article.imageId,
     );
 
@@ -100,8 +98,8 @@ Future<CmsResult<Unit>> _updateArticleFromExistingArticle({
       data: newArticle.toJson(),
       documentId: newArticle.id,
     );
-    return CmsResult.success(const Unit());
+    return FlatResult.success(const Unit());
   } catch (exception) {
-    return CmsResult.error("Failed to update article. Please try again");
+    return FlatResult.error("Failed to update article. Please try again");
   }
 }

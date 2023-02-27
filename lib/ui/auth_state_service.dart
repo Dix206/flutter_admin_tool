@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/navigation_infos.dart';
+import 'package:flat/data_types/flat_auth_infos.dart';
 
 /// T is the type of the logged in user
 class AuthStateService<T extends Object> with ChangeNotifier {
-  final CmsAuthInfos<T> _cmsAuthInfos;
+  final FlatAuthInfos<T> _flatAuthInfos;
 
   T? _loggedInUser;
   bool _isInitialized = false;
 
   AuthStateService(
-    this._cmsAuthInfos,
+    this._flatAuthInfos,
   ) {
     _init();
   }
@@ -19,18 +19,18 @@ class AuthStateService<T extends Object> with ChangeNotifier {
   bool get isInitialized => _isInitialized;
 
   Future<void> onUserLoggedIn() async {
-    _loggedInUser = await _cmsAuthInfos.getLoggedInUser();
+    _loggedInUser = await _flatAuthInfos.getLoggedInUser();
     notifyListeners();
   }
 
   Future<void> onUserLoggedOut() async {
-    await _cmsAuthInfos.onLogout();
+    await _flatAuthInfos.onLogout();
     _loggedInUser = null;
     notifyListeners();
   }
 
   Future<void> _init() async {
-    _loggedInUser = await _cmsAuthInfos.getLoggedInUser();
+    _loggedInUser = await _flatAuthInfos.getLoggedInUser();
     _isInitialized = true;
     notifyListeners();
   }

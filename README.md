@@ -1,6 +1,6 @@
-# Flutter CMS
+# Flutter Flat
 
-Flutter CMS is a package that helps you set up an admin tool to create content for your backend just by defining the structure of your objects and the methods to handle the crud operations.
+Flutter Flat is a package that helps you set up an admin tool to create content for your backend just by defining the structure of your objects and the methods to handle the crud operations.
 
 IMPORTANT: This package is in early stages and not very well tested so far. Use it on your own risk.
 
@@ -9,56 +9,56 @@ IMPORTANT: This package is in early stages and not very well tested so far. Use 
 - [Setup](#setup)
 - [Handle authentication](#handle-authentication)
 - [Object Structures](#object-structures)
-- [Cms Attribute Structure](#cms-attribute-structure)
-  - [CmsAttributeString](#CmsAttributeString)
-  - [CmsAttributeBool](#CmsAttributeBool)
-  - [CmsAttributeInt](#CmsAttributeInt)
-  - [CmsAttributeDouble](#CmsAttributeDouble)
-  - [CmsAttributeColor](#CmsAttributeColor)
-  - [CmsAttributeDateTime](#CmsAttributeDateTime)
-  - [CmsAttributeDate](#CmsAttributeDate)
-  - [CmsAttributeTime](#CmsAttributeTime)
-  - [CmsAttributeHtml](#CmsAttributeHtml)
-  - [CmsAttributeImage](#CmsAttributeImage)
-  - [CmsAttributeFile](#CmsAttributeFile)
-  - [CmsAttributeLocation](#CmsAttributeLocation)
-  - [CmsAttributeSelection](#CmsAttributeSelection)
-  - [CmsAttributeList](#CmsAttributeList)
-  - [CmsAttributeReference](#CmsAttributeReference)
+- [Flat Attribute Structure](#flat-attribute-structure)
+  - [FlatAttributeString](#FlatAttributeString)
+  - [FlatAttributeBool](#FlatAttributeBool)
+  - [FlatAttributeInt](#FlatAttributeInt)
+  - [FlatAttributeDouble](#FlatAttributeDouble)
+  - [FlatAttributeColor](#FlatAttributeColor)
+  - [FlatAttributeDateTime](#FlatAttributeDateTime)
+  - [FlatAttributeDate](#FlatAttributeDate)
+  - [FlatAttributeTime](#FlatAttributeTime)
+  - [FlatAttributeHtml](#FlatAttributeHtml)
+  - [FlatAttributeImage](#FlatAttributeImage)
+  - [FlatAttributeFile](#FlatAttributeFile)
+  - [FlatAttributeLocation](#FlatAttributeLocation)
+  - [FlatAttributeSelection](#FlatAttributeSelection)
+  - [FlatAttributeList](#FlatAttributeList)
+  - [FlatAttributeReference](#FlatAttributeReference)
 - [Base Validator](#base-validator)
-- [CMS Object Structure CRUD Operations](#cms-object-structure-crud-operations)
-- [Load Cms Objects](#load-cms-objects)
+- [Flat Object Structure CRUD Operations](#flat-object-structure-crud-operations)
+- [Load Flat Objects](#load-flat-objects)
 - [Custom Strings](#custom-strings)
 - [Custom Screens](#custom-screens)
-  - [Cms Custom Menu Entry](#cms-custom-menu-entry)
-  - [Cms Unauthorized Route](#cms-unauthorized-route)
+  - [Flat Custom Menu Entry](#flat-custom-menu-entry)
+  - [Flat Unauthorized Route](#flat-unauthorized-route)
 - [Theming](#theming)
 
 
 ## Setup
-To start your cms app you just have to return the `FlutterCms` Widget in your `runApp` method. This will automatically setup all you need to run the app.
+To start your flat app you just have to return the `FlatApp` Widget in your `runApp` method. This will automatically setup all you need to run the app.
 
 ```dart
 void main() {
   runApp(
-    FlutterCms(
+    FlatApp(
         ...
     );
 }
 ```
 
 ## Handle authentication
-Flutter CMS is completely undependent from your used authentication method. You just have to pass a method to get the current logged in user to the `CmsAuthInfos`. If there currently is no logged in user, that method needs to return null. Based on that method Flutter CMS can check if the user is authenticated and allow/disallow specific routes.
+Flutter Flat is completely undependent from your used authentication method. You just have to pass a method to get the current logged in user to the `FlatAuthInfos`. If there currently is no logged in user, that method needs to return null. Based on that method Flutter Flat can check if the user is authenticated and allow/disallow specific routes.
 
 The passed `onLogout` will be called if the user wants to logout. After this method was called, the `getLoggedInUser` method should return null. The further logout functionality and button will automatically handled.
 
-Because there could be many different ways to login, you have to setup your login screen by yourself. This screen needs also be passed to the `CmsAuthInfos`. After you have successfully handled your login, you just have to call the given `onLoginSuccess` method. This will automatically navigate you into the Flutter Cms dashboard.
+Because there could be many different ways to login, you have to setup your login screen by yourself. This screen needs also be passed to the `FlatAuthInfos`. After you have successfully handled your login, you just have to call the given `onLoginSuccess` method. This will automatically navigate you into the Flutter Flat dashboard.
 
 ```dart
 void main() {
   runApp(
-    FlutterCms(
-        cmsAuthInfos: CmsAuthInfos(
+    FlatApp(
+        flatAuthInfos: FlatAuthInfos(
             getLoggedInUser: authService.getLoggedInUser,
             onLogout: authService.logout,
             loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
@@ -68,13 +68,13 @@ void main() {
 }
 ```
 
-You can optionally display informations about the logged in user. Therefore you need to set the `getCmsUserInfos`. That method will give you the currently logged in user which was returned by the `getLoggedInUser` method.
+You can optionally display informations about the logged in user. Therefore you need to set the `getFlatUserInfos`. That method will give you the currently logged in user which was returned by the `getLoggedInUser` method.
 
 ```dart
 void main() {
   runApp(
-    FlutterCms(
-        getCmsUserInfos: (loggedInUser) => CmsUserInfos(
+    FlatApp(
+        getFlatUserInfos: (loggedInUser) => FlatUserInfos(
             name: loggedInUser.name,
             email: loggedInUser.email,
             role: loggedInUser.prefs.data["role"] == "admin" ? "Admin" : "User",
@@ -85,9 +85,9 @@ void main() {
 ```
 
 ## Object Structures
-The main part of Flutter CMS is the content management. You can easely display, create, update and delete objects. All Flutter CMS needs for that is the data structure of your object and the methods to handle these crud operations.
+The main part of Flutter Flat is the content management. You can easely display, create, update and delete objects. All Flutter Flat needs for that is the data structure of your object and the methods to handle these crud operations.
 
-To define the data structure you have to pass a method to `getCmsObjectStructures` which returns a list of `CmsObjectStructure`. The method gives you the currently logged in user so you can change the functionality based on the logged in user. The `CmsObjectStructure` needs to have a list of attributes. Every attribute must extends the `CmsAttributeStructure`. Flutter CMS gives you a number of pre defined attributes but if you need a specific new attribute, you can define it by yourself.
+To define the data structure you have to pass a method to `getFlatObjectStructures` which returns a list of `FlatObjectStructure`. The method gives you the currently logged in user so you can change the functionality based on the logged in user. The `FlatObjectStructure` needs to have a list of attributes. Every attribute must extends the `FlatAttributeStructure`. Flutter Flat gives you a number of pre defined attributes but if you need a specific new attribute, you can define it by yourself.
 
 Not every of crud function needs to be set. If you dont pass a specific method, that functionality will automatically be disabled. As you get the current logged in user, it is possible to disable some of these crud functions for specific user.
 
@@ -95,33 +95,33 @@ Not every of crud function needs to be set. If you dont pass a specific method, 
 ```dart
 void main() {
   runApp(
-    FlutterCms(
-        getCmsObjectStructures: (loggedInUser) => [
-            CmsObjectStructure(
+    FlatApp(
+        getFlatObjectStructures: (loggedInUser) => [
+            FlatObjectStructure(
                 id: "event",
                 displayName: "Event",
                 attributes: [
-                    CmsAttributeString(
+                    FlatAttributeString(
                         id: "title",
                         displayName: "Title",
                         hint: "Enter a title",
                     ),
-                    CmsAttributeLocation(
+                    FlatAttributeLocation(
                         id: "location",
                         displayName: "Location",
                         invalidValueErrorMessage: "You have to enter valid location",
                     ),
-                    CmsAttributeTime(
+                    FlatAttributeTime(
                         id: "startingTime",
                         displayName: "Starting Time",
                         isOptional: true,
                     ),
                 ],
-                onCreateCmsObject: createEvent,
-                onUpdateCmsObject: updateEvent,
-                loadCmsObjectById: loadEventById,
-                onLoadCmsObjects: loadEvents,
-                onDeleteCmsObject: loggedInUser.isAdmin ? deleteEvent : null,
+                onCreateFlatObject: createEvent,
+                onUpdateFlatObject: updateEvent,
+                loadFlatObjectById: loadEventById,
+                onLoadFlatObjects: loadEvents,
+                onDeleteFlatObject: loggedInUser.isAdmin ? deleteEvent : null,
             ),
         ],
         ...
@@ -129,17 +129,17 @@ void main() {
 }
 ```
 
-## Cms Attribute Structure
-The `id` of every `CmsAttributeStructure` inside a `CmsObjectStructure` has to be unique. Its needed to identify a `CmsAttributeValue` inside a `CmsObjectValue` which are needed in the crud functions of a `CmsObjectStructure`.
-Every `CmsAttributeStructure` can be validated so that it will only be possible to pass a valid value. Just set the `validator` for that. If the user passed value is not valid the `invalidValueErrorMessage` will be displayed. So you can also handle the error message.
-By default every `CmsAttributeStructure` is required. You can set the parameter `isOptional` to true if also null values should be possible. If the attribute is required and not set, the `invalidValueErrorMessage` will be displayed.
-Flutter CMS has many pre defined `CmsAttributeStructure` elements. Here is a list of every existing element:
+## Flat Attribute Structure
+The `id` of every `FlatAttributeStructure` inside a `FlatObjectStructure` has to be unique. Its needed to identify a `FlatAttributeValue` inside a `FlatObjectValue` which are needed in the crud functions of a `FlatObjectStructure`.
+Every `FlatAttributeStructure` can be validated so that it will only be possible to pass a valid value. Just set the `validator` for that. If the user passed value is not valid the `invalidValueErrorMessage` will be displayed. So you can also handle the error message.
+By default every `FlatAttributeStructure` is required. You can set the parameter `isOptional` to true if also null values should be possible. If the attribute is required and not set, the `invalidValueErrorMessage` will be displayed.
+Flutter Flat has many pre defined `FlatAttributeStructure` elements. Here is a list of every existing element:
 
-### CmsAttributeString
+### FlatAttributeString
 
 Example:
 ```dart
-CmsAttributeString(
+FlatAttributeString(
     id: "title",
     displayName: "Title",
     hint: "Enter a title",
@@ -147,150 +147,150 @@ CmsAttributeString(
     maxLength: 15,
 )
 ```
-![Alt text](doc/CmsAttributeString.png "CmsAttributeString")
+![Alt text](doc/FlatAttributeString.png "FlatAttributeString")
 
-### CmsAttributeBool
-The `CmsAttributeBool` is by default required and cant be set optional. By default the `defaultValue` is false.
+### FlatAttributeBool
+The `FlatAttributeBool` is by default required and cant be set optional. By default the `defaultValue` is false.
 
 Example:
 ```dart
-CmsAttributeBool(
+FlatAttributeBool(
       id: "isActive",
       displayName: "Is Article active",
       canObjectBeSortedByThisAttribute: true,
 )
 ```
-![Alt text](doc/CmsAttributeBool.png "CmsAttributeBool")
+![Alt text](doc/FlatAttributeBool.png "FlatAttributeBool")
 
-### CmsAttributeInt
+### FlatAttributeInt
 Example:
 ```dart
-CmsAttributeInt(
+FlatAttributeInt(
           id: "sortOrder",
           displayName: "Sort Order",
           defaultValue: 0,
           canObjectBeSortedByThisAttribute: true,
 )
 ```
-![Alt text](doc/CmsAttributeInt.png "CmsAttributeInt")
+![Alt text](doc/FlatAttributeInt.png "FlatAttributeInt")
 
-### CmsAttributeDouble
+### FlatAttributeDouble
 Example:
 ```dart
-CmsAttributeDouble(
+FlatAttributeDouble(
       id: "price",
       displayName: "Price",
       hint: "12.34",
       invalidValueErrorMessage: "You have to enter valid a price",
       canObjectBeSortedByThisAttribute: true,
-      validator: CmsBaseValidator.isPrice,
+      validator: FlatBaseValidator.isPrice,
 )
 ```
-![Alt text](doc/CmsAttributeDouble.png "CmsAttributeDouble")
+![Alt text](doc/FlatAttributeDouble.png "FlatAttributeDouble")
 
-### CmsAttributeColor
+### FlatAttributeColor
 The color selection widget is build upon the [flutter_colorpicker](https://pub.dev/packages/flutter_colorpicker) package.
 
 Example:
 ```dart
-const CmsAttributeColor(
+const FlatAttributeColor(
         id: "color",
         displayName: "Color",
         isOptional: true,
 )
 ```
-![Alt text](doc/CmsAttributeColor.png "CmsAttributeColor")
-![Alt text](doc/CmsAttributeColorPicker.png "CmsAttributeColorPicker")
+![Alt text](doc/FlatAttributeColor.png "FlatAttributeColor")
+![Alt text](doc/FlatAttributeColorPicker.png "FlatAttributeColorPicker")
 
-### CmsAttributeDateTime
+### FlatAttributeDateTime
 Example:
 ```dart
-CmsAttributeDateTime(
+FlatAttributeDateTime(
       id: "timestamp",
       displayName: "Created at",
       minDateTime: DateTime(2020),
       maxDateTime: DateTime.now().add(const Duration(days: 365)),
 )
 ```
-![Alt text](doc/CmsAttributeDateTime.png "CmsAttributeDateTime")
+![Alt text](doc/FlatAttributeDateTime.png "FlatAttributeDateTime")
 
-### CmsAttributeDate
+### FlatAttributeDate
 Example:
 ```dart
-CmsAttributeDate(
+FlatAttributeDate(
     id: "day",
     displayName: "Day",
     defaultValue: DateTime(2020, 12, 12),
 )
 ```
-![Alt text](doc/CmsAttributeDate.png "CmsAttributeDate")
+![Alt text](doc/FlatAttributeDate.png "FlatAttributeDate")
 
-### CmsAttributeTime
+### FlatAttributeTime
 Example:
 ```dart
-const CmsAttributeTime(
+const FlatAttributeTime(
       id: "startingTime",
       displayName: "Starting Time",
       invalidValueErrorMessage: "You have to enter starting time",
     )
 ```
-![Alt text](doc/CmsAttributeTime.png "CmsAttributeTime")
+![Alt text](doc/FlatAttributeTime.png "FlatAttributeTime")
 
-### CmsAttributeHtml
+### FlatAttributeHtml
 The html widget is build upon the [quill_html_editor](https://pub.dev/packages/quill_html_editor) package. Because it is an embadded web library, there could be some unwanted behavior in the UI.
 
 Example:
 ```dart
-const CmsAttributeHtml(
+const FlatAttributeHtml(
         id: "content",
         displayName: "Content",
 )
 ```
-![Alt text](doc/CmsAttributeHtml.png "CmsAttributeHtml")
+![Alt text](doc/FlatAttributeHtml.png "FlatAttributeHtml")
 
-### CmsAttributeImage
+### FlatAttributeImage
 The image selection is build upon the [file_picker](https://pub.dev/packages/file_picker) package.
 
 Example:
 ```dart
-CmsAttributeImage(
+FlatAttributeImage(
     id: "image",
     displayName: "Image",
     isOptional: true,
 )
 ```
-![Alt text](doc/CmsAttributeImage.png "CmsAttributeImage")
+![Alt text](doc/FlatAttributeImage.png "FlatAttributeImage")
 
-### CmsAttributeFile
+### FlatAttributeFile
 The file selection is build upon the [file_picker](https://pub.dev/packages/file_picker) package.
 
 Example:
 ```dart
-CmsAttributeFile(
+FlatAttributeFile(
     id: "file",
     displayName: "File",
     isOptional: true,
 )
 ```
-![Alt text](doc/CmsAttributeFile.png "CmsAttributeFile")
+![Alt text](doc/FlatAttributeFile.png "FlatAttributeFile")
 
-### CmsAttributeLocation
+### FlatAttributeLocation
 Example:
 ```dart
-CmsAttributeLocation(
+FlatAttributeLocation(
     id: "location",
     displayName: "Location",
     invalidValueErrorMessage: "You have to enter valid location",
 )
 ```
-![Alt text](doc/CmsAttributeLocation.png "CmsAttributeLocation")
+![Alt text](doc/FlatAttributeLocation.png "FlatAttributeLocation")
 
-### CmsAttributeSelection
+### FlatAttributeSelection
 The selected object could be of any type. 
 
 Example:
 ```dart
-CmsAttributeSelection<EventType>(
+FlatAttributeSelection<EventType>(
     id: "eventType",
     displayName: "Typ",
     invalidValueErrorMessage: "You have to select a typ",
@@ -298,17 +298,17 @@ CmsAttributeSelection<EventType>(
     optionToString: (option) => option.name,
 )
 ```
-![Alt text](doc/CmsAttributeSelection.png "CmsAttributeSelection")
+![Alt text](doc/FlatAttributeSelection.png "FlatAttributeSelection")
 
-### CmsAttributeList
-You can use `CmsAttributeList`to add a list of attributes to your object. The type of the attributes will be defined by the parameter `CmsAttributeStructure`. There you have to pass a `CmsAttributeStructure`. You can use any `CmsAttributeStructure` you want. The behaviour for adding a new attribute instance to the list will be defined in there.
+### FlatAttributeList
+You can use `FlatAttributeList`to add a list of attributes to your object. The type of the attributes will be defined by the parameter `FlatAttributeStructure`. There you have to pass a `FlatAttributeStructure`. You can use any `FlatAttributeStructure` you want. The behaviour for adding a new attribute instance to the list will be defined in there.
 
 Example:
 ```dart
-CmsAttributeList(
+FlatAttributeList(
     id: "neededItems",
     displayName: "Needed Items",
-    CmsAttributeStructure: CmsAttributeString(
+    FlatAttributeStructure: FlatAttributeString(
         id: "item",
         displayName: "Item",
         hint: "Item",
@@ -316,17 +316,17 @@ CmsAttributeList(
     ),
 )
 ```
-![Alt text](doc/CmsAttributeList.png "CmsAttributeList")
-![Alt text](doc/CmsAttributeListSelectedItems.png "CmsAttributeListSelectedItems")
+![Alt text](doc/FlatAttributeList.png "FlatAttributeList")
+![Alt text](doc/FlatAttributeListSelectedItems.png "FlatAttributeListSelectedItems")
 
-### CmsAttributeReference
+### FlatAttributeReference
 This attribute gives you the possibility to search for an option which will be selected. You can define that function and return a list of possible items which can be selected. You also have to pass a function for the parameter `getReferenceDisplayString`. This function has to return the display string for a passed item.
 
 A common use case is to add a reference to another object. 
 
 Example:
 ```dart
-CmsAttributeReference<Author>(
+FlatAttributeReference<Author>(
     id: "author",
     displayName: "Author",
     searchFunction: loadAuthors,
@@ -334,7 +334,7 @@ CmsAttributeReference<Author>(
     isOptional: true,
 )
 
-Future<CmsResult<List<Author>>> loadAuthors(String searchQuery) async {
+Future<FlatResult<List<Author>>> loadAuthors(String searchQuery) async {
     final authors = [
         Author(id: 1, name: "Jan"),
         Author(id: 1, name: "Fritz"),
@@ -343,40 +343,40 @@ Future<CmsResult<List<Author>>> loadAuthors(String searchQuery) async {
 
     final filteredAuthors = authors.where((author) => author.name.startsWith(searchQuery)).toList();
 
-    return CmsResult.success(filteredAuthors);
+    return FlatResult.success(filteredAuthors);
 }
 ```
 
-![Alt text](doc/CmsAttributeReference.png "CmsAttributeReference")
+![Alt text](doc/FlatAttributeReference.png "FlatAttributeReference")
 
 
 ## Base Validator
-Flutter CMS offers you some base validation methods that you can use inside your `CmsAttributeStructure`. You can find them inside the `CmsBaseValidator` class.
+Flutter Flat offers you some base validation methods that you can use inside your `FlatAttributeStructure`. You can find them inside the `FlatBaseValidator` class.
 
-## CMS Object Structure CRUD Operations
-In an `CmsObjectStructure` you need to define CRUD functions which connects Flutter CMS with your backend. Every of these functions returns a Future of `CmsResult`. The `CmsResult` has two constructors `CmsResult.success` and `CmsResult.error`. If your function succeeds you can use the `CmsResult.success` constructor and pass the required data. If a function shouldnt return any data you need to pass a new `Unit` object: `CmsResult.success(Unit())`. This is for example the case in the delete function. There we only need the information if the action was successful. So you could emagine `Unit()` as `void`. If the action wasnt successful you should use the `CmsResult.error` constructor and pass an error message string. That string will be displayed to the user.
+## Flat Object Structure CRUD Operations
+In an `FlatObjectStructure` you need to define CRUD functions which connects Flutter Flat with your backend. Every of these functions returns a Future of `FlatResult`. The `FlatResult` has two constructors `FlatResult.success` and `FlatResult.error`. If your function succeeds you can use the `FlatResult.success` constructor and pass the required data. If a function shouldnt return any data you need to pass a new `Unit` object: `FlatResult.success(Unit())`. This is for example the case in the delete function. There we only need the information if the action was successful. So you could emagine `Unit()` as `void`. If the action wasnt successful you should use the `FlatResult.error` constructor and pass an error message string. That string will be displayed to the user.
 
 Example:
 
 ```dart
-Future<CmsResult<Unit>> deleteEvent(String eventId) async {
+Future<FlatResult<Unit>> deleteEvent(String eventId) async {
   try {
     final response = await client.delete("/event/$eventId");
 
     if(response.status == 404) {
-        return CmsResult.error("There exists no event with the id $eventId")
+        return FlatResult.error("There exists no event with the id $eventId")
     } else {
-        return CmsResult.success(const Unit());
+        return FlatResult.success(const Unit());
     }
   } catch (exception) {
-    return CmsResult.error("Failed to delete event. Please try again");
+    return FlatResult.error("Failed to delete event. Please try again");
   }
 }
 ```
 
-To get and pass instances of the pre defined `CmsObjectStructure` there will be used the object `CmsObjectValue`. That object gets an `id` which is the id of the instance, not the id of the `CmsObjectStructure`. Also it has a list of `CmsAttributeValue`. That list should contain a value for every `CmsAttributeStructure` defined in the `CmsObjectStructure`. Its important that the `id` which is set in an `CmsAttributeValue` is the same as the `id` in the defined `CmsAttributeStructure` to which it belongs to. Thats neccessary to load the value of the attribute in a `CmsObjectValue` with the method `getAttributeValueByAttributeId`.
+To get and pass instances of the pre defined `FlatObjectStructure` there will be used the object `FlatObjectValue`. That object gets an `id` which is the id of the instance, not the id of the `FlatObjectStructure`. Also it has a list of `FlatAttributeValue`. That list should contain a value for every `FlatAttributeStructure` defined in the `FlatObjectStructure`. Its important that the `id` which is set in an `FlatAttributeValue` is the same as the `id` in the defined `FlatAttributeStructure` to which it belongs to. Thats neccessary to load the value of the attribute in a `FlatObjectValue` with the method `getAttributeValueByAttributeId`.
 
-It is a good practice to define a seperate model for the `CmsObjectStructure` with `fromCmsObjectValue` and `toCmsObjectValue` methods. Similar to the `fromJson` and `toJson` methods. That makes it possible to work with that model in a typesave way. 
+It is a good practice to define a seperate model for the `FlatObjectStructure` with `fromFlatObjectValue` and `toFlatObjectValue` methods. Similar to the `fromJson` and `toJson` methods. That makes it possible to work with that model in a typesave way. 
 
 Example:
 ```dart
@@ -395,65 +395,65 @@ class Event {
     required this.startingTime,
   });
 
-  CmsObjectValue toCmsObjectValue() {
-    return CmsObjectValue(
+  FlatObjectValue toFlatObjectValue() {
+    return FlatObjectValue(
       id: id,
       values: [
-        CmsAttributeValue(id: 'id', value: id),
-        CmsAttributeValue(id: 'title', value: title),
-        CmsAttributeValue(
+        FlatAttributeValue(id: 'id', value: id),
+        FlatAttributeValue(id: 'title', value: title),
+        FlatAttributeValue(
           id: 'location',
           value: locationLatitude != null && locationLongitude != null
-              ? CmsLocation(
+              ? FlatLocation(
                   latitude: locationLatitude!,
                   longitude: locationLongitude!,
                 )
               : null,
         ),
-        CmsAttributeValue(id: 'startingTime', value: startingTime),
+        FlatAttributeValue(id: 'startingTime', value: startingTime),
       ],
     );
   }
 
-  factory Event.fromCmsObjectValue({
-    required CmsObjectValue cmsObjectValue,
+  factory Event.fromFlatObjectValue({
+    required FlatObjectValue flatObjectValue,
     String? id,
   }) {
     return Event(
-      id: id ?? cmsObjectValue.id!,
-      title: cmsObjectValue.getAttributeValueByAttributeId('title'),
-      locationLatitude: (cmsObjectValue.getAttributeValueByAttributeId('location') as CmsLocation?)?.latitude,
-      locationLongitude: (cmsObjectValue.getAttributeValueByAttributeId('location') as CmsLocation?)?.longitude,
-      startingTime: cmsObjectValue.getAttributeValueByAttributeId('startingTime'),
+      id: id ?? flatObjectValue.id!,
+      title: flatObjectValue.getAttributeValueByAttributeId('title'),
+      locationLatitude: (flatObjectValue.getAttributeValueByAttributeId('location') as FlatLocation?)?.latitude,
+      locationLongitude: (flatObjectValue.getAttributeValueByAttributeId('location') as FlatLocation?)?.longitude,
+      startingTime: flatObjectValue.getAttributeValueByAttributeId('startingTime'),
     );
   }
 }
 ```
 
-### Load Cms Objects
-The most complex function is `OnLoadCmsObjects`. Thats because this function also handles pagination, filtering and sorting items. 
+### Load Flat Objects
+The most complex function is `OnLoadFlatObjects`. Thats because this function also handles pagination, filtering and sorting items. 
 
-For the pagination behavior it doesnt directly return a list of `CmsObjectValue` but an `CmsObjectValueList` object, which contains that `CmsObjectValue` list. Additionaly the `CmsObjectValueList` needs an `overallPageCount` value. This is needed to handle the pagination correctly.
+For the pagination behavior it doesnt directly return a list of `FlatObjectValue` but an `FlatObjectValueList` object, which contains that `FlatObjectValue` list. Additionaly the `FlatObjectValueList` needs an `overallPageCount` value. This is needed to handle the pagination correctly.
 
-The `OnLoadCmsObjects` function gets an `page` value. Thats the value of the page which should be loaded and returned from the function. The size of each page could be defined by yourself. 
+The `OnLoadFlatObjects` function gets an `page` value. Thats the value of the page which should be loaded and returned from the function. The size of each page could be defined by yourself. 
 
 The only search parameter for now is `searchQuery`. That optional parameter contains the search text which was entered by the user to filter the objects. How implement that filter is up to you.
 
-For sort functionality an optional value of `CmsObjectSortOptions` will be passed. That object contains the attributeId of the attribute according to which sorting is to take place. If the value `ascending` is set to true, the attribute should be sorted ascending, otherwise descending. The objects can only be sorted by attributes where the values `shouldBeDisplayedOnOverviewTable` and `canObjectBeSortedByThisAttribute` both where set to true. 
+For sort functionality an optional value of `FlatObjectSortOptions` will be passed. That object contains the attributeId of the attribute according to which sorting is to take place. If the value `ascending` is set to true, the attribute should be sorted ascending, otherwise descending. The objects can only be sorted by attributes where the values `shouldBeDisplayedOnOverviewTable` and `canObjectBeSortedByThisAttribute` both where set to true. 
 
 ## Custom Strings
-You can override every string which is used in Flutter CMS. To do that you need to pass a `CmsTexts` object to the `FlutterCms` widget. That object contains all strings which are used in Flutter CMS. You can find the default strings in the constructor of the `CmsTexts` class.
+You can override every string which is used in Flutter Flat. To do that you need to pass a `FlatTexts` object to the `FlatApp`. That object contains all strings which are used in Flutter Flat. You can find the default strings in the constructor of the `FlatTexts` class.
 
 ## Custom Screens
 You can define two kinds of custom screens. One is a custom menu entry which is displayed in the main menu and the other one is a public screen which can be reached before the user is logged in.
  
-### Cms Custom Menu Entry
-To define custom menu entries you need to pass a list of `CmsCustomMenuEntry` to the `FlutterCms` widget. The `id` of a `CmsCustomMenuEntry` will be used for navigation and will be shown in the url. The `displayName` will be visible in the menu and the `contentBuilder` has to return the widget which should be shown if the menu entry is selected.
+### Flat Custom Menu Entry
+To define custom menu entries you need to pass a list of `FlatCustomMenuEntry` to the `FlatApp`. The `id` of a `FlatCustomMenuEntry` will be used for navigation and will be shown in the url. The `displayName` will be visible in the menu and the `contentBuilder` has to return the widget which should be shown if the menu entry is selected.
 
 These menu entries can only be reached if the user is logged in. So it is possible to display content there based on the logged in user.
 
-### Cms Unauthorized Route
-A `CmsUnauthorizedRoute` is a route which can be reached before the user logged in. You can pass a list of `CmsUnauthorizedRoute` to the `FlutterCms` widget to define these routes. As Flutter CMS uses GoRouter for navigation you can reach your passed routes simply by using the GoRouter and navigate with it to your passed `path`. You also have to pass a `pageBuilder` to the `CmsUnauthorizedRoute`. This is the same pageBuilder you would pass to the `GoRouter`. So it is also possible to work with parameters. It is not possible to navigate to these routes if the user is logged in. Examples for using these routes could be a registration or a forgot password screen.
+### Flat Unauthorized Route
+A `FlatUnauthorizedRoute` is a route which can be reached before the user logged in. You can pass a list of `FlatUnauthorizedRoute` to the `FlatApp` to define these routes. As Flutter Flat uses GoRouter for navigation you can reach your passed routes simply by using the GoRouter and navigate with it to your passed `path`. You also have to pass a `pageBuilder` to the `FlatUnauthorizedRoute`. This is the same pageBuilder you would pass to the `GoRouter`. So it is also possible to work with parameters. It is not possible to navigate to these routes if the user is logged in. Examples for using these routes could be a registration or a forgot password screen.
 
 ## Theming
-To customize the look and feel of Flutter CMS you can use just pass your own `lightTheme`and `darkTheme` to `FlutterCms` widget. The mainly used colors are `background`, `surface` and `primary`. So you can get a good result by just changing these colors.
+To customize the look and feel of Flutter Flat you can use just pass your own `lightTheme`and `darkTheme` to `FlatApp`. The mainly used colors are `background`, `surface` and `primary`. So you can get a good result by just changing these colors.

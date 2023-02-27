@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_texts.dart';
-import 'package:flutter_cms/data_types/cms_unauthorized_route.dart';
-import 'package:flutter_cms/ui/auth_state_service.dart';
-import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
-import 'package:flutter_cms/data_types/cms_custom_menu_entry.dart';
-import 'package:flutter_cms/extensions/iterable_extensions.dart';
-import 'package:flutter_cms/flutter_cms.dart';
-import 'package:flutter_cms/data_types/navigation_infos.dart';
-import 'package:flutter_cms/ui/screens/cms_main_screen.dart';
-import 'package:flutter_cms/ui/screens/overview/overview_screen.dart';
-import 'package:flutter_cms/ui/screens/settings/settings_screen.dart';
-import 'package:flutter_cms/ui/screens/insert_cms_object/insert_cms_object_screen.dart';
+import 'package:flat/data_types/flat_texts.dart';
+import 'package:flat/data_types/flat_unauthorized_route.dart';
+import 'package:flat/ui/auth_state_service.dart';
+import 'package:flat/data_types/flat_object_sort_options.dart';
+import 'package:flat/data_types/flat_custom_menu_entry.dart';
+import 'package:flat/extensions/iterable_extensions.dart';
+import 'package:flat/flat_app.dart';
+import 'package:flat/data_types/flat_auth_infos.dart';
+import 'package:flat/ui/screens/flat_main_screen.dart';
+import 'package:flat/ui/screens/overview/overview_screen.dart';
+import 'package:flat/ui/screens/settings/settings_screen.dart';
+import 'package:flat/ui/screens/insert_flat_object/insert_flat_object_screen.dart';
 import 'package:go_router/go_router.dart';
 
 /// T is the type of the logged in user
 GoRouter getGoRouter<T extends Object>({
-  required CmsAuthInfos<T> cmsAuthInfos,
-  required GetCmsObjectStructures<T> getCmsObjectStructures,
+  required FlatAuthInfos<T> flatAuthInfos,
+  required GetFlatObjectStructures<T> getFlatObjectStructures,
   required AuthStateService<T> authStateService,
-  required List<CmsCustomMenuEntry> cmsCustomMenuEntries,
-  required List<CmsUnauthorizedRoute> cmsUnauthorizedRoutes,
-  required CmsTexts cmsTexts,
+  required List<FlatCustomMenuEntry> flatCustomMenuEntries,
+  required List<FlatUnauthorizedRoute> flatUnauthorizedRoutes,
+  required FlatTexts flatTexts,
 }) {
   return GoRouter(
     initialLocation: Routes.login,
@@ -34,7 +34,7 @@ GoRouter getGoRouter<T extends Object>({
         return null;
       } else if (authStateService.isLoggedIn && !isAuthRoute) {
         return Routes.overview(
-          cmsObjectId: getCmsObjectStructures(authStateService.loggedInUser!).first.id,
+          flatObjectId: getFlatObjectStructures(authStateService.loggedInUser!).first.id,
           page: 1,
           searchQuery: null,
           sortOptions: null,
@@ -46,30 +46,30 @@ GoRouter getGoRouter<T extends Object>({
       }
     },
     routes: [
-      ...cmsUnauthorizedRoutes.map(
-        (cmsUnauthorizedRoute) => FadeRoute(
-          path: cmsUnauthorizedRoute.path,
-          childBuilder: cmsUnauthorizedRoute.pageBuilder,
+      ...flatUnauthorizedRoutes.map(
+        (flatUnauthorizedRoute) => FadeRoute(
+          path: flatUnauthorizedRoute.path,
+          childBuilder: flatUnauthorizedRoute.pageBuilder,
         ),
       ),
       FadeRoute(
         path: Routes.login,
-        childBuilder: (context, state) => cmsAuthInfos.loginScreenBuilder(
+        childBuilder: (context, state) => flatAuthInfos.loginScreenBuilder(
           authStateService.onUserLoggedIn,
         ),
       ),
       ShellRoute(
         builder: (context, state, child) {
-          final cmsObjectId = state.params['cmsObjectId'];
+          final flatObjectId = state.params['flatObjectId'];
           final customMenuEntryId = state.params['customMenuEntryId'];
           final mainScreenTab = state.location == Routes.settings
-              ? CmsMainScreenTab.settings
+              ? FlatMainScreenTab.settings
               : state.location.startsWith("/custom/")
-                  ? CmsMainScreenTab.custom
-                  : CmsMainScreenTab.overview;
+                  ? FlatMainScreenTab.custom
+                  : FlatMainScreenTab.overview;
 
-          return CmsMainScreen(
-            selectedCmsObjectId: cmsObjectId,
+          return FlatMainScreen(
+            selectedFlatObjectId: flatObjectId,
             selectedCustomMenuEntryId: customMenuEntryId,
             selectedTab: mainScreenTab,
             child: child,
@@ -82,38 +82,38 @@ GoRouter getGoRouter<T extends Object>({
               return const SettingsScreen();
             },
           ),
-          ...cmsCustomMenuEntries.map(
+          ...flatCustomMenuEntries.map(
             (customMenuEntry) => FadeRoute(
               path: "/custom/:customMenuEntryId",
               childBuilder: (context, state) {
                 final customMenuEntryId = state.params['customMenuEntryId'];
-                final customMenuEntry = cmsCustomMenuEntries.firstWhereOrNull(
+                final customMenuEntry = flatCustomMenuEntries.firstWhereOrNull(
                   (entry) => entry.id == customMenuEntryId,
                 );
 
                 return customMenuEntry?.contentBuilder(context) ??
                     Center(
-                      child: Text(cmsTexts.noCmsCustomMenuEntryFoundWithId),
+                      child: Text(flatTexts.noFlatCustomMenuEntryFoundWithId),
                     );
               },
             ),
           ),
           FadeRoute(
-            path: "/overview/:cmsObjectId",
+            path: "/overview/:flatObjectId",
             childBuilder: (context, state) {
-              final cmsObjectId = state.params['cmsObjectId'] ?? "";
+              final flatObjectId = state.params['flatObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
               final pageString = state.queryParams['page'] ?? "1";
               final sortAttributeId = state.queryParams['sortAttribute'];
               final sortAscending = state.queryParams['sortAscending'] == "true";
 
               return OverviewScreen(
-                selectedCmsObjectId: cmsObjectId,
+                selectedFlatObjectId: flatObjectId,
                 searchQuery: searchQuery,
                 page: int.tryParse(pageString) ?? 1,
                 sortOptions: sortAttributeId == null
                     ? null
-                    : CmsObjectSortOptions(
+                    : FlatObjectSortOptions(
                         attributeId: sortAttributeId,
                         ascending: sortAscending,
                       ),
@@ -121,22 +121,22 @@ GoRouter getGoRouter<T extends Object>({
             },
           ),
           FadeRoute(
-            path: "/overview/:cmsObjectId/create",
+            path: "/overview/:flatObjectId/create",
             childBuilder: (context, state) {
-              final cmsObjectId = state.params['cmsObjectId'] ?? "";
+              final flatObjectId = state.params['flatObjectId'] ?? "";
               final searchQuery = state.queryParams['searchQuery'];
               final pageString = state.queryParams['page'] ?? "";
               final sortAttributeId = state.queryParams['sortAttribute'];
               final sortAscending = state.queryParams['sortAscending'] == "true";
 
-              return InsertCmsObjectScreen(
-                cmsObjectId: cmsObjectId,
-                existingCmsObjectValueId: null,
+              return InsertFlatObjectScreen(
+                flatObjectId: flatObjectId,
+                existingFlatObjectValueId: null,
                 searchQuery: searchQuery,
                 page: int.tryParse(pageString),
                 sortOptions: sortAttributeId == null
                     ? null
-                    : CmsObjectSortOptions(
+                    : FlatObjectSortOptions(
                         attributeId: sortAttributeId,
                         ascending: sortAscending,
                       ),
@@ -144,23 +144,23 @@ GoRouter getGoRouter<T extends Object>({
             },
           ),
           FadeRoute(
-            path: "/overview/:cmsObjectId/update/:existingCmsObjectValueId",
+            path: "/overview/:flatObjectId/update/:existingFlatObjectValueId",
             childBuilder: (context, state) {
-              final cmsObjectId = state.params['cmsObjectId'] ?? "";
-              final existingCmsObjectValueId = state.params['existingCmsObjectValueId'];
+              final flatObjectId = state.params['flatObjectId'] ?? "";
+              final existingFlatObjectValueId = state.params['existingFlatObjectValueId'];
               final searchQuery = state.queryParams['searchQuery'];
               final pageString = state.queryParams['page'] ?? "";
               final sortAttributeId = state.queryParams['sortAttribute'];
               final sortAscending = state.queryParams['sortAscending'] == "true";
 
-              return InsertCmsObjectScreen(
-                cmsObjectId: cmsObjectId,
-                existingCmsObjectValueId: existingCmsObjectValueId,
+              return InsertFlatObjectScreen(
+                flatObjectId: flatObjectId,
+                existingFlatObjectValueId: existingFlatObjectValueId,
                 searchQuery: searchQuery,
                 page: int.tryParse(pageString),
                 sortOptions: sortAttributeId == null
                     ? null
-                    : CmsObjectSortOptions(
+                    : FlatObjectSortOptions(
                         attributeId: sortAttributeId,
                         ascending: sortAscending,
                       ),
@@ -178,44 +178,44 @@ class Routes {
   static String settings = "/settings";
   static customMenuEntry(String customMenuEntryId) => "/custom/$customMenuEntryId";
   static overview({
-    required String cmsObjectId,
+    required String flatObjectId,
     required String? searchQuery,
     required int page,
-    required CmsObjectSortOptions? sortOptions,
+    required FlatObjectSortOptions? sortOptions,
   }) {
     final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
     final sortOptionsPath =
         sortOptions == null ? "" : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
-    return "/overview/$cmsObjectId?page=$page$searchQueryPath$sortOptionsPath";
+    return "/overview/$flatObjectId?page=$page$searchQueryPath$sortOptionsPath";
   }
 
   static updateObject({
-    required String cmsObjectId,
-    required Object existingCmsObjectValueId,
+    required String flatObjectId,
+    required Object existingFlatObjectValueId,
     required String? searchQuery,
     required int? page,
-    required CmsObjectSortOptions? sortOptions,
+    required FlatObjectSortOptions? sortOptions,
   }) {
     final pagePath = "?page=$page";
     final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
     final sortOptionsPath =
         sortOptions == null ? "" : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
 
-    return "/overview/$cmsObjectId/update/$existingCmsObjectValueId$pagePath$searchQueryPath$sortOptionsPath";
+    return "/overview/$flatObjectId/update/$existingFlatObjectValueId$pagePath$searchQueryPath$sortOptionsPath";
   }
 
   static createObject({
-    required String cmsObjectId,
+    required String flatObjectId,
     required String? searchQuery,
     required int? page,
-    required CmsObjectSortOptions? sortOptions,
+    required FlatObjectSortOptions? sortOptions,
   }) {
     final pagePath = "?page=$page";
     final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
     final sortOptionsPath =
         sortOptions == null ? "" : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
 
-    return "/overview/$cmsObjectId/create$pagePath$searchQueryPath$sortOptionsPath";
+    return "/overview/$flatObjectId/create$pagePath$searchQueryPath$sortOptionsPath";
   }
 }
 

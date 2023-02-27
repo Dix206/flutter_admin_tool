@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
-import 'package:flutter_cms/ui/screens/overview/cms_object_overview.dart';
-import 'package:flutter_cms/flutter_cms.dart';
+import 'package:flat/data_types/flat_object_sort_options.dart';
+import 'package:flat/ui/screens/overview/flat_object_overview.dart';
+import 'package:flat/flat_app.dart';
 
 class OverviewScreen extends StatelessWidget {
-  final String selectedCmsObjectId;
+  final String selectedFlatObjectId;
   final String? searchQuery;
   final int page;
-  final CmsObjectSortOptions? sortOptions;
+  final FlatObjectSortOptions? sortOptions;
 
   const OverviewScreen({
     Key? key,
-    required this.selectedCmsObjectId,
+    required this.selectedFlatObjectId,
     required this.searchQuery,
     required this.page,
     required this.sortOptions,
@@ -19,23 +19,23 @@ class OverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedCmsObjectStructure = FlutterCms.getCmsObjectStructureById(
+    final selectedFlatObjectStructure = FlatApp.getFlatObjectStructureById(
       context: context,
-      cmsObjectId: selectedCmsObjectId,
+      flatObjectId: selectedFlatObjectId,
     );
 
-    return selectedCmsObjectStructure == null
+    return selectedFlatObjectStructure == null
         ? Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                FlutterCms.getCmsTexts(context).noCmsObjectStructureObjectFoundWithPassedId(selectedCmsObjectId),
+                FlatApp.getFlatTexts(context).noFlatObjectStructureObjectFoundWithPassedId(selectedFlatObjectId),
                 textAlign: TextAlign.center,
               ),
             ),
           )
-        : CmsObjectOverview(
-            cmsObject: selectedCmsObjectStructure,
+        : FlatObjectOverview(
+            flatObject: selectedFlatObjectStructure,
             searchQuery: searchQuery,
             page: page,
             sortOptions: sortOptions,

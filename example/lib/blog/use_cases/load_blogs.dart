@@ -2,14 +2,12 @@ import 'package:appwrite/appwrite.dart';
 import 'package:example/appwrite/client.dart';
 import 'package:example/blog/blog.dart';
 import 'package:example/constants.dart';
-import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flat/flat.dart';
 
-Future<CmsResult<CmsObjectValueList>> loadBlogs({
+Future<FlatResult<FlatObjectValueList>> loadBlogs({
   required int page,
   required String? searchQuery,
-  required CmsObjectSortOptions? sortOptions,
+  required FlatObjectSortOptions? sortOptions,
 }) async {
   try {
     const itemsToLoad = 10;
@@ -28,12 +26,12 @@ Future<CmsResult<CmsObjectValueList>> loadBlogs({
 
     final jwt = await account.createJWT();
 
-    return CmsResult.success(
-      CmsObjectValueList(
-        cmsObjectValues: databaseList.documents
+    return FlatResult.success(
+      FlatObjectValueList(
+        flatObjectValues: databaseList.documents
             .map((document) => Blog.fromJson(document.data))
             .map(
-              (blog) => blog.toCmsObjectValue(
+              (blog) => blog.toFlatObjectValue(
                 {"x-appwrite-jwt": jwt.jwt},
               ),
             )
@@ -42,6 +40,6 @@ Future<CmsResult<CmsObjectValueList>> loadBlogs({
       ),
     );
   } catch (exception) {
-    return CmsResult.error("Failed to load blogs. Please try again");
+    return FlatResult.error("Failed to load blogs. Please try again");
   }
 }

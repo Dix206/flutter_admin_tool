@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/flutter_cms.dart';
+import 'package:flat/flat_app.dart';
 
 void showErrorMessage({
   required BuildContext context,
@@ -8,12 +8,12 @@ void showErrorMessage({
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text(FlutterCms.getCmsTexts(context).errorMessageTitle),
+      title: Text(FlatApp.getFlatTexts(context).errorMessageTitle),
       content: Text(errorMessage),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(FlutterCms.getCmsTexts(context).ok),
+          child: Text(FlatApp.getFlatTexts(context).ok),
         ),
       ],
     ),

@@ -2,14 +2,12 @@ import 'package:appwrite/appwrite.dart';
 import 'package:example/appwrite/client.dart';
 import 'package:example/constants.dart';
 import 'package:example/event/event.dart';
-import 'package:flutter_cms/data_types/cms_object_sort_options.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flat/flat.dart';
 
-Future<CmsResult<CmsObjectValueList>> loadEvents({
+Future<FlatResult<FlatObjectValueList>> loadEvents({
   required int page,
   required String? searchQuery,
-  required CmsObjectSortOptions? sortOptions,
+  required FlatObjectSortOptions? sortOptions,
 }) async {
   try {
     const itemsToLoad = 10;
@@ -26,16 +24,16 @@ Future<CmsResult<CmsObjectValueList>> loadEvents({
       ],
     );
 
-    return CmsResult.success(
-      CmsObjectValueList(
-        cmsObjectValues: databaseList.documents
+    return FlatResult.success(
+      FlatObjectValueList(
+        flatObjectValues: databaseList.documents
             .map((document) => Event.fromJson(document.data))
-            .map((event) => event.toCmsObjectValue())
+            .map((event) => event.toFlatObjectValue())
             .toList(),
         overallPageCount: (databaseList.total / itemsToLoad).ceil(),
       ),
     );
   } catch (exception) {
-    return CmsResult.error("Failed to load events. Please try again");
+    return FlatResult.error("Failed to load events. Please try again");
   }
 }

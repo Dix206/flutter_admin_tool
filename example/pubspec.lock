@@ -137,18 +137,18 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.5"
-  flutter:
-    dependency: "direct main"
-    description: flutter
-    source: sdk
-    version: "0.0.0"
-  flutter_cms:
+  flat:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
     version: "0.0.1"
+  flutter:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_colorpicker:
     dependency: transitive
     description:

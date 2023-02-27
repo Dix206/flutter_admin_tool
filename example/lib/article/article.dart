@@ -1,8 +1,6 @@
 import 'package:example/constants.dart';
 
-import 'package:flutter_cms/data_types/cms_attribute_value.dart';
-import 'package:flutter_cms/data_types/cms_file_value.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
+import 'package:flat/flat.dart';
 
 class Article {
   final String id;
@@ -23,19 +21,19 @@ class Article {
     required this.authorId,
   });
 
-  CmsObjectValue toCmsObjectValue({
+  FlatObjectValue toFlatObjectValue({
     required Map<String, String> authHeaders,
     required Author? author,
   }) {
-    return CmsObjectValue(
+    return FlatObjectValue(
       id: id,
       values: [
-        CmsAttributeValue(id: 'id', value: id),
-        CmsAttributeValue(id: 'title', value: title),
-        CmsAttributeValue(id: 'description', value: description),
-        CmsAttributeValue(
+        FlatAttributeValue(id: 'id', value: id),
+        FlatAttributeValue(id: 'title', value: title),
+        FlatAttributeValue(id: 'description', value: description),
+        FlatAttributeValue(
           id: 'image',
-          value: CmsFileValue(
+          value: FlatFileValue(
             url: imageId != null
                 ? '$appwriteHost/storage/buckets/articles/files/$imageId/view?project=$appwriteProjectId'
                 : null,
@@ -45,26 +43,26 @@ class Article {
             wasDeleted: false,
           ),
         ),
-        CmsAttributeValue(id: 'timestamp', value: timestamp),
-        CmsAttributeValue(id: 'isActive', value: isActive),
-        CmsAttributeValue(id: 'author', value: author),
+        FlatAttributeValue(id: 'timestamp', value: timestamp),
+        FlatAttributeValue(id: 'isActive', value: isActive),
+        FlatAttributeValue(id: 'author', value: author),
       ],
     );
   }
 
-  factory Article.fromCmsObjectValue({
-    required CmsObjectValue cmsObjectValue,
+  factory Article.fromFlatObjectValue({
+    required FlatObjectValue flatObjectValue,
     String? id,
     required String? imageId,
   }) {
     return Article(
-      id: id ?? cmsObjectValue.id as String,
-      title: cmsObjectValue.getAttributeValueByAttributeId('title'),
-      description: cmsObjectValue.getAttributeValueByAttributeId('description'),
+      id: id ?? flatObjectValue.id as String,
+      title: flatObjectValue.getAttributeValueByAttributeId('title'),
+      description: flatObjectValue.getAttributeValueByAttributeId('description'),
       imageId: imageId,
-      timestamp: cmsObjectValue.getAttributeValueByAttributeId('timestamp'),
-      isActive: cmsObjectValue.getAttributeValueByAttributeId('isActive'),
-      authorId: (cmsObjectValue.getAttributeValueByAttributeId('author') as Author?)?.id,
+      timestamp: flatObjectValue.getAttributeValueByAttributeId('timestamp'),
+      isActive: flatObjectValue.getAttributeValueByAttributeId('isActive'),
+      authorId: (flatObjectValue.getAttributeValueByAttributeId('author') as Author?)?.id,
     );
   }
 

@@ -2,15 +2,13 @@ import 'package:example/appwrite/client.dart';
 import 'package:example/article/article.dart';
 import 'package:example/article/use_cases/article_image_service.dart';
 import 'package:example/constants.dart';
-import 'package:flutter_cms/data_types/cms_file_value.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flat/flat.dart';
 import 'package:uuid/uuid.dart';
 
-Future<CmsResult<Unit>> createArticle(CmsObjectValue cmsObjectValue) async {
+Future<FlatResult<Unit>> createArticle(FlatObjectValue flatObjectValue) async {
   try {
     final id = const Uuid().v4();
-    final imageData = cmsObjectValue.getAttributeValueByAttributeId<CmsFileValue?>('image');
+    final imageData = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('image');
 
     if (imageData?.data != null) {
       final imageId = const Uuid().v4();
@@ -20,10 +18,10 @@ Future<CmsResult<Unit>> createArticle(CmsObjectValue cmsObjectValue) async {
       );
 
       return result.fold(
-          onError: (error) => CmsResult.error(error),
+          onError: (error) => FlatResult.error(error),
           onSuccess: (url) async {
-            final article = Article.fromCmsObjectValue(
-              cmsObjectValue: cmsObjectValue,
+            final article = Article.fromFlatObjectValue(
+              flatObjectValue: flatObjectValue,
               id: id,
               imageId: imageId,
             );
@@ -34,12 +32,12 @@ Future<CmsResult<Unit>> createArticle(CmsObjectValue cmsObjectValue) async {
               data: article.toJson(),
               documentId: article.id,
             );
-            return CmsResult.success(const Unit());
+            return FlatResult.success(const Unit());
           });
     }
 
-    final article = Article.fromCmsObjectValue(
-      cmsObjectValue: cmsObjectValue,
+    final article = Article.fromFlatObjectValue(
+      flatObjectValue: flatObjectValue,
       id: id,
       imageId: null,
     );
@@ -50,8 +48,8 @@ Future<CmsResult<Unit>> createArticle(CmsObjectValue cmsObjectValue) async {
       data: article.toJson(),
       documentId: article.id,
     );
-    return CmsResult.success(const Unit());
+    return FlatResult.success(const Unit());
   } catch (exception) {
-    return CmsResult.error("Failed to create article. Please try again");
+    return FlatResult.error("Failed to create article. Please try again");
   }
 }

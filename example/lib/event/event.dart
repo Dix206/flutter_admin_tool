@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data_types/attribute_implementations/cms_attribute_location/cms_location.dart';
-import 'package:flutter_cms/data_types/cms_attribute_value.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
+import 'package:flat/flat.dart';
 
 class Event {
   final String id;
@@ -28,46 +26,46 @@ class Event {
     required this.startingTime,
   });
 
-  CmsObjectValue toCmsObjectValue() {
-    return CmsObjectValue(
+  FlatObjectValue toFlatObjectValue() {
+    return FlatObjectValue(
       id: id,
       values: [
-        CmsAttributeValue(id: 'id', value: id),
-        CmsAttributeValue(id: 'title', value: title),
-        CmsAttributeValue(id: 'price', value: price),
-        CmsAttributeValue(id: 'phoneNumber', value: phoneNumber),
-        CmsAttributeValue(id: 'email', value: email),
-        CmsAttributeValue(
+        FlatAttributeValue(id: 'id', value: id),
+        FlatAttributeValue(id: 'title', value: title),
+        FlatAttributeValue(id: 'price', value: price),
+        FlatAttributeValue(id: 'phoneNumber', value: phoneNumber),
+        FlatAttributeValue(id: 'email', value: email),
+        FlatAttributeValue(
           id: 'location',
           value: locationLatitude != null && locationLongitude != null
-              ? CmsLocation(
+              ? FlatLocation(
                   latitude: locationLatitude!,
                   longitude: locationLongitude!,
                 )
               : null,
         ),
-        CmsAttributeValue(id: 'eventType', value: eventType),
-        CmsAttributeValue(id: 'neededItems', value: neededItems),
-        CmsAttributeValue(id: 'startingTime', value: startingTime),
+        FlatAttributeValue(id: 'eventType', value: eventType),
+        FlatAttributeValue(id: 'neededItems', value: neededItems),
+        FlatAttributeValue(id: 'startingTime', value: startingTime),
       ],
     );
   }
 
-  factory Event.fromCmsObjectValue({
-    required CmsObjectValue cmsObjectValue,
+  factory Event.fromFlatObjectValue({
+    required FlatObjectValue flatObjectValue,
     String? id,
   }) {
     return Event(
-      id: id ?? cmsObjectValue.id!,
-      title: cmsObjectValue.getAttributeValueByAttributeId('title'),
-      price: cmsObjectValue.getAttributeValueByAttributeId('price'),
-      phoneNumber: cmsObjectValue.getAttributeValueByAttributeId('phoneNumber'),
-      email: cmsObjectValue.getAttributeValueByAttributeId('email'),
-      locationLatitude: (cmsObjectValue.getAttributeValueByAttributeId('location') as CmsLocation?)?.latitude,
-      locationLongitude: (cmsObjectValue.getAttributeValueByAttributeId('location') as CmsLocation?)?.longitude,
-      eventType: cmsObjectValue.getAttributeValueByAttributeId('eventType'),
-      neededItems: (cmsObjectValue.getAttributeValueByAttributeId('neededItems') as List<dynamic>?)?.cast(),
-      startingTime: cmsObjectValue.getAttributeValueByAttributeId('startingTime'),
+      id: id ?? flatObjectValue.id!,
+      title: flatObjectValue.getAttributeValueByAttributeId('title'),
+      price: flatObjectValue.getAttributeValueByAttributeId('price'),
+      phoneNumber: flatObjectValue.getAttributeValueByAttributeId('phoneNumber'),
+      email: flatObjectValue.getAttributeValueByAttributeId('email'),
+      locationLatitude: (flatObjectValue.getAttributeValueByAttributeId('location') as FlatLocation?)?.latitude,
+      locationLongitude: (flatObjectValue.getAttributeValueByAttributeId('location') as FlatLocation?)?.longitude,
+      eventType: flatObjectValue.getAttributeValueByAttributeId('eventType'),
+      neededItems: (flatObjectValue.getAttributeValueByAttributeId('neededItems') as List<dynamic>?)?.cast(),
+      startingTime: flatObjectValue.getAttributeValueByAttributeId('startingTime'),
     );
   }
 

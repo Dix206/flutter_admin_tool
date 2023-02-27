@@ -1,16 +1,15 @@
 import 'package:example/appwrite/client.dart';
 import 'package:example/constants.dart';
 import 'package:example/event/event.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flat/flat.dart';
 import 'package:uuid/uuid.dart';
 
-Future<CmsResult<Unit>> createEvent(CmsObjectValue cmsObjectValue) async {
+Future<FlatResult<Unit>> createEvent(FlatObjectValue flatObjectValue) async {
   try {
     final id = const Uuid().v4();
 
-    final event = Event.fromCmsObjectValue(
-      cmsObjectValue: cmsObjectValue,
+    final event = Event.fromFlatObjectValue(
+      flatObjectValue: flatObjectValue,
       id: id,
     );
 
@@ -20,8 +19,8 @@ Future<CmsResult<Unit>> createEvent(CmsObjectValue cmsObjectValue) async {
       data: event.toJson(),
       documentId: event.id,
     );
-    return CmsResult.success(const Unit());
+    return FlatResult.success(const Unit());
   } catch (exception) {
-    return CmsResult.error("Failed to create event. Please try again");
+    return FlatResult.error("Failed to create event. Please try again");
   }
 }

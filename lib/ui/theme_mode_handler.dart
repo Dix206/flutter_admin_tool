@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cms/data/app_shared_preferences.dart';
+import 'package:flat/data/app_shared_preferences.dart';
 
 class ThemeModeHandler extends StatefulWidget {
   final Widget Function(ThemeMode themeMode) childBuilder;

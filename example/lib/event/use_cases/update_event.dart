@@ -1,12 +1,11 @@
 import 'package:example/appwrite/client.dart';
 import 'package:example/constants.dart';
 import 'package:example/event/event.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
-import 'package:flutter_cms/data_types/cms_result.dart';
+import 'package:flat/flat.dart';
 
-Future<CmsResult<Unit>> updateEvent(CmsObjectValue cmsObjectValue) async {
+Future<FlatResult<Unit>> updateEvent(FlatObjectValue flatObjectValue) async {
   try {
-    final event = Event.fromCmsObjectValue(cmsObjectValue: cmsObjectValue);
+    final event = Event.fromFlatObjectValue(flatObjectValue: flatObjectValue);
 
     await databases.updateDocument(
       databaseId: databaseId,
@@ -14,8 +13,8 @@ Future<CmsResult<Unit>> updateEvent(CmsObjectValue cmsObjectValue) async {
       data: event.toJson(),
       documentId: event.id,
     );
-    return CmsResult.success(const Unit());
+    return FlatResult.success(const Unit());
   } catch (exception) {
-    return CmsResult.error("Failed to update event. Please try again");
+    return FlatResult.error("Failed to update event. Please try again");
   }
 }

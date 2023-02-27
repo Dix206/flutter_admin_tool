@@ -1,9 +1,6 @@
 import 'package:example/constants.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_cms/data_types/cms_attribute_value.dart';
-import 'package:flutter_cms/data_types/cms_file_value.dart';
-import 'package:flutter_cms/data_types/cms_object_value.dart';
+import 'package:flat/flat.dart';
 
 class Blog {
   final String id;
@@ -24,19 +21,19 @@ class Blog {
     required this.fileId,
   });
 
-  CmsObjectValue toCmsObjectValue(Map<String, String> authHeaders) {
-    return CmsObjectValue(
+  FlatObjectValue toFlatObjectValue(Map<String, String> authHeaders) {
+    return FlatObjectValue(
       id: id,
       values: [
-        CmsAttributeValue(id: 'id', value: id),
-        CmsAttributeValue(id: 'title', value: title),
-        CmsAttributeValue(id: 'content', value: content),
-        CmsAttributeValue(id: 'day', value: day),
-        CmsAttributeValue(id: 'sortOrder', value: sortOrder),
-        CmsAttributeValue(id: 'color', value: color),
-        CmsAttributeValue(
+        FlatAttributeValue(id: 'id', value: id),
+        FlatAttributeValue(id: 'title', value: title),
+        FlatAttributeValue(id: 'content', value: content),
+        FlatAttributeValue(id: 'day', value: day),
+        FlatAttributeValue(id: 'sortOrder', value: sortOrder),
+        FlatAttributeValue(id: 'color', value: color),
+        FlatAttributeValue(
           id: 'file',
-          value: CmsFileValue(
+          value: FlatFileValue(
             url: fileId != null
                 ? '$appwriteHost/storage/buckets/blog/files/$fileId/view?project=$appwriteProjectId'
                 : null,
@@ -50,18 +47,18 @@ class Blog {
     );
   }
 
-  factory Blog.fromCmsObjectValue({
-    required CmsObjectValue cmsObjectValue,
+  factory Blog.fromFlatObjectValue({
+    required FlatObjectValue flatObjectValue,
     String? id,
     required String? fileId,
   }) {
     return Blog(
-      id: id ?? cmsObjectValue.id as String,
-      title: cmsObjectValue.getAttributeValueByAttributeId('title'),
-      content: cmsObjectValue.getAttributeValueByAttributeId('content'),
-      day: cmsObjectValue.getAttributeValueByAttributeId('day'),
-      sortOrder: cmsObjectValue.getAttributeValueByAttributeId('sortOrder'),
-      color: cmsObjectValue.getAttributeValueByAttributeId('color'),
+      id: id ?? flatObjectValue.id as String,
+      title: flatObjectValue.getAttributeValueByAttributeId('title'),
+      content: flatObjectValue.getAttributeValueByAttributeId('content'),
+      day: flatObjectValue.getAttributeValueByAttributeId('day'),
+      sortOrder: flatObjectValue.getAttributeValueByAttributeId('sortOrder'),
+      color: flatObjectValue.getAttributeValueByAttributeId('color'),
       fileId: fileId,
     );
   }
