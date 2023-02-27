@@ -15,6 +15,19 @@ typedef OnLoadFlatObjects = Future<FlatResult<FlatObjectValueList>> Function({
   required FlatObjectSortOptions? sortOptions,
 });
 
+class FlatPaginationInfo<T extends Object> extends Equatable {
+  final int page;
+  final T? lastLoadedObject;
+
+  const FlatPaginationInfo({
+    required this.page,
+    required this.lastLoadedObject,
+  });
+
+  @override
+  List<Object?> get props => [page, lastLoadedObject];
+}
+
 /// This Class represents an object in the Flat-App. It should be used for every object which is stored in your backend.
 /// The id of an FlatObject will always be a string. If your id isnt a string you have to convert it to a string while loading [FlatObjectValues] and load the id from a string while getting the id of a [FlatObjectValue].
 class FlatObjectStructure extends Equatable {

@@ -5,20 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Main",
+            "name": "Appwrite Example",
             "request": "launch",
             "type": "dart",
-            "program": "example/lib/main.dart",
+            "program": "examples/appwrite_example/lib/main.dart",
         },
         {
-            "name": "Main Mac",
+            "name": "Firebase Example",
             "request": "launch",
             "type": "dart",
-            "program": "example/lib/main.dart",
-            "args": [
-                "-d",
-                "macos"
-            ],
+            "program": "examples/firebase_example/lib/main.dart",
         },
     ]
 }

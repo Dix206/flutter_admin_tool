@@ -71,8 +71,8 @@ class _FlatAttributeHtmlWidgetState extends State<FlatAttributeHtmlWidget> {
           height: 400,
           text: widget.currentValue,
           onTextChanged: widget.onFlatTypeUpdated,
-          defaultFontColor: Theme.of(context).colorScheme.onBackground,
-          backgroundColor: Theme.of(context).colorScheme.background,
+          // defaultFontColor: Theme.of(context).colorScheme.onBackground,
+          // backgroundColor: Theme.of(context).colorScheme.background,
         ),
         if (!isValid && widget.shouldDisplayValidationErrors)
           Padding(
