@@ -95,6 +95,9 @@ class FlatObjectOverviewTable extends StatelessWidget {
                                 overallPages: state.totalPages,
                                 searchQuery: searchQuery,
                                 sortOptions: sortOptions,
+                                hasMoreItems: state.hasMoreItems,
+                                isLoadingMoreItems: state.isLoadingMoreItems,
+                                loadMoreItemsError: state.loadMoreItemsError,
                               );
                             }
                           },
@@ -190,13 +193,16 @@ class _TableTitle extends StatelessWidget {
   }
 }
 
-class _TableContent extends StatelessWidget {
+class _TableContent extends StatefulWidget {
   final FlatObjectStructure flatObject;
   final List<FlatObjectValue> flatObjectValues;
   final int page;
   final int overallPages;
   final String? searchQuery;
   final FlatObjectSortOptions? sortOptions;
+  final bool hasMoreItems;
+  final bool isLoadingMoreItems;
+  final String? loadMoreItemsError;
 
   const _TableContent({
     Key? key,
@@ -206,19 +212,54 @@ class _TableContent extends StatelessWidget {
     required this.overallPages,
     required this.searchQuery,
     required this.sortOptions,
+    required this.hasMoreItems,
+    required this.isLoadingMoreItems,
+    required this.loadMoreItemsError,
   }) : super(key: key);
+
+  @override
+  State<_TableContent> createState() => _TableContentState();
+}
+
+class _TableContentState extends State<_TableContent> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.offset + 50 > _scrollController.position.maxScrollExtent &&
+          widget.loadMoreItemsError == null) {
+        FlatObjectOverviewViewModel.of(context).loadMoreItems();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       physics: const ClampingScrollPhysics(),
-      itemCount: flatObjectValues.length,
+      controller: _scrollController,
+      itemCount:
+          widget.flatObjectValues.length + (widget.isLoadingMoreItems || widget.loadMoreItemsError != null ? 1 : 0),
       separatorBuilder: (context, index) => const Divider(height: 0),
       itemBuilder: (context, index) {
-        final flatObjectValue = flatObjectValues[index];
+        if (index == widget.flatObjectValues.length) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: widget.loadMoreItemsError != null
+                ? FlatErrorWidget(
+                    errorMessage: widget.loadMoreItemsError!,
+                    onRetry: FlatObjectOverviewViewModel.of(context).loadMoreItems,
+                  )
+                : const FlatLoading(),
+          );
+        }
+
+        final flatObjectValue = widget.flatObjectValues[index];
 
         return InkWell(
-          onTap: flatObject.onUpdateFlatObject == null
+          onTap: widget.flatObject.onUpdateFlatObject == null
               ? null
               : () => _updateObject(
                     context: context,
@@ -234,11 +275,12 @@ class _TableContent extends StatelessWidget {
               ...flatObjectValue.values
                   .where(
                     (flatAttributeValue) =>
-                        flatObject.getAttributeById(flatAttributeValue.id)?.shouldBeDisplayedOnOverviewTable ?? false,
+                        widget.flatObject.getAttributeById(flatAttributeValue.id)?.shouldBeDisplayedOnOverviewTable ??
+                        false,
                   )
                   .map(
                     (flatAttributeValue) => _TableEntry(
-                      text: flatObject.getAttributeById(flatAttributeValue.id)?.valueToString(
+                      text: widget.flatObject.getAttributeById(flatAttributeValue.id)?.valueToString(
                                 context: context,
                                 value: flatAttributeValue.value,
                               ) ??
@@ -260,11 +302,11 @@ class _TableContent extends StatelessWidget {
   }) {
     context.go(
       Routes.updateObject(
-        flatObjectId: flatObject.id,
+        flatObjectId: widget.flatObject.id,
         existingFlatObjectValueId: flatObjectValue.id!,
-        page: page,
-        searchQuery: searchQuery,
-        sortOptions: sortOptions,
+        page: widget.page,
+        searchQuery: widget.searchQuery,
+        sortOptions: widget.sortOptions,
       ),
     );
   }

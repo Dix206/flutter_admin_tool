@@ -4,7 +4,7 @@ import 'package:example/constants.dart';
 import 'package:example/event/event.dart';
 import 'package:flat/flat.dart';
 
-Future<FlatResult<FlatObjectValueList>> loadEvents({
+Future<FlatResult<FlatOffsetObjectValueList>> loadEvents({
   required int page,
   required String? searchQuery,
   required FlatObjectSortOptions? sortOptions,
@@ -25,7 +25,7 @@ Future<FlatResult<FlatObjectValueList>> loadEvents({
     );
 
     return FlatResult.success(
-      FlatObjectValueList(
+      FlatOffsetObjectValueList(
         flatObjectValues: databaseList.documents
             .map((document) => Event.fromJson(document.data))
             .map((event) => event.toFlatObjectValue())

@@ -59,6 +59,6 @@ final articleFlatObject = FlatObjectStructure(
   onCreateFlatObject: createArticle,
   onUpdateFlatObject: updateArticle,
   loadFlatObjectById: loadArticleById,
-  onLoadFlatObjects: loadArticles,
+  onLoadFlatObjects: LoadFlatObjects.offset(loadArticles),
   onDeleteFlatObject: deleteArticle,
 );

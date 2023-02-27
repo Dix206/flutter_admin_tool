@@ -4,7 +4,7 @@ import 'package:example/blog/blog.dart';
 import 'package:example/constants.dart';
 import 'package:flat/flat.dart';
 
-Future<FlatResult<FlatObjectValueList>> loadBlogs({
+Future<FlatResult<FlatOffsetObjectValueList>> loadBlogs({
   required int page,
   required String? searchQuery,
   required FlatObjectSortOptions? sortOptions,
@@ -27,7 +27,7 @@ Future<FlatResult<FlatObjectValueList>> loadBlogs({
     final jwt = await account.createJWT();
 
     return FlatResult.success(
-      FlatObjectValueList(
+      FlatOffsetObjectValueList(
         flatObjectValues: databaseList.documents
             .map((document) => Blog.fromJson(document.data))
             .map(

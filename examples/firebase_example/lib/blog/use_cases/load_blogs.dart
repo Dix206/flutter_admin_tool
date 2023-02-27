@@ -3,8 +3,8 @@ import 'package:firebase_example/blog/blog.dart';
 import 'package:firebase_example/constants.dart';
 import 'package:flat/flat.dart';
 
-Future<FlatResult<FlatObjectValueList>> loadBlogs({
-  required int page,
+Future<FlatResult<FlatCurserObjectValueList>> loadBlogs({
+  required String? lastLoadedObjectId,
   required String? searchQuery,
   required FlatObjectSortOptions? sortOptions,
 }) async {
@@ -13,23 +13,21 @@ Future<FlatResult<FlatObjectValueList>> loadBlogs({
 
     final query = FirebaseFirestore.instance.collection(blogCollectionId);
     final sortedQuery = sortOptions == null
-        ? query
+        ? query.orderBy("id", descending: true)
         : query.orderBy(sortOptions.attributeId, descending: !sortOptions.ascending);
     final filteredQuery = searchQuery == null ? sortedQuery : sortedQuery.where("title", isGreaterThan: searchQuery);
-    final aggregateQuerySnapshot = await filteredQuery.count().get();
-    final limetedQuery = filteredQuery.startAfter([page * itemsToLoad]) .limit(itemsToLoad);
-    final documentSnapshots = await limetedQuery.get();
+    final paginationQuery = lastLoadedObjectId != null ? filteredQuery.startAfter([lastLoadedObjectId]) : filteredQuery;
+    final documentSnapshots = await paginationQuery.limit(itemsToLoad).get();
 
     return FlatResult.success(
-      FlatObjectValueList(
+      FlatCurserObjectValueList(
         flatObjectValues: documentSnapshots.docs
             .map((document) => Blog.fromJson(document.data()))
             .map(
-              (blog) => blog.toFlatObjectValue(
-              ),
+              (blog) => blog.toFlatObjectValue(),
             )
             .toList(),
-        overallPageCount: (aggregateQuerySnapshot.count / itemsToLoad).ceil(),
+        hasMoreItems: documentSnapshots.docs.length == itemsToLoad,
       ),
     );
   } catch (exception) {

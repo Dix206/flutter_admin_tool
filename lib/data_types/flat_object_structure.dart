@@ -9,23 +9,49 @@ import 'package:flat/extensions/iterable_extensions.dart';
 typedef LoadFlatObjectById = Future<FlatResult<FlatObjectValue>> Function(String id);
 typedef OnManipulateFlatObject = Future<FlatResult<Unit>> Function(FlatObjectValue);
 typedef OnDeleteFlatObject = Future<FlatResult<Unit>> Function(String id);
-typedef OnLoadFlatObjects = Future<FlatResult<FlatObjectValueList>> Function({
+typedef OnLoadFlatObjectsOffset = Future<FlatResult<FlatOffsetObjectValueList>> Function({
   required int page,
   required String? searchQuery,
   required FlatObjectSortOptions? sortOptions,
 });
+typedef OnLoadFlatObjectsCurser = Future<FlatResult<FlatCurserObjectValueList>> Function({
+  required String? lastLoadedObjectId,
+  required String? searchQuery,
+  required FlatObjectSortOptions? sortOptions,
+});
 
-class FlatPaginationInfo<T extends Object> extends Equatable {
-  final int page;
-  final T? lastLoadedObject;
+class LoadFlatObjects extends Equatable {
+  final OnLoadFlatObjectsOffset? offsetLoading;
+  final OnLoadFlatObjectsCurser? curserLoading;
 
-  const FlatPaginationInfo({
-    required this.page,
-    required this.lastLoadedObject,
+  const LoadFlatObjects._({
+    required this.offsetLoading,
+    required this.curserLoading,
   });
 
+  factory LoadFlatObjects.offset(OnLoadFlatObjectsOffset offsetLoading) => LoadFlatObjects._(
+        offsetLoading: offsetLoading,
+        curserLoading: null,
+      );
+
+  factory LoadFlatObjects.curser(OnLoadFlatObjectsCurser curserLoading) => LoadFlatObjects._(
+        offsetLoading: null,
+        curserLoading: curserLoading,
+      );
+
+  S fold<S>({
+    required S Function(OnLoadFlatObjectsOffset offsetLoading) onOffsetLoading,
+    required S Function(OnLoadFlatObjectsCurser curserLoading) onCurserLoading,
+  }) {
+    if (offsetLoading != null) {
+      return onOffsetLoading(offsetLoading!);
+    } else {
+      return onCurserLoading(curserLoading!);
+    }
+  }
+
   @override
-  List<Object?> get props => [page, lastLoadedObject];
+  List<Object?> get props => [offsetLoading, curserLoading];
 }
 
 /// This Class represents an object in the Flat-App. It should be used for every object which is stored in your backend.
@@ -47,8 +73,8 @@ class FlatObjectStructure extends Equatable {
   final List<FlatAttributeStructure> attributes;
 
   /// This method should return values of this flat object based on passed filters and pagination.
-  /// If there are no more items to load, the [FlatObjectValueList.hasMoreItems] should be set to false.
-  final OnLoadFlatObjects onLoadFlatObjects;
+  /// If there are no more items to load, the [FlatOffsetObjectValueList.hasMoreItems] should be set to false.
+  final LoadFlatObjects onLoadFlatObjects;
 
   /// This method will be called if an valid object should be created.
   /// If the creation failed it should return a [Result.error] with an error message which will be displayed to the user.

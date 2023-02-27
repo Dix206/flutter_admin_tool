@@ -109,19 +109,73 @@ class FlatObjectOverviewViewModel extends InheritedWidget {
     );
     onNotifyListener(state);
 
-    final result = await flatObject.onLoadFlatObjects(
+    await flatObject.onLoadFlatObjects.fold(
+      onOffsetLoading: (function) async {
+        final result = await function(
+          searchQuery: searchQuery,
+          page: page,
+          sortOptions: sortOptions,
+        );
+
+        state = result.fold(
+          onError: (errorMessage) => state.copyWith(
+            loadingError: NullableObject(errorMessage),
+          ),
+          onSuccess: (flatObjectValueList) => state.copyWith(
+            flatObjectValues: NullableObject(flatObjectValueList.flatObjectValues),
+            totalPages: flatObjectValueList.overallPageCount,
+          ),
+        );
+        onNotifyListener(state);
+      },
+      onCurserLoading: (function) async {
+        final result = await function(
+          searchQuery: searchQuery,
+          lastLoadedObjectId: null,
+          sortOptions: sortOptions,
+        );
+
+        state = result.fold(
+          onError: (errorMessage) => state.copyWith(
+            loadingError: NullableObject(errorMessage),
+          ),
+          onSuccess: (flatCurserObjectValueList) => state.copyWith(
+            flatObjectValues: NullableObject(flatCurserObjectValueList.flatObjectValues),
+            hasMoreItems: flatCurserObjectValueList.hasMoreItems,
+          ),
+        );
+        onNotifyListener(state);
+      },
+    );
+  }
+
+  Future<void> loadMoreItems() async {
+    if (state.isLoadingMoreItems || !state.hasMoreItems) return;
+    state = state.copyWith(isLoadingMoreItems: true);
+    onNotifyListener(state);
+    
+    await Future.delayed(const Duration(seconds: 5));
+
+    final result = await flatObject.onLoadFlatObjects.curserLoading!.call(
       searchQuery: searchQuery,
-      page: page,
+      lastLoadedObjectId: state.flatObjectValues?.last.id,
       sortOptions: sortOptions,
     );
 
     state = result.fold(
       onError: (errorMessage) => state.copyWith(
-        loadingError: NullableObject(errorMessage),
+        loadMoreItemsError: NullableObject(errorMessage),
+        isLoadingMoreItems: false,
       ),
-      onSuccess: (flatObjectValueList) => state.copyWith(
-        flatObjectValues: NullableObject(flatObjectValueList.flatObjectValues),
-        totalPages: flatObjectValueList.overallPageCount,
+      onSuccess: (flatCurserObjectValueList) => state.copyWith(
+        flatObjectValues: NullableObject(
+          [
+            ...state.flatObjectValues!,
+            ...flatCurserObjectValueList.flatObjectValues,
+          ],
+        ),
+        hasMoreItems: flatCurserObjectValueList.hasMoreItems,
+        isLoadingMoreItems: false,
       ),
     );
     onNotifyListener(state);
@@ -137,22 +191,34 @@ class FlatObjectOverviewState extends Equatable {
   final String? loadingError;
   final List<FlatObjectValue>? flatObjectValues;
   final int totalPages;
+  final bool isLoadingMoreItems;
+  final String? loadMoreItemsError;
+  final bool hasMoreItems;
 
   const FlatObjectOverviewState({
     this.loadingError,
     this.flatObjectValues,
     this.totalPages = 1,
+    this.isLoadingMoreItems = false,
+    this.loadMoreItemsError,
+    this.hasMoreItems = false,
   });
 
   FlatObjectOverviewState copyWith({
     NullableObject<String>? loadingError,
     NullableObject<List<FlatObjectValue>>? flatObjectValues,
     int? totalPages,
+    bool? isLoadingMoreItems,
+    NullableObject<String>? loadMoreItemsError,
+    bool? hasMoreItems,
   }) {
     return FlatObjectOverviewState(
       loadingError: loadingError == null ? this.loadingError : loadingError.value,
       flatObjectValues: flatObjectValues == null ? this.flatObjectValues : flatObjectValues.value,
       totalPages: totalPages ?? this.totalPages,
+      isLoadingMoreItems: isLoadingMoreItems ?? this.isLoadingMoreItems,
+      loadMoreItemsError: loadMoreItemsError == null ? this.loadMoreItemsError : loadMoreItemsError.value,
+      hasMoreItems: hasMoreItems ?? this.hasMoreItems,
     );
   }
 
@@ -162,6 +228,9 @@ class FlatObjectOverviewState extends Equatable {
       loadingError,
       flatObjectValues,
       totalPages,
+      isLoadingMoreItems,
+      loadMoreItemsError,
+      hasMoreItems,
     ];
   }
 }

@@ -51,6 +51,6 @@ FlatObjectStructure getBlogFlatObject(User user) => FlatObjectStructure(
       onCreateFlatObject: user.email == "admin@admin.de" ? createBlog : null,
       onUpdateFlatObject: user.email == "admin@admin.de" ? updateBlog : null,
       loadFlatObjectById: loadBlogById,
-      onLoadFlatObjects: loadBlogs,
+      onLoadFlatObjects: LoadFlatObjects.curser(loadBlogs),
       onDeleteFlatObject: user.email == "admin@admin.de" ? deleteBlog : null,
     );

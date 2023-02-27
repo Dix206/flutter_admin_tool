@@ -75,6 +75,6 @@ final eventFlatObject = FlatObjectStructure(
   onCreateFlatObject: createEvent,
   onUpdateFlatObject: updateEvent,
   loadFlatObjectById: loadEventById,
-  onLoadFlatObjects: loadEvents,
+  onLoadFlatObjects: LoadFlatObjects.curser(loadEvents),
   onDeleteFlatObject: deleteEvent,
 );

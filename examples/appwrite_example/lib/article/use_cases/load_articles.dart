@@ -4,7 +4,7 @@ import 'package:example/article/article.dart';
 import 'package:example/constants.dart';
 import 'package:flat/flat.dart';
 
-Future<FlatResult<FlatObjectValueList>> loadArticles({
+Future<FlatResult<FlatOffsetObjectValueList>> loadArticles({
   required int page,
   required String? searchQuery,
   required FlatObjectSortOptions? sortOptions,
@@ -48,7 +48,7 @@ Future<FlatResult<FlatObjectValueList>> loadArticles({
     }
 
     return FlatResult.success(
-      FlatObjectValueList(
+      FlatOffsetObjectValueList(
         flatObjectValues: flatObjectValues,
         overallPageCount: (databaseList.total / itemsToLoad).ceil(),
       ),

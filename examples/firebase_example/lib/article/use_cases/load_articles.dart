@@ -3,8 +3,8 @@ import 'package:firebase_example/article/article.dart';
 import 'package:firebase_example/constants.dart';
 import 'package:flat/flat.dart';
 
-Future<FlatResult<FlatObjectValueList>> loadArticles({
-  required int page,
+Future<FlatResult<FlatCurserObjectValueList>> loadArticles({
+  required String? lastLoadedObjectId,
   required String? searchQuery,
   required FlatObjectSortOptions? sortOptions,
 }) async {
@@ -15,9 +15,8 @@ Future<FlatResult<FlatObjectValueList>> loadArticles({
     final sortedQuery =
         sortOptions == null ? query : query.orderBy(sortOptions.attributeId, descending: !sortOptions.ascending);
     final filteredQuery = searchQuery == null ? sortedQuery : sortedQuery.where("title", isGreaterThan: searchQuery);
-    final aggregateQuerySnapshot = await filteredQuery.count().get();
-    final limetedQuery = filteredQuery.startAfter([page * itemsToLoad]).limit(itemsToLoad);
-    final documentSnapshots = await limetedQuery.get();
+    final paginationQuery = lastLoadedObjectId != null ? filteredQuery.startAfter([lastLoadedObjectId]) : filteredQuery;
+    final documentSnapshots = await paginationQuery.get();
 
     final articles = documentSnapshots.docs.map((document) => Article.fromJson(document.data()));
 
@@ -36,9 +35,9 @@ Future<FlatResult<FlatObjectValueList>> loadArticles({
     }
 
     return FlatResult.success(
-      FlatObjectValueList(
+      FlatCurserObjectValueList(
         flatObjectValues: flatObjectValues,
-        overallPageCount: (aggregateQuerySnapshot.count / itemsToLoad).ceil(),
+        hasMoreItems: documentSnapshots.docs.length == itemsToLoad,
       ),
     );
   } catch (exception) {

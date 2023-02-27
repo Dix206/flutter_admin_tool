@@ -2,17 +2,33 @@ import 'package:equatable/equatable.dart';
 
 import 'package:flat/data_types/flat_attribute_value.dart';
 
-class FlatObjectValueList extends Equatable {
+class FlatOffsetObjectValueList extends Equatable {
   final List<FlatObjectValue> flatObjectValues;
   final int overallPageCount;
 
-  const FlatObjectValueList({
+  const FlatOffsetObjectValueList({
     required this.flatObjectValues,
     required this.overallPageCount,
   });
 
   @override
   List<Object?> get props => [flatObjectValues, overallPageCount];
+
+  @override
+  bool get stringify => true;
+}
+
+class FlatCurserObjectValueList extends Equatable {
+  final List<FlatObjectValue> flatObjectValues;
+  final bool hasMoreItems;
+
+  const FlatCurserObjectValueList({
+    required this.flatObjectValues,
+    required this.hasMoreItems,
+  });
+
+  @override
+  List<Object?> get props => [flatObjectValues, hasMoreItems];
 
   @override
   bool get stringify => true;
