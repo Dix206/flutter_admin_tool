@@ -237,6 +237,11 @@ class _TableContentState extends State<_TableContent> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+      _scrollController.notifyListeners();
+    });
+
     return ListView.separated(
       physics: const ClampingScrollPhysics(),
       controller: _scrollController,

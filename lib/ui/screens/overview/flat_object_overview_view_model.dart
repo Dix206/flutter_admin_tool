@@ -151,10 +151,11 @@ class FlatObjectOverviewViewModel extends InheritedWidget {
 
   Future<void> loadMoreItems() async {
     if (state.isLoadingMoreItems || !state.hasMoreItems) return;
-    state = state.copyWith(isLoadingMoreItems: true);
+    state = state.copyWith(
+      isLoadingMoreItems: true,
+      loadMoreItemsError: const NullableObject(),
+    );
     onNotifyListener(state);
-    
-    await Future.delayed(const Duration(seconds: 5));
 
     final result = await flatObject.onLoadFlatObjects.curserLoading!.call(
       searchQuery: searchQuery,

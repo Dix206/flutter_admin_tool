@@ -1,58 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 import 'package:flat/data_types/flat_attribute_structure.dart';
-import 'package:flat/data_types/flat_object_sort_options.dart';
 import 'package:flat/data_types/flat_object_value.dart';
 import 'package:flat/data_types/flat_result.dart';
+import 'package:flat/data_types/load_flat_objects.dart';
 import 'package:flat/extensions/iterable_extensions.dart';
 
 typedef LoadFlatObjectById = Future<FlatResult<FlatObjectValue>> Function(String id);
 typedef OnManipulateFlatObject = Future<FlatResult<Unit>> Function(FlatObjectValue);
 typedef OnDeleteFlatObject = Future<FlatResult<Unit>> Function(String id);
-typedef OnLoadFlatObjectsOffset = Future<FlatResult<FlatOffsetObjectValueList>> Function({
-  required int page,
-  required String? searchQuery,
-  required FlatObjectSortOptions? sortOptions,
-});
-typedef OnLoadFlatObjectsCurser = Future<FlatResult<FlatCurserObjectValueList>> Function({
-  required String? lastLoadedObjectId,
-  required String? searchQuery,
-  required FlatObjectSortOptions? sortOptions,
-});
-
-class LoadFlatObjects extends Equatable {
-  final OnLoadFlatObjectsOffset? offsetLoading;
-  final OnLoadFlatObjectsCurser? curserLoading;
-
-  const LoadFlatObjects._({
-    required this.offsetLoading,
-    required this.curserLoading,
-  });
-
-  factory LoadFlatObjects.offset(OnLoadFlatObjectsOffset offsetLoading) => LoadFlatObjects._(
-        offsetLoading: offsetLoading,
-        curserLoading: null,
-      );
-
-  factory LoadFlatObjects.curser(OnLoadFlatObjectsCurser curserLoading) => LoadFlatObjects._(
-        offsetLoading: null,
-        curserLoading: curserLoading,
-      );
-
-  S fold<S>({
-    required S Function(OnLoadFlatObjectsOffset offsetLoading) onOffsetLoading,
-    required S Function(OnLoadFlatObjectsCurser curserLoading) onCurserLoading,
-  }) {
-    if (offsetLoading != null) {
-      return onOffsetLoading(offsetLoading!);
-    } else {
-      return onCurserLoading(curserLoading!);
-    }
-  }
-
-  @override
-  List<Object?> get props => [offsetLoading, curserLoading];
-}
 
 /// This Class represents an object in the Flat-App. It should be used for every object which is stored in your backend.
 /// The id of an FlatObject will always be a string. If your id isnt a string you have to convert it to a string while loading [FlatObjectValues] and load the id from a string while getting the id of a [FlatObjectValue].

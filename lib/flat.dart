@@ -28,3 +28,4 @@ export 'package:flat/data_types/flat_result.dart';
 export 'package:flat/data_types/flat_unauthorized_route.dart';
 export 'package:flat/data_types/flat_user_infos.dart';
 export 'package:flat/ui/widgets/flat_top_bar.dart';
+export 'package:flat/data_types/load_flat_objects.dart';
