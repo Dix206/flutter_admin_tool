@@ -6,7 +6,6 @@ import 'package:flat/data_types/attribute_implementations/flat_attribute_html/fl
 import 'package:flat/data_types/flat_attribute_structure.dart';
 import 'package:flat/data_types/flat_texts.dart';
 import 'package:flat/flat_app.dart';
-import 'package:quill_html_editor/quill_html_editor.dart';
 
 class FlatAttributeHtmlWidget extends StatefulWidget {
   final String? currentValue;
@@ -27,11 +26,11 @@ class FlatAttributeHtmlWidget extends StatefulWidget {
 }
 
 class _FlatAttributeHtmlWidgetState extends State<FlatAttributeHtmlWidget> {
-  final controller = QuillEditorController();
+  // final controller = QuillEditorController();
 
   @override
   void dispose() {
-    controller.dispose();
+    // controller.dispose();
     super.dispose();
   }
 
@@ -50,30 +49,30 @@ class _FlatAttributeHtmlWidgetState extends State<FlatAttributeHtmlWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ToolBar(
-          toolBarColor: Theme.of(context).colorScheme.primaryContainer,
-          activeIconColor: Theme.of(context).colorScheme.onPrimaryContainer,
-          iconColor: Theme.of(context).colorScheme.inversePrimary,
-          padding: const EdgeInsets.all(8),
-          iconSize: 20,
-          controller: controller,
-          toolBarConfig: List.of(ToolBarStyle.values)
-            ..remove(ToolBarStyle.video)
-            ..remove(ToolBarStyle.clean)
-            ..remove(ToolBarStyle.indentAdd)
-            ..remove(ToolBarStyle.indentMinus)
-            ..remove(ToolBarStyle.headerOne)
-            ..remove(ToolBarStyle.headerTwo)
-            ..remove(ToolBarStyle.strike),
-        ),
-        QuillHtmlEditor(
-          controller: controller,
-          height: 400,
-          text: widget.currentValue,
-          onTextChanged: widget.onFlatTypeUpdated,
-          // defaultFontColor: Theme.of(context).colorScheme.onBackground,
-          // backgroundColor: Theme.of(context).colorScheme.background,
-        ),
+        // ToolBar(
+        //   toolBarColor: Theme.of(context).colorScheme.primaryContainer,
+        //   activeIconColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        //   iconColor: Theme.of(context).colorScheme.inversePrimary,
+        //   padding: const EdgeInsets.all(8),
+        //   iconSize: 20,
+        //   controller: controller,
+        //   toolBarConfig: List.of(ToolBarStyle.values)
+        //     ..remove(ToolBarStyle.video)
+        //     ..remove(ToolBarStyle.clean)
+        //     ..remove(ToolBarStyle.indentAdd)
+        //     ..remove(ToolBarStyle.indentMinus)
+        //     ..remove(ToolBarStyle.headerOne)
+        //     ..remove(ToolBarStyle.headerTwo)
+        //     ..remove(ToolBarStyle.strike),
+        // ),
+        // QuillHtmlEditor(
+        //   controller: controller,
+        //   height: 400,
+        //   text: widget.currentValue,
+        //   onTextChanged: widget.onFlatTypeUpdated,
+        //   // defaultFontColor: Theme.of(context).colorScheme.onBackground,
+        //   // backgroundColor: Theme.of(context).colorScheme.background,
+        // ),
         if (!isValid && widget.shouldDisplayValidationErrors)
           Padding(
             padding: const EdgeInsets.only(

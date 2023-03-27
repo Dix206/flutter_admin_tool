@@ -16,5 +16,13 @@
             "type": "dart",
             "program": "examples/firebase_example/lib/main.dart",
         },
+        {
+            "name": "Dart Frog Example",
+            "request": "launch",
+        
+            "type": "dart",
+            "program": "examples/dart_frog_example/frontend/lib/main.dart",
+            "args": ["--web-browser-flag \"--disable-web-security\""]
+        },
     ]
 }

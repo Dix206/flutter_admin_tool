@@ -1,6 +1,6 @@
-# Flutter Flat
+# Flat
 
-Flutter Flat is a package that helps you set up an admin tool to create content for your backend just by defining the structure of your objects and the methods to handle the crud operations.
+Flat is a package that helps you set up an admin tool to create content for your backend just by defining the structure of your objects and the methods to handle the crud operations.
 
 IMPORTANT: This package is in early stages and not very well tested so far. Use it on your own risk.
 
@@ -48,11 +48,11 @@ void main() {
 ```
 
 ## Handle authentication
-Flutter Flat is completely undependent from your used authentication method. You just have to pass a method to get the current logged in user to the `FlatAuthInfos`. If there currently is no logged in user, that method needs to return null. Based on that method Flutter Flat can check if the user is authenticated and allow/disallow specific routes.
+Flat is completely undependent from your used authentication method. You just have to pass a method to get the current logged in user to the `FlatAuthInfos`. If there currently is no logged in user, that method needs to return null. Based on that method Flat can check if the user is authenticated and allow/disallow specific routes.
 
 The passed `onLogout` will be called if the user wants to logout. After this method was called, the `getLoggedInUser` method should return null. The further logout functionality and button will automatically handled.
 
-Because there could be many different ways to login, you have to setup your login screen by yourself. This screen needs also be passed to the `FlatAuthInfos`. After you have successfully handled your login, you just have to call the given `onLoginSuccess` method. This will automatically navigate you into the Flutter Flat dashboard.
+Because there could be many different ways to login, you have to setup your login screen by yourself. This screen needs also be passed to the `FlatAuthInfos`. After you have successfully handled your login, you just have to call the given `onLoginSuccess` method. This will automatically navigate you into the Flat dashboard.
 
 ```dart
 void main() {
@@ -85,11 +85,13 @@ void main() {
 ```
 
 ## Object Structures
-The main part of Flutter Flat is the content management. You can easely display, create, update and delete objects. All Flutter Flat needs for that is the data structure of your object and the methods to handle these crud operations.
+The main part of Flat is the content management. You can easely display, create, update and delete objects. All Flat needs for that is the data structure of your object and the methods to handle these crud operations.
 
-To define the data structure you have to pass a method to `getFlatObjectStructures` which returns a list of `FlatObjectStructure`. The method gives you the currently logged in user so you can change the functionality based on the logged in user. The `FlatObjectStructure` needs to have a list of attributes. Every attribute must extends the `FlatAttributeStructure`. Flutter Flat gives you a number of pre defined attributes but if you need a specific new attribute, you can define it by yourself.
+To define the data structure you have to pass a method to `getFlatObjectStructures` which returns a list of `FlatObjectStructure`. The method gives you the currently logged in user so you can change the functionality based on the logged in user. The `FlatObjectStructure` needs to have a list of attributes. Every attribute must extend the `FlatAttributeStructure`. Flat gives you a number of pre defined attributes but if you need a specific new attribute, you can define it by yourself.
 
 Not every of crud function needs to be set. If you dont pass a specific method, that functionality will automatically be disabled. As you get the current logged in user, it is possible to disable some of these crud functions for specific user.
+
+To get more information about the crud operations, take a look at the [Flat Object Structure CRUD Operations](#flat-object-structure-crud-operations) section.
 
 
 ```dart
@@ -120,7 +122,7 @@ void main() {
                 onCreateFlatObject: createEvent,
                 onUpdateFlatObject: updateEvent,
                 loadFlatObjectById: loadEventById,
-                onLoadFlatObjects: loadEvents,
+                onLoadFlatObjects: LoadFlatObjects.offset(loadEvents),
                 onDeleteFlatObject: loggedInUser.isAdmin ? deleteEvent : null,
             ),
         ],
@@ -133,7 +135,7 @@ void main() {
 The `id` of every `FlatAttributeStructure` inside a `FlatObjectStructure` has to be unique. Its needed to identify a `FlatAttributeValue` inside a `FlatObjectValue` which are needed in the crud functions of a `FlatObjectStructure`.
 Every `FlatAttributeStructure` can be validated so that it will only be possible to pass a valid value. Just set the `validator` for that. If the user passed value is not valid the `invalidValueErrorMessage` will be displayed. So you can also handle the error message.
 By default every `FlatAttributeStructure` is required. You can set the parameter `isOptional` to true if also null values should be possible. If the attribute is required and not set, the `invalidValueErrorMessage` will be displayed.
-Flutter Flat has many pre defined `FlatAttributeStructure` elements. Here is a list of every existing element:
+Flat has many pre defined `FlatAttributeStructure` elements. Here is a list of every existing element:
 
 ### FlatAttributeString
 
@@ -351,10 +353,10 @@ Future<FlatResult<List<Author>>> loadAuthors(String searchQuery) async {
 
 
 ## Base Validator
-Flutter Flat offers you some base validation methods that you can use inside your `FlatAttributeStructure`. You can find them inside the `FlatBaseValidator` class.
+Flat offers you some base validation methods that you can use inside your `FlatAttributeStructure`. You can find them inside the `FlatBaseValidator` class.
 
 ## Flat Object Structure CRUD Operations
-In an `FlatObjectStructure` you need to define CRUD functions which connects Flutter Flat with your backend. Every of these functions returns a Future of `FlatResult`. The `FlatResult` has two constructors `FlatResult.success` and `FlatResult.error`. If your function succeeds you can use the `FlatResult.success` constructor and pass the required data. If a function shouldnt return any data you need to pass a new `Unit` object: `FlatResult.success(Unit())`. This is for example the case in the delete function. There we only need the information if the action was successful. So you could emagine `Unit()` as `void`. If the action wasnt successful you should use the `FlatResult.error` constructor and pass an error message string. That string will be displayed to the user.
+In an `FlatObjectStructure` you need to define CRUD functions which connects Flat with your backend. Every of these functions returns a Future of `FlatResult`. The `FlatResult` has two constructors `FlatResult.success` and `FlatResult.error`. If your function succeeds you can use the `FlatResult.success` constructor and pass the required data. If a function shouldnt return any data you need to pass a new `Unit` object: `FlatResult.success(Unit())`. This is for example the case in the delete function. There we only need the information if the action was successful. So you could emagine `Unit()` as `void`. If the action wasnt successful you should use the `FlatResult.error` constructor and pass an error message string. That string will be displayed to the user.
 
 Example:
 
@@ -433,16 +435,19 @@ class Event {
 ### Load Flat Objects
 The most complex function is `OnLoadFlatObjects`. Thats because this function also handles pagination, filtering and sorting items. 
 
-For the pagination behavior it doesnt directly return a list of `FlatObjectValue` but an `FlatObjectValueList` object, which contains that `FlatObjectValue` list. Additionaly the `FlatObjectValueList` needs an `overallPageCount` value. This is needed to handle the pagination correctly.
+For the pagination there are two methods available. You can load your data with offset- or with curser-pagination. 
 
-The `OnLoadFlatObjects` function gets an `page` value. Thats the value of the page which should be loaded and returned from the function. The size of each page could be defined by yourself. 
+To use the offset-pagination you have to use the `LoadFlatObjects.offset` constructor to pass the `OnLoadFlatObjectsOffset` function. 
+
+To use the curser-pagination you have to use the `LoadFlatObjects.curser` constructor and pass the `OnLoadFlatObjectsCurser` function. This method doesnt directly return a list of `FlatObjectValue` but an `FlatOffsetObjectValueList` object, which contains that `FlatObjectValue` list. Additionaly the `FlatOffsetObjectValueList` needs an `overallPageCount` value. This is needed to handle the pagination correctly. 
+The `OnLoadFlatObjectsCurser` function gets an `page` value. Thats the value of the page which should be loaded and returned from the function. The size of each page could be defined by yourself. 
 
 The only search parameter for now is `searchQuery`. That optional parameter contains the search text which was entered by the user to filter the objects. How implement that filter is up to you.
 
 For sort functionality an optional value of `FlatObjectSortOptions` will be passed. That object contains the attributeId of the attribute according to which sorting is to take place. If the value `ascending` is set to true, the attribute should be sorted ascending, otherwise descending. The objects can only be sorted by attributes where the values `shouldBeDisplayedOnOverviewTable` and `canObjectBeSortedByThisAttribute` both where set to true. 
 
 ## Custom Strings
-You can override every string which is used in Flutter Flat. To do that you need to pass a `FlatTexts` object to the `FlatApp`. That object contains all strings which are used in Flutter Flat. You can find the default strings in the constructor of the `FlatTexts` class.
+You can override every string which is used in Flat. To do that you need to pass a `FlatTexts` object to the `FlatApp`. That object contains all strings which are used in Flat. You can find the default strings in the constructor of the `FlatTexts` class.
 
 ## Custom Screens
 You can define two kinds of custom screens. One is a custom menu entry which is displayed in the main menu and the other one is a public screen which can be reached before the user is logged in.
@@ -453,7 +458,7 @@ To define custom menu entries you need to pass a list of `FlatCustomMenuEntry` t
 These menu entries can only be reached if the user is logged in. So it is possible to display content there based on the logged in user.
 
 ### Flat Unauthorized Route
-A `FlatUnauthorizedRoute` is a route which can be reached before the user logged in. You can pass a list of `FlatUnauthorizedRoute` to the `FlatApp` to define these routes. As Flutter Flat uses GoRouter for navigation you can reach your passed routes simply by using the GoRouter and navigate with it to your passed `path`. You also have to pass a `pageBuilder` to the `FlatUnauthorizedRoute`. This is the same pageBuilder you would pass to the `GoRouter`. So it is also possible to work with parameters. It is not possible to navigate to these routes if the user is logged in. Examples for using these routes could be a registration or a forgot password screen.
+A `FlatUnauthorizedRoute` is a route which can be reached before the user logged in. You can pass a list of `FlatUnauthorizedRoute` to the `FlatApp` to define these routes. As Flat uses GoRouter for navigation you can reach your passed routes simply by using the GoRouter and navigate with it to your passed `path`. You also have to pass a `pageBuilder` to the `FlatUnauthorizedRoute`. This is the same pageBuilder you would pass to the `GoRouter`. So it is also possible to work with parameters. It is not possible to navigate to these routes if the user is logged in. Examples for using these routes could be a registration or a forgot password screen.
 
 ## Theming
-To customize the look and feel of Flutter Flat you can use just pass your own `lightTheme`and `darkTheme` to `FlatApp`. The mainly used colors are `background`, `surface` and `primary`. So you can get a good result by just changing these colors.
+To customize the look and feel of Flat you can use just pass your own `lightTheme`and `darkTheme` to `FlatApp`. The mainly used colors are `background`, `surface` and `primary`. So you can get a good result by just changing these colors.
