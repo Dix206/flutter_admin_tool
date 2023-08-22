@@ -6,7 +6,6 @@ export 'package:flat/data_types/attribute_implementations/flat_attribute_date/fl
 export 'package:flat/data_types/attribute_implementations/flat_attribute_date_time/flat_attribute_date_time.dart';
 export 'package:flat/data_types/attribute_implementations/flat_attribute_double/flat_attribute_double.dart';
 export 'package:flat/data_types/attribute_implementations/flat_attribute_file/flat_attribute_file.dart';
-export 'package:flat/data_types/attribute_implementations/flat_attribute_html/flat_attribute_html.dart';
 export 'package:flat/data_types/attribute_implementations/flat_attribute_image/flat_attribute_image.dart';
 export 'package:flat/data_types/attribute_implementations/flat_attribute_int/flat_attribute_int.dart';
 export 'package:flat/data_types/attribute_implementations/flat_attribute_list/flat_attribute_list.dart';

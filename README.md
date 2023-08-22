@@ -18,7 +18,6 @@ IMPORTANT: This package is in early stages and not very well tested so far. Use 
   - [FlatAttributeDateTime](#FlatAttributeDateTime)
   - [FlatAttributeDate](#FlatAttributeDate)
   - [FlatAttributeTime](#FlatAttributeTime)
-  - [FlatAttributeHtml](#FlatAttributeHtml)
   - [FlatAttributeImage](#FlatAttributeImage)
   - [FlatAttributeFile](#FlatAttributeFile)
   - [FlatAttributeLocation](#FlatAttributeLocation)
@@ -237,18 +236,6 @@ const FlatAttributeTime(
     )
 ```
 ![Alt text](doc/FlatAttributeTime.png "FlatAttributeTime")
-
-### FlatAttributeHtml
-The html widget is build upon the [quill_html_editor](https://pub.dev/packages/quill_html_editor) package. Because it is an embadded web library, there could be some unwanted behavior in the UI.
-
-Example:
-```dart
-const FlatAttributeHtml(
-        id: "content",
-        displayName: "Content",
-)
-```
-![Alt text](doc/FlatAttributeHtml.png "FlatAttributeHtml")
 
 ### FlatAttributeImage
 The image selection is build upon the [file_picker](https://pub.dev/packages/file_picker) package.

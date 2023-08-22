@@ -18,7 +18,7 @@ FlatObjectStructure getBlogFlatObject(Account account) => FlatObjectStructure(
           invalidValueErrorMessage: "You have to enter a title",
           canObjectBeSortedByThisAttribute: true,
         ),
-        const FlatAttributeHtml(
+        const FlatAttributeString(
           id: "content",
           displayName: "Content",
           invalidValueErrorMessage: "You have to enter content",

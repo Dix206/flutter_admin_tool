@@ -1,6 +1,5 @@
 import 'package:flat/flat.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/blog/blog_flat_object.dart';
 import 'package:frontend/login.dart';
 import 'package:frontend/register.dart';
 
