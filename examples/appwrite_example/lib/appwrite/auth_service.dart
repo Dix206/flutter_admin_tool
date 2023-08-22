@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart' as models;
+import 'package:appwrite/models.dart';
 import 'package:example/appwrite/client.dart';
 import 'package:flat/flat.dart';
 
@@ -36,7 +36,7 @@ class AuthAppwriteService {
     }
   }
 
-  Future<models.Account?> getLoggedInUser() async {
+  Future<User?> getLoggedInUser() async {
     try {
       final account = await _account.get();
       return account;

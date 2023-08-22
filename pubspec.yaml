@@ -1,10 +1,10 @@
 name: flat
 description: A new Flutter package project.
 version: 0.0.1
-homepage: "www.example.com" # TODO
+homepage: https://github.com/Dix206/flutter_multi_tap_detector
 
 environment:
-  sdk: '>=2.18.5 <3.0.0'
+  sdk: '>=3.0.5 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
@@ -14,15 +14,15 @@ dependencies:
     sdk: flutter
   
   equatable: ^2.0.5
-  go_router: ^5.2.0
-  file_picker: ^5.2.5
-  intl: ^0.17.0
-  shared_preferences: ^2.0.17
+  go_router: ^10.1.0
+  file_picker: ^5.3.3
+  intl: ^0.18.0
+  shared_preferences: ^2.2.0
   flutter_colorpicker: ^1.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.2
 
 flutter:

@@ -37,8 +37,8 @@ void main() async {
         FlatCustomMenuEntry(
           id: "test",
           displayName: "Test",
-          contentBuilder: (context) => Column(
-            children: const [
+          contentBuilder: (context) => const Column(
+            children: [
               FlatTopBar(
                 title: "Custom Content Title",
               ),
@@ -55,7 +55,7 @@ void main() async {
         FlatUnauthorizedRoute(
           path: "/register/:parameter",
           pageBuilder: (context, state) {
-            final parameter = state.params["parameter"] ?? "";
+            final parameter = state.pathParameters["parameter"] ?? "";
             return RegisterScreen(parameter: parameter);
           },
         ),

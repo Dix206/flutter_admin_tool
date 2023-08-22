@@ -11,7 +11,7 @@ Future<FlatResult<Unit>> uploadArticleImage({
     await storage.createFile(
       bucketId: "articles",
       fileId: imageId,
-      file: InputFile(
+      file: InputFile.fromBytes(
         bytes: data,
         filename: imageId,
       ),

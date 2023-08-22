@@ -1,4 +1,5 @@
 import 'package:appwrite/models.dart';
+
 import 'package:example/blog/use_cases/create_blog.dart';
 import 'package:example/blog/use_cases/delete_blog.dart';
 import 'package:example/blog/use_cases/load_blog_by_id.dart';
@@ -6,7 +7,7 @@ import 'package:example/blog/use_cases/load_blogs.dart';
 import 'package:example/blog/use_cases/update_blog.dart';
 import 'package:flat/flat.dart';
 
-FlatObjectStructure getBlogFlatObject(Account account) => FlatObjectStructure(
+FlatObjectStructure getBlogFlatObject(User account) => FlatObjectStructure(
       id: "blog",
       displayName: "Blog",
       canBeSortedById: false,
