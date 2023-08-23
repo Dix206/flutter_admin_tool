@@ -1,9 +1,9 @@
-import 'package:flat/data_types/attribute_implementations/flat_attribute_date/flat_attribute_date_widget.dart';
-import 'package:flat/flat_app.dart';
+import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_attribute_date/flat_attribute_date_widget.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:flat/data_types/flat_attribute_structure.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
 
 class FlatAttributeDate extends FlatAttributeStructure<DateTime> {
   final DateTime? minDateTime;

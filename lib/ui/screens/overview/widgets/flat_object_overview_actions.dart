@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flat/data_types/flat_object_sort_options.dart';
-import 'package:flat/data_types/flat_object_structure.dart';
-import 'package:flat/flat_app.dart';
-import 'package:flat/ui/routes.dart';
-import 'package:flat/ui/widgets/flat_button.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_sort_options.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_structure.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
+import 'package:flutter_admin_tool/ui/routes.dart';
+import 'package:flutter_admin_tool/ui/widgets/flat_button.dart';
 import 'package:go_router/go_router.dart';
 
 class FlatObjectOverviewActions extends StatelessWidget {

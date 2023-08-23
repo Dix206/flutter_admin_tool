@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flat/data_types/flat_attribute_structure.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
 
 class FlatAttributeBoolWidget extends StatelessWidget {
   final bool currentValue;

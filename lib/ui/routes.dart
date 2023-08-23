@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flat/data_types/flat_texts.dart';
-import 'package:flat/data_types/flat_unauthorized_route.dart';
-import 'package:flat/ui/auth_state_service.dart';
-import 'package:flat/data_types/flat_object_sort_options.dart';
-import 'package:flat/data_types/flat_custom_menu_entry.dart';
-import 'package:flat/extensions/iterable_extensions.dart';
-import 'package:flat/flat_app.dart';
-import 'package:flat/data_types/flat_auth_infos.dart';
-import 'package:flat/ui/screens/flat_main_screen.dart';
-import 'package:flat/ui/screens/overview/overview_screen.dart';
-import 'package:flat/ui/screens/settings/settings_screen.dart';
-import 'package:flat/ui/screens/insert_flat_object/insert_flat_object_screen.dart';
+import 'package:flutter_admin_tool/data_types/flat_texts.dart';
+import 'package:flutter_admin_tool/data_types/flat_unauthorized_route.dart';
+import 'package:flutter_admin_tool/ui/auth_state_service.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_sort_options.dart';
+import 'package:flutter_admin_tool/data_types/flat_custom_menu_entry.dart';
+import 'package:flutter_admin_tool/extensions/iterable_extensions.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
+import 'package:flutter_admin_tool/data_types/flat_auth_infos.dart';
+import 'package:flutter_admin_tool/ui/screens/flat_main_screen.dart';
+import 'package:flutter_admin_tool/ui/screens/overview/overview_screen.dart';
+import 'package:flutter_admin_tool/ui/screens/settings/settings_screen.dart';
+import 'package:flutter_admin_tool/ui/screens/insert_flat_object/insert_flat_object_screen.dart';
 import 'package:go_router/go_router.dart';
 
 /// T is the type of the logged in user

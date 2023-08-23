@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flat/data_types/flat_attribute_value.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_value.dart';
 
 typedef Validator<T extends Object> = bool Function(T?);
 typedef OnFlatTypeUpdated<T extends Object> = void Function(T?);

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flat/constants.dart';
-import 'package:flat/data_types/flat_object_sort_options.dart';
-import 'package:flat/data_types/flat_object_structure.dart';
-import 'package:flat/data_types/flat_object_value.dart';
-import 'package:flat/ui/routes.dart';
-import 'package:flat/flat_app.dart';
-import 'package:flat/ui/messages/error_message.dart';
-import 'package:flat/ui/screens/insert_flat_object/insert_flat_object_view_model.dart';
-import 'package:flat/ui/widgets/flat_button.dart';
-import 'package:flat/ui/widgets/flat_error_widget.dart';
-import 'package:flat/ui/widgets/flat_loading.dart';
-import 'package:flat/ui/widgets/flat_top_bar.dart';
+import 'package:flutter_admin_tool/constants.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_sort_options.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_structure.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_value.dart';
+import 'package:flutter_admin_tool/ui/routes.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
+import 'package:flutter_admin_tool/ui/messages/error_message.dart';
+import 'package:flutter_admin_tool/ui/screens/insert_flat_object/insert_flat_object_view_model.dart';
+import 'package:flutter_admin_tool/ui/widgets/flat_button.dart';
+import 'package:flutter_admin_tool/ui/widgets/flat_error_widget.dart';
+import 'package:flutter_admin_tool/ui/widgets/flat_loading.dart';
+import 'package:flutter_admin_tool/ui/widgets/flat_top_bar.dart';
 import 'package:go_router/go_router.dart';
 
 class InsertFlatObjectScreen extends StatelessWidget {

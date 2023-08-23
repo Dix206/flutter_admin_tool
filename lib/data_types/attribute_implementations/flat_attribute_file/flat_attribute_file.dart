@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:flat/data_types/attribute_implementations/flat_attribute_file/flat_attribute_file_widget.dart';
+import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_attribute_file/flat_attribute_file_widget.dart';
 
-import 'package:flat/data_types/flat_attribute_structure.dart';
-import 'package:flat/data_types/flat_file_value.dart';
-import 'package:flat/flat_app.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
+import 'package:flutter_admin_tool/data_types/flat_file_value.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
 
 class FlatAttributeFile extends FlatAttributeStructure<FlatFileValue> {
   /// Set this method to allow the user to download the romte file

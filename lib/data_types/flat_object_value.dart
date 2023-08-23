@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:flat/data_types/flat_attribute_value.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_value.dart';
 
 class FlatOffsetObjectValueList extends Equatable {
   final List<FlatObjectValue> flatObjectValues;

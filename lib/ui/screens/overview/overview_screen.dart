@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flat/data_types/flat_object_sort_options.dart';
-import 'package:flat/ui/screens/overview/flat_object_overview.dart';
-import 'package:flat/flat_app.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_sort_options.dart';
+import 'package:flutter_admin_tool/ui/screens/overview/flat_object_overview.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
 
 class OverviewScreen extends StatelessWidget {
   final String selectedFlatObjectId;

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:flat/data_types/attribute_implementations/flat_attribute_int/flat_attribute_int_widget.dart';
-import 'package:flat/data_types/flat_attribute_structure.dart';
-import 'package:flat/flat_app.dart';
+import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_attribute_int/flat_attribute_int_widget.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
 
 class FlatAttributeInt extends FlatAttributeStructure<int> {
   final String? hint;

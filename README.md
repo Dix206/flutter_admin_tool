@@ -1,4 +1,4 @@
-# Flat
+# FLutter Admin Tool (FLAT)
 
 Flat is a package that helps you set up an admin tool to create content for your backend just by defining the structure of your objects and the methods to handle the crud operations.
 

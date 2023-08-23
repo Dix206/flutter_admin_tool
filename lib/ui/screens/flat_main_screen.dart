@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flat/constants.dart';
+import 'package:flutter_admin_tool/constants.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:flat/ui/routes.dart';
-import 'package:flat/flat_app.dart';
+import 'package:flutter_admin_tool/ui/routes.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
 
 enum FlatMainScreenTab {
   overview,

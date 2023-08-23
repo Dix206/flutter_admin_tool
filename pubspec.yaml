@@ -1,6 +1,6 @@
-name: flat
-description: A new Flutter package project.
-version: 0.0.1
+name: flutter_admin_tool
+description: A package to help you build a flutter admin tool.
+version: 0.0.3
 homepage: https://github.com/Dix206/flutter_multi_tap_detector
 
 environment:
@@ -26,3 +26,8 @@ dev_dependencies:
   flutter_lints: ^2.0.2
 
 flutter:
+
+false_secrets:
+ - /example/firebase_example/android/app/google-services.json
+ - /example/firebase_example/ios/Runner/GoogleService-Info.plist
+ - /example/firebase_example/lib/firebase_options.dart

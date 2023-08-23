@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flat/data_types/flat_attribute_value.dart';
-import 'package:flat/data_types/flat_object_structure.dart';
-import 'package:flat/data_types/flat_object_value.dart';
-import 'package:flat/data_types/nullable_object.dart';
-import 'package:flat/data_types/flat_result.dart';
-import 'package:flat/flat_app.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_value.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_structure.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_value.dart';
+import 'package:flutter_admin_tool/data_types/nullable_object.dart';
+import 'package:flutter_admin_tool/data_types/flat_result.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
 
 class InsertFlatObjectViewModelProvider extends StatefulWidget {
   final FlatObjectStructure flatObject;

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:flat/data_types/flat_object_sort_options.dart';
-import 'package:flat/data_types/flat_object_value.dart';
-import 'package:flat/data_types/flat_result.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_sort_options.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_value.dart';
+import 'package:flutter_admin_tool/data_types/flat_result.dart';
 
 typedef OnLoadFlatObjectsOffset = Future<FlatResult<FlatOffsetObjectValueList>> Function({
   required int page,

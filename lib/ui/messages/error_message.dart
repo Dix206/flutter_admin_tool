@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flat/flat_app.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
 
 void showErrorMessage({
   required BuildContext context,

@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:flat/data_types/flat_attribute_structure.dart';
-import 'package:flat/data_types/flat_object_value.dart';
-import 'package:flat/data_types/flat_result.dart';
-import 'package:flat/data_types/load_flat_objects.dart';
-import 'package:flat/extensions/iterable_extensions.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_value.dart';
+import 'package:flutter_admin_tool/data_types/flat_result.dart';
+import 'package:flutter_admin_tool/data_types/load_flat_objects.dart';
+import 'package:flutter_admin_tool/extensions/iterable_extensions.dart';
 
 typedef LoadFlatObjectById = Future<FlatResult<FlatObjectValue>> Function(String id);
 typedef OnManipulateFlatObject = Future<FlatResult<Unit>> Function(FlatObjectValue);

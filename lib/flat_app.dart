@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flat/data_types/flat_texts.dart';
-import 'package:flat/data_types/flat_unauthorized_route.dart';
-import 'package:flat/data_types/flat_user_infos.dart';
-import 'package:flat/ui/auth_state_service.dart';
-import 'package:flat/data_types/flat_object_structure.dart';
-import 'package:flat/extensions/iterable_extensions.dart';
-import 'package:flat/data_types/flat_auth_infos.dart';
-import 'package:flat/ui/routes.dart';
-import 'package:flat/ui/theme_mode_handler.dart';
-import 'package:flat/data_types/flat_custom_menu_entry.dart';
+import 'package:flutter_admin_tool/data_types/flat_texts.dart';
+import 'package:flutter_admin_tool/data_types/flat_unauthorized_route.dart';
+import 'package:flutter_admin_tool/data_types/flat_user_infos.dart';
+import 'package:flutter_admin_tool/ui/auth_state_service.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_structure.dart';
+import 'package:flutter_admin_tool/extensions/iterable_extensions.dart';
+import 'package:flutter_admin_tool/data_types/flat_auth_infos.dart';
+import 'package:flutter_admin_tool/ui/routes.dart';
+import 'package:flutter_admin_tool/ui/theme_mode_handler.dart';
+import 'package:flutter_admin_tool/data_types/flat_custom_menu_entry.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 /// This method will return a list of all flat object structures based on the passed user object which is of type T

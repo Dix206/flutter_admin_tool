@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flat/data_types/attribute_implementations/flat_attribute_time/flat_attribute_time_widget.dart';
-import 'package:flat/flat_app.dart';
+import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_attribute_time/flat_attribute_time_widget.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
 import 'package:intl/intl.dart';
 
-import 'package:flat/data_types/flat_attribute_structure.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
 
 class FlatAttributeTime extends FlatAttributeStructure<TimeOfDay> {
   const FlatAttributeTime({

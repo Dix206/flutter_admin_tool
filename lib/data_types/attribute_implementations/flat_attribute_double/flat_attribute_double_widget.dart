@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flat/data_types/attribute_implementations/flat_attribute_double/flat_attribute_double.dart';
-import 'package:flat/data_types/flat_attribute_structure.dart';
+import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_attribute_double/flat_attribute_double.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
 
 class FlatAttributeDoubleWidget extends StatefulWidget {
   final double? currentValue;

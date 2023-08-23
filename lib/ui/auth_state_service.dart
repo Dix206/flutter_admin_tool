@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flat/data_types/flat_auth_infos.dart';
+import 'package:flutter_admin_tool/data_types/flat_auth_infos.dart';
 
 /// T is the type of the logged in user
 class AuthStateService<T extends Object> with ChangeNotifier {

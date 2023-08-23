@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flat/data_types/flat_object_sort_options.dart';
-import 'package:flat/data_types/flat_object_structure.dart';
-import 'package:flat/ui/screens/overview/widgets/flat_object_overview_actions.dart';
-import 'package:flat/ui/screens/overview/widgets/flat_object_overview_pagination.dart';
-import 'package:flat/ui/screens/overview/widgets/flat_object_overview_table.dart';
-import 'package:flat/ui/widgets/flat_top_bar.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_sort_options.dart';
+import 'package:flutter_admin_tool/data_types/flat_object_structure.dart';
+import 'package:flutter_admin_tool/ui/screens/overview/widgets/flat_object_overview_actions.dart';
+import 'package:flutter_admin_tool/ui/screens/overview/widgets/flat_object_overview_pagination.dart';
+import 'package:flutter_admin_tool/ui/screens/overview/widgets/flat_object_overview_table.dart';
+import 'package:flutter_admin_tool/ui/widgets/flat_top_bar.dart';
 
 class FlatObjectOverview extends StatefulWidget {
   final FlatObjectStructure flatObject;

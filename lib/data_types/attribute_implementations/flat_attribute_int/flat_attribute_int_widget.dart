@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flat/data_types/flat_attribute_structure.dart';
-import 'package:flat/data_types/attribute_implementations/flat_attribute_int/flat_attribute_int.dart';
+import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
+import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_attribute_int/flat_attribute_int.dart';
 
 class FlatAttributeIntWidget extends StatefulWidget {
   final int? currentValue;

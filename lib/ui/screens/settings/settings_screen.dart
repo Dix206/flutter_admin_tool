@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flat/flat_app.dart';
-import 'package:flat/ui/theme_mode_handler.dart';
-import 'package:flat/ui/widgets/flat_top_bar.dart';
+import 'package:flutter_admin_tool/flat_app.dart';
+import 'package:flutter_admin_tool/ui/theme_mode_handler.dart';
+import 'package:flutter_admin_tool/ui/widgets/flat_top_bar.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
