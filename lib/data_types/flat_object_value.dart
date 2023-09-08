@@ -44,12 +44,16 @@ class FlatObjectValue extends Equatable {
   });
 
   S getAttributeValueByAttributeId<S extends Object?>(String id) {
-    return values
-        .firstWhere(
-          (value) => value.id.toLowerCase() == id.toLowerCase(),
-          orElse: () => throw Exception('FlatAttributeValue with id $id not found'),
-        )
-        .value as S;
+    final attributeValue = values.firstWhere(
+      (value) => value.id.toLowerCase() == id.toLowerCase(),
+      orElse: () => throw Exception('FlatAttributeValue with id $id not found'),
+    );
+
+    if (attributeValue.value is! S) {
+      throw Exception('FlatAttributeValue with id $id is not of type $S but of type ${attributeValue.value.runtimeType}');
+    }
+
+    return attributeValue.value as S;
   }
 
   FlatObjectValue copyWithNewValue(FlatAttributeValue newValue) {

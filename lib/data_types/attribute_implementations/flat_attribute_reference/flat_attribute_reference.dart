@@ -19,6 +19,7 @@ class FlatAttributeReference<T extends Object> extends FlatAttributeStructure<T>
     super.validator,
     super.invalidValueErrorMessage,
     super.isOptional = false,
+    super.canBeEdited = true,
     super.canObjectBeSortedByThisAttribute = false,
     super.shouldBeDisplayedOnOverviewTable = true,
   });

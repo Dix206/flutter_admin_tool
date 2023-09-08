@@ -6,6 +6,7 @@ import 'package:firebase_example/event/event_flat_object.dart';
 import 'package:firebase_example/firebase_options.dart';
 import 'package:firebase_example/login.dart';
 import 'package:firebase_example/register.dart';
+import 'package:firebase_example/user/user_flat_object.dart';
 import 'package:flutter_admin_tool/flat.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,7 @@ void main() async {
         getBlogFlatObject(account),
         articleFlatObject,
         eventFlatObject,
+        userFlatObject,
       ],
       getFlatUserInfos: (account) => FlatUserInfos(
         name: account.displayName,

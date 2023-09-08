@@ -14,6 +14,7 @@ class FlatAttributeInt extends FlatAttributeStructure<int> {
     super.validator,
     super.invalidValueErrorMessage,
     super.isOptional = false,
+    super.canBeEdited = true,
     super.canObjectBeSortedByThisAttribute = false,
     super.shouldBeDisplayedOnOverviewTable = true,
   });

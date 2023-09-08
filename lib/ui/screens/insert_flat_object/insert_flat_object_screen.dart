@@ -146,6 +146,7 @@ class _ContentState extends State<_Content> {
         ),
         Expanded(
           child: _AttributeWidgets(
+            existingFlatObjectValueId: widget.existingFlatObjectValueId,
             flatObject: widget.flatObject,
             currentFlatObjectValue: widget.currentFlatObjectValue,
             shouldDisplayValidationErrors: widget.shouldDisplayValidationErrors,
@@ -237,12 +238,14 @@ class _TopBar extends StatelessWidget {
 }
 
 class _AttributeWidgets extends StatelessWidget {
+  final String? existingFlatObjectValueId;
   final FlatObjectStructure flatObject;
   final FlatObjectValue currentFlatObjectValue;
   final bool shouldDisplayValidationErrors;
 
   const _AttributeWidgets({
     Key? key,
+    required this.existingFlatObjectValueId,
     required this.flatObject,
     required this.currentFlatObjectValue,
     required this.shouldDisplayValidationErrors,
@@ -274,16 +277,22 @@ class _AttributeWidgets extends StatelessWidget {
                           ),
                     ),
                     const SizedBox(height: 16),
-                    flatValue.buildWidget(
-                      currentValue: currentFlatObjectValue.getAttributeValueByAttributeId(flatValue.id),
-                      shouldDisplayValidationErrors: shouldDisplayValidationErrors,
-                      onFlatTypeUpdated: (newValue) {
-                        InsertFlatObjectViewModel.of(context).updateAttributeValue(
-                          id: flatValue.id,
-                          value: newValue,
-                        );
-                      },
-                    ),
+                    flatValue.canBeEdited || existingFlatObjectValueId == null
+                        ? flatValue.buildWidget(
+                            currentValue: currentFlatObjectValue.getAttributeValueByAttributeId(flatValue.id),
+                            shouldDisplayValidationErrors: shouldDisplayValidationErrors,
+                            onFlatTypeUpdated: (newValue) {
+                              InsertFlatObjectViewModel.of(context).updateAttributeValue(
+                                id: flatValue.id,
+                                value: newValue,
+                              );
+                            },
+                          )
+                        : SelectableText(
+                            flatValue.valueToString(
+                                context: context,
+                                value: currentFlatObjectValue.getAttributeValueByAttributeId(flatValue.id)),
+                          ),
                     const SizedBox(height: 16),
                   ],
                 ),

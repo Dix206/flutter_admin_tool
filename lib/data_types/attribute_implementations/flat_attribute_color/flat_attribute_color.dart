@@ -9,6 +9,7 @@ class FlatAttributeColor extends FlatAttributeStructure<Color> {
     required super.displayName,
     super.defaultValue,
     super.isOptional = false,
+    super.canBeEdited = true,
     super.validator,
     super.invalidValueErrorMessage,
   }) : super(

@@ -10,6 +10,7 @@ class FlatAttributeImage extends FlatAttributeStructure<FlatFileValue> {
     required super.id,
     required super.displayName,
     super.isOptional = false,
+    super.canBeEdited = true,
     super.invalidValueErrorMessage,
   }) : super(
           validator: null,

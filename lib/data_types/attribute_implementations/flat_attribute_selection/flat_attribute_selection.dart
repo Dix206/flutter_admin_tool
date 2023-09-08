@@ -18,6 +18,7 @@ class FlatAttributeSelection<T extends Object> extends FlatAttributeStructure<T>
     super.defaultValue,
     super.invalidValueErrorMessage,
     super.isOptional = false,
+    super.canBeEdited = true,
     super.canObjectBeSortedByThisAttribute = false,
     super.shouldBeDisplayedOnOverviewTable = true,
   }) : super(

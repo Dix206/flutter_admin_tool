@@ -19,6 +19,9 @@ abstract class FlatAttributeStructure<T extends Object> extends Equatable {
   /// If its true, this attribute can be null.
   final bool isOptional;
 
+  /// If this value is set to false, this value can't be changed while updating this object. It can only be set while creating this object.
+  final bool canBeEdited;
+
   /// The validator will validate if the user passed value is valid.
   /// If the validator is null, the attribute is always valid and every value of type [T] can be passed.
   final Validator<T>? validator;
@@ -41,6 +44,7 @@ abstract class FlatAttributeStructure<T extends Object> extends Equatable {
     required this.displayName,
     required this.invalidValueErrorMessage,
     required this.isOptional,
+    required this.canBeEdited,
     required this.validator,
     required this.shouldBeDisplayedOnOverviewTable,
     required this.canObjectBeSortedByThisAttribute,

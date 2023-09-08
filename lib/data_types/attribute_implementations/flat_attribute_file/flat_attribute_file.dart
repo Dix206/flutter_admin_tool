@@ -14,6 +14,7 @@ class FlatAttributeFile extends FlatAttributeStructure<FlatFileValue> {
     required super.displayName,
     this.onFileDownload,
     super.isOptional = false,
+    super.canBeEdited = true,
     super.invalidValueErrorMessage,
   }) : super(
           validator: null,

@@ -8,6 +8,7 @@ class FlatAttributeBool extends FlatAttributeStructure<bool> {
     required super.id,
     required super.displayName,
     super.defaultValue = false,
+    super.canBeEdited = true,
     super.canObjectBeSortedByThisAttribute = false,
     super.shouldBeDisplayedOnOverviewTable = true,
   }) : super(

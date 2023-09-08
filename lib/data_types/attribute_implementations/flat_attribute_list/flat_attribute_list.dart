@@ -14,6 +14,7 @@ class FlatAttributeList<T extends Object, S extends FlatAttributeStructure<T>> e
     super.defaultValue,
     super.invalidValueErrorMessage,
     super.isOptional = false,
+    super.canBeEdited = true,
     super.validator,
     super.canObjectBeSortedByThisAttribute = false,
     super.shouldBeDisplayedOnOverviewTable = true,
