@@ -38,14 +38,16 @@ class FlatObjectOverviewActions extends StatelessWidget {
               ),
             ),
           ),
-        const SizedBox(width: 16),
-        Flexible(
-          child: _SearchBar(
-            flatObject: flatObjectStructure,
-            searchQuery: searchQuery,
-            sortOptions: sortOptions,
+        if (flatObjectStructure.canSearchObjects) ...[
+          const SizedBox(width: 16),
+          Flexible(
+            child: _SearchBar(
+              flatObject: flatObjectStructure,
+              searchQuery: searchQuery,
+              sortOptions: sortOptions,
+            ),
           ),
-        ),
+        ],
       ],
     );
   }

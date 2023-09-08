@@ -23,6 +23,9 @@ class FlatObjectStructure extends Equatable {
 
   final bool canBeSortedById;
 
+  /// If this is true, the user will be able to search for objects of this type. A search query will be passed to the [onLoadFlatObjects] method.
+  final bool canSearchObjects;
+
   /// The attributes define the properties of an object.
   /// They are used to create and update objects.
   /// In the UI they will be displayed in the order they are defined.
@@ -54,6 +57,7 @@ class FlatObjectStructure extends Equatable {
   FlatObjectStructure({
     required this.id,
     this.canBeSortedById = true,
+    this.canSearchObjects = true,
     required this.displayName,
     required this.attributes,
     required this.onLoadFlatObjects,
