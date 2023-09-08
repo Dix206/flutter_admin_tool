@@ -29,7 +29,8 @@ Future<FlatResult<Unit>> _updateBlogFromExistingBlog({
   required Blog blog,
 }) async {
   try {
-    final file = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('file');
+    final file =
+        flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('file');
 
     if (file?.data != null) {
       final fileId = const Uuid().v4();

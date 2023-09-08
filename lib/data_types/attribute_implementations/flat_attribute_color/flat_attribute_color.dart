@@ -36,5 +36,7 @@ class FlatAttributeColor extends FlatAttributeStructure<Color> {
     required BuildContext context,
     required Color? value,
   }) =>
-      value != null ? "#${value.value.toRadixString(16).padLeft(8, '0').toUpperCase()}" : FlatApp.getFlatTexts(context).flatAttributeValueNull;
+      value != null
+          ? "#${value.value.toRadixString(16).padLeft(8, '0').toUpperCase()}"
+          : FlatApp.getFlatTexts(context).flatAttributeValueNull;
 }

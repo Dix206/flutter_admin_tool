@@ -22,7 +22,8 @@ class FlatAttributeImageWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FlatAttributeImageWidget> createState() => _FlatAttributeImageWidgetState();
+  State<FlatAttributeImageWidget> createState() =>
+      _FlatAttributeImageWidgetState();
 }
 
 class _FlatAttributeImageWidgetState extends State<FlatAttributeImageWidget> {
@@ -31,7 +32,7 @@ class _FlatAttributeImageWidgetState extends State<FlatAttributeImageWidget> {
   @override
   Widget build(BuildContext context) {
     final FlatTexts flatTexts = FlatApp.getFlatTexts(context);
-    
+
     return Column(
       children: [
         InkWell(
@@ -69,7 +70,8 @@ class _FlatAttributeImageWidgetState extends State<FlatAttributeImageWidget> {
                       widget.currentValue!.data!,
                       fit: BoxFit.cover,
                     )
-                  : widget.currentValue?.url != null && !widget.currentValue!.wasDeleted
+                  : widget.currentValue?.url != null &&
+                          !widget.currentValue!.wasDeleted
                       ? Image.network(
                           widget.currentValue!.url!,
                           fit: BoxFit.cover,
@@ -86,7 +88,8 @@ class _FlatAttributeImageWidgetState extends State<FlatAttributeImageWidget> {
         ),
         if (widget.currentValue != null &&
             (widget.currentValue!.data != null ||
-                (widget.currentValue!.url != null && !widget.currentValue!.wasDeleted))) ...[
+                (widget.currentValue!.url != null &&
+                    !widget.currentValue!.wasDeleted))) ...[
           const SizedBox(height: 8),
           SizedBox(
             width: _imageSize,
@@ -106,10 +109,12 @@ class _FlatAttributeImageWidgetState extends State<FlatAttributeImageWidget> {
             ),
           ),
         ],
-        if (widget.shouldDisplayValidationErrors && !widget.flatTypeImage.isValid(widget.currentValue)) ...[
+        if (widget.shouldDisplayValidationErrors &&
+            !widget.flatTypeImage.isValid(widget.currentValue)) ...[
           const SizedBox(height: 8),
           Text(
-            widget.flatTypeImage.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
+            widget.flatTypeImage.invalidValueErrorMessage ??
+                flatTexts.defaultInvalidDataMessage,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: Theme.of(context).colorScheme.error,
                 ),

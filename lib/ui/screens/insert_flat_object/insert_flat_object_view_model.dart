@@ -26,7 +26,8 @@ class InsertFlatObjectViewModelProvider extends StatefulWidget {
   State createState() => _InsertFlatObjectViewModelProviderState();
 }
 
-class _InsertFlatObjectViewModelProviderState extends State<InsertFlatObjectViewModelProvider> {
+class _InsertFlatObjectViewModelProviderState
+    extends State<InsertFlatObjectViewModelProvider> {
   final ValueNotifier<InsertFlatObjectState?> _state = ValueNotifier(null);
 
   @override
@@ -87,7 +88,8 @@ class InsertFlatObjectViewModel extends InheritedWidget {
   }
 
   static InsertFlatObjectViewModel of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<InsertFlatObjectViewModel>()!;
+    return context
+        .dependOnInheritedWidgetOfExactType<InsertFlatObjectViewModel>()!;
   }
 
   Future<void> init() async {
@@ -102,7 +104,8 @@ class InsertFlatObjectViewModel extends InheritedWidget {
       return;
     }
 
-    final result = await flatObject.loadFlatObjectById(existingFlatObjectValueId!);
+    final result =
+        await flatObject.loadFlatObjectById(existingFlatObjectValueId!);
 
     state = result.fold(
       onError: (errorMessage) => InsertFlatObjectFailureState(errorMessage),
@@ -132,7 +135,9 @@ class InsertFlatObjectViewModel extends InheritedWidget {
   }
 
   Future<void> deleteObject() async {
-    if (state is! InsertFlatObjectInitState || existingFlatObjectValueId == null || flatObject.onDeleteFlatObject == null) {
+    if (state is! InsertFlatObjectInitState ||
+        existingFlatObjectValueId == null ||
+        flatObject.onDeleteFlatObject == null) {
       return;
     }
     final initState = state as InsertFlatObjectInitState;
@@ -140,7 +145,8 @@ class InsertFlatObjectViewModel extends InheritedWidget {
     state = initState.copyWith(isDeleting: true);
     onNotifyListener(state);
 
-    final result = await flatObject.onDeleteFlatObject!(existingFlatObjectValueId!);
+    final result =
+        await flatObject.onDeleteFlatObject!(existingFlatObjectValueId!);
 
     result.fold(
       onError: (errorMessage) {
@@ -190,11 +196,13 @@ class InsertFlatObjectViewModel extends InheritedWidget {
 
     if (existingFlatObjectValueId != null) {
       result = flatObject.onUpdateFlatObject != null
-          ? await flatObject.onUpdateFlatObject!(initState.currentFlatObjectValue)
+          ? await flatObject
+              .onUpdateFlatObject!(initState.currentFlatObjectValue)
           : FlatResult.success(const Unit());
     } else {
       result = flatObject.onCreateFlatObject != null
-          ? await flatObject.onCreateFlatObject!(initState.currentFlatObjectValue)
+          ? await flatObject
+              .onCreateFlatObject!(initState.currentFlatObjectValue)
           : FlatResult.success(const Unit());
     }
 
@@ -236,7 +244,8 @@ class InsertFlatObjectFailureState extends InsertFlatObjectState {
   InsertFlatObjectFailureState(this.failure);
 }
 
-class InsertFlatObjectInitState extends InsertFlatObjectState with EquatableMixin {
+class InsertFlatObjectInitState extends InsertFlatObjectState
+    with EquatableMixin {
   final FlatObjectValue currentFlatObjectValue;
   final bool shouldDisplayValidationErrors;
   final bool isInserting;
@@ -278,12 +287,15 @@ class InsertFlatObjectInitState extends InsertFlatObjectState with EquatableMixi
     NullableObject<String>? failure,
   }) {
     return InsertFlatObjectInitState(
-      currentFlatObjectValue: currentFlatObjectValue ?? this.currentFlatObjectValue,
-      shouldDisplayValidationErrors: shouldDisplayValidationErrors ?? this.shouldDisplayValidationErrors,
+      currentFlatObjectValue:
+          currentFlatObjectValue ?? this.currentFlatObjectValue,
+      shouldDisplayValidationErrors:
+          shouldDisplayValidationErrors ?? this.shouldDisplayValidationErrors,
       isInserting: isInserting ?? this.isInserting,
       isInsertSuccessfull: isInsertSuccessfull ?? this.isInsertSuccessfull,
       isDeleting: isDeleting ?? this.isDeleting,
-      isDeletionSuccessfull: isDeletionSuccessfull ?? this.isDeletionSuccessfull,
+      isDeletionSuccessfull:
+          isDeletionSuccessfull ?? this.isDeletionSuccessfull,
       failure: failure == null ? this.failure : failure.value,
     );
   }

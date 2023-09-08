@@ -14,9 +14,14 @@ Future<FlatResult<FlatCurserObjectValueList>> loadEvents({
     final query = FirebaseFirestore.instance.collection(eventCollectionId);
     final sortedQuery = sortOptions == null
         ? query.orderBy("id", descending: true)
-        : query.orderBy(sortOptions.attributeId, descending: !sortOptions.ascending);
-    final filteredQuery = searchQuery == null ? sortedQuery : sortedQuery.where("title", isGreaterThan: searchQuery);
-    final paginationQuery = lastLoadedObjectId != null ? filteredQuery.startAfter([lastLoadedObjectId]) : filteredQuery;
+        : query.orderBy(sortOptions.attributeId,
+            descending: !sortOptions.ascending);
+    final filteredQuery = searchQuery == null
+        ? sortedQuery
+        : sortedQuery.where("title", isGreaterThan: searchQuery);
+    final paginationQuery = lastLoadedObjectId != null
+        ? filteredQuery.startAfter([lastLoadedObjectId])
+        : filteredQuery;
     final documentSnapshots = await paginationQuery.limit(itemsToLoad).get();
 
     return FlatResult.success(

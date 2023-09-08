@@ -16,11 +16,14 @@ class ThemeModeHandler extends StatefulWidget {
     required BuildContext context,
     required ThemeMode themeMode,
   }) async {
-    await context.findAncestorStateOfType<_ThemeModeHandlerState>()!.setThemeMode(themeMode);
+    await context
+        .findAncestorStateOfType<_ThemeModeHandlerState>()!
+        .setThemeMode(themeMode);
   }
 
-  static ThemeMode getThemeMode(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_ThemeModeHandlerInherited>()!.themeMode;
+  static ThemeMode getThemeMode(BuildContext context) => context
+      .dependOnInheritedWidgetOfExactType<_ThemeModeHandlerInherited>()!
+      .themeMode;
 }
 
 class _ThemeModeHandlerState extends State<ThemeModeHandler> {

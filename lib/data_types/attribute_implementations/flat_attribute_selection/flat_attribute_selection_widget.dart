@@ -45,11 +45,13 @@ class FlatAttributeSelectionWidget<T extends Object> extends StatelessWidget {
                     onTap: () => onFlatTypeUpdated(null),
                   )
                 : null,
-            hintText: FlatApp.getFlatTexts(context).flatAttributeSelectionNoItemSelected,
+            hintText: FlatApp.getFlatTexts(context)
+                .flatAttributeSelectionNoItemSelected,
             border: const OutlineInputBorder(),
           ),
         ),
-        if (shouldDisplayValidationErrors && !flatTypeSelection.isValid(currentValue))
+        if (shouldDisplayValidationErrors &&
+            !flatTypeSelection.isValid(currentValue))
           Padding(
             padding: const EdgeInsets.only(
               top: 8.0,
@@ -57,7 +59,8 @@ class FlatAttributeSelectionWidget<T extends Object> extends StatelessWidget {
               right: 16,
             ),
             child: Text(
-              flatTypeSelection.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
+              flatTypeSelection.invalidValueErrorMessage ??
+                  flatTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

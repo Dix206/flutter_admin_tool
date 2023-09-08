@@ -7,7 +7,10 @@ import 'package:uuid/uuid.dart';
 
 Future<FlatResult<Unit>> updateBlog(FlatObjectValue flatObjectValue) async {
   try {
-    final snapshot = await FirebaseFirestore.instance.collection(blogCollectionId).doc(flatObjectValue.id).get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection(blogCollectionId)
+        .doc(flatObjectValue.id)
+        .get();
 
     final blog = Blog.fromJson(snapshot.data()!);
 
@@ -25,7 +28,8 @@ Future<FlatResult<Unit>> _updateBlogFromExistingBlog({
   required Blog blog,
 }) async {
   try {
-    final file = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('file');
+    final file =
+        flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('file');
 
     if (file?.data != null) {
       final fileId = const Uuid().v4();
@@ -48,7 +52,10 @@ Future<FlatResult<Unit>> _updateBlogFromExistingBlog({
             fileId: fileId,
           );
 
-          await FirebaseFirestore.instance.collection(blogCollectionId).doc(newBlog.id).set(newBlog.toJson());
+          await FirebaseFirestore.instance
+              .collection(blogCollectionId)
+              .doc(newBlog.id)
+              .set(newBlog.toJson());
           return FlatResult.success(const Unit());
         },
       );
@@ -66,7 +73,10 @@ Future<FlatResult<Unit>> _updateBlogFromExistingBlog({
             fileId: null,
           );
 
-          await FirebaseFirestore.instance.collection(blogCollectionId).doc(newBlog.id).set(newBlog.toJson());
+          await FirebaseFirestore.instance
+              .collection(blogCollectionId)
+              .doc(newBlog.id)
+              .set(newBlog.toJson());
           return FlatResult.success(const Unit());
         },
       );
@@ -78,7 +88,10 @@ Future<FlatResult<Unit>> _updateBlogFromExistingBlog({
       fileId: blog.fileId,
     );
 
-    await FirebaseFirestore.instance.collection(blogCollectionId).doc(newBlog.id).set(newBlog.toJson());
+    await FirebaseFirestore.instance
+        .collection(blogCollectionId)
+        .doc(newBlog.id)
+        .set(newBlog.toJson());
     return FlatResult.success(const Unit());
   } catch (exception) {
     return FlatResult.error("Failed to update article. Please try again");

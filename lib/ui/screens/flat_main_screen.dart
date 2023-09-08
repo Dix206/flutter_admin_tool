@@ -27,7 +27,8 @@ class FlatMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isMobile = MediaQuery.of(context).size.width < mobileViewMaxWidth;
+    final bool isMobile =
+        MediaQuery.of(context).size.width < mobileViewMaxWidth;
 
     return Scaffold(
       drawer: isMobile
@@ -151,7 +152,8 @@ class _Menu extends StatelessWidget {
                 },
                 tileColor: Theme.of(context).colorScheme.surface,
                 selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                selected: selectedTab == FlatMainScreenTab.overview && flatObject.id == selectedFlatObjectId,
+                selected: selectedTab == FlatMainScreenTab.overview &&
+                    flatObject.id == selectedFlatObjectId,
               ),
             ),
           ),
@@ -168,7 +170,8 @@ class _Menu extends StatelessWidget {
                 },
                 tileColor: Theme.of(context).colorScheme.surface,
                 selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                selected: selectedTab == FlatMainScreenTab.custom && customMenuEntry.id == selectedCustomMenuEntryId,
+                selected: selectedTab == FlatMainScreenTab.custom &&
+                    customMenuEntry.id == selectedCustomMenuEntryId,
               ),
             ),
           ),

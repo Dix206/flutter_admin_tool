@@ -29,7 +29,9 @@ class OverviewScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                FlatApp.getFlatTexts(context).noFlatObjectStructureObjectFoundWithPassedId(selectedFlatObjectId),
+                FlatApp.getFlatTexts(context)
+                    .noFlatObjectStructureObjectFoundWithPassedId(
+                        selectedFlatObjectId),
                 textAlign: TextAlign.center,
               ),
             ),

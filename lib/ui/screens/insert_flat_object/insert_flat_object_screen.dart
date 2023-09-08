@@ -41,7 +41,8 @@ class InsertFlatObjectScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            FlatApp.getFlatTexts(context).updateFlatObjectNoObjectFoundWithPassedId(flatObjectId),
+            FlatApp.getFlatTexts(context)
+                .updateFlatObjectNoObjectFoundWithPassedId(flatObjectId),
             textAlign: TextAlign.center,
           ),
         ),
@@ -55,7 +56,8 @@ class InsertFlatObjectScreen extends StatelessWidget {
             showErrorMessage(context: context, errorMessage: state.failure!);
           }
 
-          if (state is InsertFlatObjectInitState && (state.isInsertSuccessfull || state.isDeletionSuccessfull)) {
+          if (state is InsertFlatObjectInitState &&
+              (state.isInsertSuccessfull || state.isDeletionSuccessfull)) {
             _onNavigateBack(
               context: context,
               flatObject: flatObjectStructure,
@@ -70,7 +72,8 @@ class InsertFlatObjectScreen extends StatelessWidget {
               existingFlatObjectValueId: existingFlatObjectValueId,
               flatObject: flatObjectStructure,
               currentFlatObjectValue: state.currentFlatObjectValue,
-              shouldDisplayValidationErrors: state.shouldDisplayValidationErrors,
+              shouldDisplayValidationErrors:
+                  state.shouldDisplayValidationErrors,
               isInserting: state.isInserting,
               isDeleting: state.isDeleting,
               onNavigateBack: () => _onNavigateBack(
@@ -175,7 +178,8 @@ class _TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isMobile = MediaQuery.of(context).size.width < mobileViewMaxWidth;
+    final bool isMobile =
+        MediaQuery.of(context).size.width < mobileViewMaxWidth;
 
     return FlatTopBar(
       actions: [
@@ -196,11 +200,13 @@ class _TopBar extends StatelessWidget {
             ),
           ),
         FlatButton(
-          onPressed: () => InsertFlatObjectViewModel.of(context).insertObject(context),
+          onPressed: () =>
+              InsertFlatObjectViewModel.of(context).insertObject(context),
           text: FlatApp.getFlatTexts(context).save,
           isLoading: isInserting,
         ),
-        if (flatObject.onDeleteFlatObject != null && existingFlatObjectValueId != null)
+        if (flatObject.onDeleteFlatObject != null &&
+            existingFlatObjectValueId != null)
           FlatButton(
             onPressed: () async {
               final shouldDeleteBject = await showDialog(
@@ -208,7 +214,8 @@ class _TopBar extends StatelessWidget {
                 builder: (context) => AlertDialog(
                   title: Text(FlatApp.getFlatTexts(context).delete),
                   content: Text(
-                    FlatApp.getFlatTexts(context).deleteFlatObjectValueConfirmationMessage,
+                    FlatApp.getFlatTexts(context)
+                        .deleteFlatObjectValueConfirmationMessage,
                   ),
                   actions: [
                     TextButton(
@@ -279,10 +286,13 @@ class _AttributeWidgets extends StatelessWidget {
                     const SizedBox(height: 16),
                     flatValue.canBeEdited || existingFlatObjectValueId == null
                         ? flatValue.buildWidget(
-                            currentValue: currentFlatObjectValue.getAttributeValueByAttributeId(flatValue.id),
-                            shouldDisplayValidationErrors: shouldDisplayValidationErrors,
+                            currentValue: currentFlatObjectValue
+                                .getAttributeValueByAttributeId(flatValue.id),
+                            shouldDisplayValidationErrors:
+                                shouldDisplayValidationErrors,
                             onFlatTypeUpdated: (newValue) {
-                              InsertFlatObjectViewModel.of(context).updateAttributeValue(
+                              InsertFlatObjectViewModel.of(context)
+                                  .updateAttributeValue(
                                 id: flatValue.id,
                                 value: newValue,
                               );
@@ -291,7 +301,9 @@ class _AttributeWidgets extends StatelessWidget {
                         : SelectableText(
                             flatValue.valueToString(
                                 context: context,
-                                value: currentFlatObjectValue.getAttributeValueByAttributeId(flatValue.id)),
+                                value: currentFlatObjectValue
+                                    .getAttributeValueByAttributeId(
+                                        flatValue.id)),
                           ),
                     const SizedBox(height: 16),
                   ],

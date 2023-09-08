@@ -43,7 +43,9 @@ class _PaginationState extends State<FlatObjectOverviewPagination> {
     final newPage = int.tryParse(pageText);
     if (newPage == null) return;
 
-    if (newPage < 1 || newPage > widget.overallPages || newPage == widget.page) return;
+    if (newPage < 1 || newPage > widget.overallPages || newPage == widget.page) {
+      return;
+    }
 
     DateTime thisPageUpdate = DateTime.now();
     _lastPageUpdate = thisPageUpdate;
@@ -91,7 +93,9 @@ class _PaginationState extends State<FlatObjectOverviewPagination> {
             padding: const EdgeInsets.all(4.0),
             child: Icon(
               Icons.arrow_back_ios,
-              color: widget.page == 1 ? Colors.grey : Theme.of(context).colorScheme.onSurface,
+              color: widget.page == 1
+                  ? Colors.grey
+                  : Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
@@ -152,7 +156,9 @@ class _PaginationState extends State<FlatObjectOverviewPagination> {
             padding: const EdgeInsets.all(4.0),
             child: Icon(
               Icons.arrow_forward_ios,
-              color: widget.page == widget.overallPages ? Colors.grey : Theme.of(context).colorScheme.onSurface,
+              color: widget.page == widget.overallPages
+                  ? Colors.grey
+                  : Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),

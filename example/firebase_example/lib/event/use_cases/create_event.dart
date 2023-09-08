@@ -13,7 +13,10 @@ Future<FlatResult<Unit>> createEvent(FlatObjectValue flatObjectValue) async {
       id: id,
     );
 
-    await FirebaseFirestore.instance.collection(eventCollectionId).doc(event.id).set(event.toJson());
+    await FirebaseFirestore.instance
+        .collection(eventCollectionId)
+        .doc(event.id)
+        .set(event.toJson());
     return FlatResult.success(const Unit());
   } catch (exception) {
     return FlatResult.error("Failed to create event. Please try again");

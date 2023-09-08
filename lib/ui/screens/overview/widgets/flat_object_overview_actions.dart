@@ -70,7 +70,8 @@ class _SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<_SearchBar> {
-  late final _textEditingController = TextEditingController(text: widget.searchQuery);
+  late final _textEditingController =
+      TextEditingController(text: widget.searchQuery);
 
   @override
   void dispose() {
@@ -96,12 +97,15 @@ class _SearchBarState extends State<_SearchBar> {
                 Routes.overview(
                   flatObjectId: widget.flatObject.id,
                   page: 1,
-                  searchQuery: _textEditingController.text.trim().isEmpty ? null : _textEditingController.text.trim(),
+                  searchQuery: _textEditingController.text.trim().isEmpty
+                      ? null
+                      : _textEditingController.text.trim(),
                   sortOptions: widget.sortOptions,
                 ),
               ),
               decoration: InputDecoration(
-                hintText: FlatApp.getFlatTexts(context).searchObjectsTextFieldHint,
+                hintText:
+                    FlatApp.getFlatTexts(context).searchObjectsTextFieldHint,
                 border: const OutlineInputBorder(),
                 prefixIcon: const Icon(Icons.search),
                 contentPadding: EdgeInsets.zero,
@@ -130,7 +134,9 @@ class _SearchBarState extends State<_SearchBar> {
             Routes.overview(
               flatObjectId: widget.flatObject.id,
               page: 1,
-              searchQuery: _textEditingController.text.trim().isEmpty ? null : _textEditingController.text.trim(),
+              searchQuery: _textEditingController.text.trim().isEmpty
+                  ? null
+                  : _textEditingController.text.trim(),
               sortOptions: widget.sortOptions,
             ),
           ),

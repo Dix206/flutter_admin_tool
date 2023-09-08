@@ -1,7 +1,7 @@
 name: flutter_admin_tool
-description: A package to help you build a flutter admin tool.
-version: 0.0.6
-homepage: https://github.com/Dix206/flutter_multi_tap_detector
+description: A package to help you build a flutter admin tool. Setup CRUD operations just by defining the datastructure and implement your backend functionality.
+version: 0.0.7
+repository: https://github.com/Dix206/flutter_admin_tool
 
 environment:
   sdk: '>=3.0.5 <4.0.0'

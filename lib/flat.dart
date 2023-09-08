@@ -1,3 +1,5 @@
+library flutter_admin_tool;
+
 export 'package:flutter_admin_tool/data_types/flat_custom_menu_entry.dart';
 export 'package:flutter_admin_tool/flat_app.dart';
 export 'package:flutter_admin_tool/data_types/attribute_implementations/flat_attribute_bool/flat_attribute_bool.dart';

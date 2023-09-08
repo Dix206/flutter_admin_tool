@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
+
 class FlatCustomMenuEntry extends Equatable {
   final String id;
   final String displayName;

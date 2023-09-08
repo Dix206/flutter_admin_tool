@@ -21,9 +21,10 @@ class SettingsScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 16),
               SwitchListTile(
-                value:
-                    (themeMode == ThemeMode.system && MediaQuery.of(context).platformBrightness == Brightness.dark) ||
-                        themeMode == ThemeMode.dark,
+                value: (themeMode == ThemeMode.system &&
+                        MediaQuery.of(context).platformBrightness ==
+                            Brightness.dark) ||
+                    themeMode == ThemeMode.dark,
                 onChanged: (value) => ThemeModeHandler.setThemeMode(
                   context: context,
                   themeMode: value ? ThemeMode.dark : ThemeMode.light,

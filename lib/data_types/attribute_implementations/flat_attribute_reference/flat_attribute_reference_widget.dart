@@ -20,23 +20,27 @@ class FlatAttributeReferenceWidget<T extends Object> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FlatAttributeReferenceWidget<T>> createState() => _FlatAttributeReferenceWidgetState<T>();
+  State<FlatAttributeReferenceWidget<T>> createState() =>
+      _FlatAttributeReferenceWidgetState<T>();
 }
 
-class _FlatAttributeReferenceWidgetState<T extends Object> extends State<FlatAttributeReferenceWidget<T>> {
+class _FlatAttributeReferenceWidgetState<T extends Object>
+    extends State<FlatAttributeReferenceWidget<T>> {
   Map<String, T> _optionsToSelect = {};
 
   @override
   Widget build(BuildContext context) {
     final FlatTexts flatTexts = FlatApp.getFlatTexts(context);
-    
+
     final isValid = widget.flatTypeReference.isValid(widget.currentValue);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Autocomplete<String>(
-          fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) => TextField(
+          fieldViewBuilder:
+              (context, textEditingController, focusNode, onFieldSubmitted) =>
+                  TextField(
             controller: textEditingController,
             focusNode: focusNode,
             decoration: const InputDecoration(
@@ -48,24 +52,29 @@ class _FlatAttributeReferenceWidgetState<T extends Object> extends State<FlatAtt
           optionsBuilder: (textEditingValue) async {
             if (textEditingValue.text.trim().isEmpty) return const [];
 
-            final result = await widget.flatTypeReference.searchFunction(textEditingValue.text);
+            final result = await widget.flatTypeReference
+                .searchFunction(textEditingValue.text);
             return result.fold(
               onError: (error) => <String>[],
               onSuccess: (data) {
                 _optionsToSelect = {
-                  for (final reference in data) widget.flatTypeReference.getReferenceDisplayString(reference): reference
+                  for (final reference in data)
+                    widget.flatTypeReference
+                        .getReferenceDisplayString(reference): reference
                 };
 
                 return _optionsToSelect.keys.toList();
               },
             );
           },
-          onSelected: (selection) => widget.onFlatTypeUpdated(_optionsToSelect[selection]),
+          onSelected: (selection) =>
+              widget.onFlatTypeUpdated(_optionsToSelect[selection]),
         ),
         const SizedBox(height: 16),
         ListTile(
           title: Text(
-            widget.flatTypeReference.valueToString(context: context, value: widget.currentValue),
+            widget.flatTypeReference
+                .valueToString(context: context, value: widget.currentValue),
           ),
           trailing: widget.currentValue == null
               ? null
@@ -82,7 +91,8 @@ class _FlatAttributeReferenceWidgetState<T extends Object> extends State<FlatAtt
               right: 16.0,
             ),
             child: Text(
-              widget.flatTypeReference.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
+              widget.flatTypeReference.invalidValueErrorMessage ??
+                  flatTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

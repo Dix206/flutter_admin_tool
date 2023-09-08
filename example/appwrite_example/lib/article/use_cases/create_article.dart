@@ -8,7 +8,8 @@ import 'package:uuid/uuid.dart';
 Future<FlatResult<Unit>> createArticle(FlatObjectValue flatObjectValue) async {
   try {
     final id = const Uuid().v4();
-    final imageData = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('image');
+    final imageData =
+        flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('image');
 
     if (imageData?.data != null) {
       final imageId = const Uuid().v4();

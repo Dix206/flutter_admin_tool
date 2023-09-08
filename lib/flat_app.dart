@@ -12,10 +12,12 @@ import 'package:flutter_admin_tool/data_types/flat_custom_menu_entry.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 /// This method will return a list of all flat object structures based on the passed user object which is of type T
-typedef GetFlatObjectStructures<T extends Object> = List<FlatObjectStructure> Function(T loggedInUser);
+typedef GetFlatObjectStructures<T extends Object> = List<FlatObjectStructure>
+    Function(T loggedInUser);
 
 /// This method will return the [FlatUserInfos] based on the passed user object which is of type T
-typedef GetFlatUserInfos<T extends Object> = FlatUserInfos Function(T loggedInUser);
+typedef GetFlatUserInfos<T extends Object> = FlatUserInfos Function(
+    T loggedInUser);
 
 /// T is the type of the logged in user
 class FlatApp<T extends Object> extends StatelessWidget {
@@ -90,11 +92,13 @@ class FlatApp<T extends Object> extends StatelessWidget {
             } else {
               return authStateService.isLoggedIn
                   ? _FlatObjectsInherited(
-                      flatObjectStructures: getFlatObjectStructures(authStateService.loggedInUser!),
+                      flatObjectStructures: getFlatObjectStructures(
+                          authStateService.loggedInUser!),
                       flatAuthInfos: flatAuthInfos,
                       authStateService: authStateService,
                       flatCustomMenuEntries: flatCustomMenuEntries,
-                      flatUserInfos: getFlatUserInfos?.call(authStateService.loggedInUser!),
+                      flatUserInfos: getFlatUserInfos
+                          ?.call(authStateService.loggedInUser!),
                       flatTexts: flatTexts,
                       child: child!,
                     )
@@ -113,27 +117,41 @@ class FlatApp<T extends Object> extends StatelessWidget {
   }
 
   static FlatUserInfos? getUserInfos(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!.flatUserInfos;
+    return context
+        .dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!
+        .flatUserInfos;
   }
 
   static AuthStateService getAuthStateService(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!.authStateService;
+    return context
+        .dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!
+        .authStateService;
   }
 
   static FlatAuthInfos getFlatAuthInfos(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!.flatAuthInfos;
+    return context
+        .dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!
+        .flatAuthInfos;
   }
 
-  static List<FlatObjectStructure> getAllFlatObjectStructures(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!.flatObjectStructures;
+  static List<FlatObjectStructure> getAllFlatObjectStructures(
+      BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!
+        .flatObjectStructures;
   }
 
-  static List<FlatCustomMenuEntry> getFlatCustomMenuEntries(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!.flatCustomMenuEntries;
+  static List<FlatCustomMenuEntry> getFlatCustomMenuEntries(
+      BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!
+        .flatCustomMenuEntries;
   }
 
   static FlatTexts getFlatTexts(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!.flatTexts;
+    return context
+        .dependOnInheritedWidgetOfExactType<_FlatObjectsInherited>()!
+        .flatTexts;
   }
 
   static FlatObjectStructure? getFlatObjectStructureById({
@@ -141,7 +159,8 @@ class FlatApp<T extends Object> extends StatelessWidget {
     required String flatObjectId,
   }) {
     final allFlatObjectStructures = getAllFlatObjectStructures(context);
-    return allFlatObjectStructures.firstWhereOrNull((object) => object.id.toLowerCase() == flatObjectId.toLowerCase());
+    return allFlatObjectStructures.firstWhereOrNull(
+        (object) => object.id.toLowerCase() == flatObjectId.toLowerCase());
   }
 }
 
@@ -164,7 +183,8 @@ class _FlatObjectsInherited extends InheritedWidget {
   }) : assert(
           flatObjectStructures.every(
             (object) => flatObjectStructures.every(
-              (otherObject) => object.id != otherObject.id || object == otherObject,
+              (otherObject) =>
+                  object.id != otherObject.id || object == otherObject,
             ),
           ),
           'There are two objects with the same id',

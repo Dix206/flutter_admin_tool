@@ -6,8 +6,10 @@ import 'package:flutter_admin_tool/data_types/flat_result.dart';
 import 'package:flutter_admin_tool/data_types/load_flat_objects.dart';
 import 'package:flutter_admin_tool/extensions/iterable_extensions.dart';
 
-typedef LoadFlatObjectById = Future<FlatResult<FlatObjectValue>> Function(String id);
-typedef OnManipulateFlatObject = Future<FlatResult<Unit>> Function(FlatObjectValue);
+typedef LoadFlatObjectById = Future<FlatResult<FlatObjectValue>> Function(
+    String id);
+typedef OnManipulateFlatObject = Future<FlatResult<Unit>> Function(
+    FlatObjectValue);
 typedef OnDeleteFlatObject = Future<FlatResult<Unit>> Function(String id);
 
 /// This Class represents an object in the Flat-App. It should be used for every object which is stored in your backend.
@@ -68,7 +70,9 @@ class FlatObjectStructure extends Equatable {
   }) : assert(
           attributes.every(
             (attribute) => attributes.every(
-              (otherAttribute) => attribute.id != otherAttribute.id || attribute == otherAttribute,
+              (otherAttribute) =>
+                  attribute.id != otherAttribute.id ||
+                  attribute == otherAttribute,
             ),
           ),
           'There are two attributes with the same id in the flat object structure with id $id.',
@@ -89,7 +93,8 @@ class FlatObjectStructure extends Equatable {
   /// An attribute is valid if it is not required and null or if it is required and valid based on the attribute validator.
   bool isFlatObjectValueValid(FlatObjectValue flatObjectValue) {
     for (final attribute in attributes) {
-      final attributeValue = flatObjectValue.getAttributeValueByAttributeId(attribute.id);
+      final attributeValue =
+          flatObjectValue.getAttributeValueByAttributeId(attribute.id);
 
       if (!attribute.isValid(attributeValue)) {
         return false;
@@ -99,7 +104,8 @@ class FlatObjectStructure extends Equatable {
     return true;
   }
 
-  FlatAttributeStructure? getAttributeById(String attributeId) => attributes.firstWhereOrNull(
+  FlatAttributeStructure? getAttributeById(String attributeId) =>
+      attributes.firstWhereOrNull(
         (attribute) => attribute.id.toLowerCase() == attributeId.toLowerCase(),
       );
 

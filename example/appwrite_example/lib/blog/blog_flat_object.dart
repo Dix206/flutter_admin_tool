@@ -49,9 +49,12 @@ FlatObjectStructure getBlogFlatObject(User account) => FlatObjectStructure(
           isOptional: true,
         ),
       ],
-      onCreateFlatObject: account.prefs.data["role"] == "admin" ? createBlog : null,
-      onUpdateFlatObject: account.prefs.data["role"] == "admin" ? updateBlog : null,
+      onCreateFlatObject:
+          account.prefs.data["role"] == "admin" ? createBlog : null,
+      onUpdateFlatObject:
+          account.prefs.data["role"] == "admin" ? updateBlog : null,
       loadFlatObjectById: loadBlogById,
       onLoadFlatObjects: LoadFlatObjects.offset(loadBlogs),
-      onDeleteFlatObject: account.prefs.data["role"] == "admin" ? deleteBlog : null,
+      onDeleteFlatObject:
+          account.prefs.data["role"] == "admin" ? deleteBlog : null,
     );

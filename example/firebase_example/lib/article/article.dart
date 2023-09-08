@@ -57,11 +57,14 @@ class Article {
     return Article(
       id: id ?? flatObjectValue.id as String,
       title: flatObjectValue.getAttributeValueByAttributeId('title'),
-      description: flatObjectValue.getAttributeValueByAttributeId('description'),
+      description:
+          flatObjectValue.getAttributeValueByAttributeId('description'),
       imageId: imageId,
       timestamp: flatObjectValue.getAttributeValueByAttributeId('timestamp'),
       isActive: flatObjectValue.getAttributeValueByAttributeId('isActive'),
-      authorId: (flatObjectValue.getAttributeValueByAttributeId('author') as Author?)?.id,
+      authorId:
+          (flatObjectValue.getAttributeValueByAttributeId('author') as Author?)
+              ?.id,
     );
   }
 

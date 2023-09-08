@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       email: emailController.text,
                       password: passwordController.text,
                     );
-                
+
                     result.fold(
                       onError: (error) => showDialog(
                         context: context,

@@ -40,7 +40,8 @@ class FlatAttributeString extends FlatAttributeStructure<String> {
 
   @override
   bool isValid(String? value) {
-    return (value?.trim().isNotEmpty == true && (validator?.call(value) ?? true)) ||
+    return (value?.trim().isNotEmpty == true &&
+            (validator?.call(value) ?? true)) ||
         (value?.trim().isNotEmpty != false && isOptional);
   }
 

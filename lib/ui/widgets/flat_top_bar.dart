@@ -13,7 +13,8 @@ class FlatTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isMobile = MediaQuery.of(context).size.width < mobileViewMaxWidth;
+    final bool isMobile =
+        MediaQuery.of(context).size.width < mobileViewMaxWidth;
 
     return Container(
       decoration: BoxDecoration(

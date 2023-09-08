@@ -4,7 +4,8 @@ import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_att
 import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
 import 'package:flutter_admin_tool/flat_app.dart';
 
-class FlatAttributeSelection<T extends Object> extends FlatAttributeStructure<T> {
+class FlatAttributeSelection<T extends Object>
+    extends FlatAttributeStructure<T> {
   final List<T> options;
 
   /// Converts an option to a string that can be displayed to the user.
@@ -44,7 +45,9 @@ class FlatAttributeSelection<T extends Object> extends FlatAttributeStructure<T>
     required BuildContext context,
     required T? value,
   }) =>
-      value == null ? FlatApp.getFlatTexts(context).flatAttributeValueNull : optionToString(value);
+      value == null
+          ? FlatApp.getFlatTexts(context).flatAttributeValueNull
+          : optionToString(value);
 
   @override
   List<Object?> get props => [

@@ -21,7 +21,8 @@ class FlatTexts extends Equatable {
   final String Function(String id)? _updateFlatObjectNoObjectFoundWithPassedId;
   final String deleteFlatObjectValueConfirmationMessage;
   final String insertFlatObjectInvalidDataMessage;
-  final String Function(String id)? _noFlatObjectStructureObjectFoundWithPassedId;
+  final String Function(String id)?
+      _noFlatObjectStructureObjectFoundWithPassedId;
   final String createNewObjectButton;
   final String searchObjectsTextFieldHint;
   final String searchObjectsButton;
@@ -52,8 +53,10 @@ class FlatTexts extends Equatable {
     this.cancel = "Cancel",
     this.save = "Save",
     String Function(String id)? updateFlatObjectNoObjectFoundWithPassedId,
-    this.deleteFlatObjectValueConfirmationMessage = "Do you really want to delete this item?",
-    this.insertFlatObjectInvalidDataMessage = "Invalid data. Please check your entered data.",
+    this.deleteFlatObjectValueConfirmationMessage =
+        "Do you really want to delete this item?",
+    this.insertFlatObjectInvalidDataMessage =
+        "Invalid data. Please check your entered data.",
     String Function(String id)? noFlatObjectStructureObjectFoundWithPassedId,
     this.createNewObjectButton = "New object",
     this.searchObjectsTextFieldHint = "Search",
@@ -67,12 +70,18 @@ class FlatTexts extends Equatable {
     this.errorMessageRetryButton = "Retry",
     this.errorMessageTitle = "Error",
     this.ok = "Ok",
-  })  : _updateFlatObjectNoObjectFoundWithPassedId = updateFlatObjectNoObjectFoundWithPassedId,
-        _noFlatObjectStructureObjectFoundWithPassedId = noFlatObjectStructureObjectFoundWithPassedId;
+  })  : _updateFlatObjectNoObjectFoundWithPassedId =
+            updateFlatObjectNoObjectFoundWithPassedId,
+        _noFlatObjectStructureObjectFoundWithPassedId =
+            noFlatObjectStructureObjectFoundWithPassedId;
 
-  String updateFlatObjectNoObjectFoundWithPassedId(String id) => _updateFlatObjectNoObjectFoundWithPassedId?.call(id) ?? "There is no Object with the id $id";
+  String updateFlatObjectNoObjectFoundWithPassedId(String id) =>
+      _updateFlatObjectNoObjectFoundWithPassedId?.call(id) ??
+      "There is no Object with the id $id";
 
-  String noFlatObjectStructureObjectFoundWithPassedId(String id) => _noFlatObjectStructureObjectFoundWithPassedId?.call(id) ?? "There is no Object with the id $id";
+  String noFlatObjectStructureObjectFoundWithPassedId(String id) =>
+      _noFlatObjectStructureObjectFoundWithPassedId?.call(id) ??
+      "There is no Object with the id $id";
 
   @override
   List<Object?> get props => [appTitle, defaultInvalidDataMessage];

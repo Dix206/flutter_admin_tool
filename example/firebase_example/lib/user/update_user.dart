@@ -5,11 +5,16 @@ import 'package:flutter_admin_tool/flat.dart';
 
 Future<FlatResult<Unit>> updateUser(FlatObjectValue flatObjectValue) async {
   try {
-    final event = AppUserDto.fromFlatObjectValue(flatObjectValue: flatObjectValue);
+    final event =
+        AppUserDto.fromFlatObjectValue(flatObjectValue: flatObjectValue);
 
-    await FirebaseFirestore.instance.collection(appUserFirebaseCollectionId).doc(event.id).set(event.toJson());
+    await FirebaseFirestore.instance
+        .collection(userFirebaseCollectionId)
+        .doc(event.id)
+        .set(event.toJson());
     return FlatResult.success(const Unit());
   } catch (exception) {
-    return FlatResult.error("Es ist ein Fehler aufgetreten. Bitte probiere es erneut.");
+    return FlatResult.error(
+        "Es ist ein Fehler aufgetreten. Bitte probiere es erneut.");
   }
 }

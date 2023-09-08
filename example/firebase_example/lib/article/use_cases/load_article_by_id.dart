@@ -5,17 +5,25 @@ import 'package:flutter_admin_tool/flat.dart';
 
 Future<FlatResult<FlatObjectValue>> loadArticleById(String articleId) async {
   try {
-    final snapshot = await FirebaseFirestore.instance.collection(articleCollectionId).doc(articleId).get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection(articleCollectionId)
+        .doc(articleId)
+        .get();
 
     final article = Article.fromJson(snapshot.data()!);
 
     final authorSnapshot = article.authorId == null
         ? null
-        : await FirebaseFirestore.instance.collection(authorCollectionId).doc(article.authorId!).get();
+        : await FirebaseFirestore.instance
+            .collection(authorCollectionId)
+            .doc(article.authorId!)
+            .get();
 
     return FlatResult.success(
       article.toFlatObjectValue(
-        author: authorSnapshot == null ? null : Author.fromJson(authorSnapshot.data()!),
+        author: authorSnapshot == null
+            ? null
+            : Author.fromJson(authorSnapshot.data()!),
       ),
     );
   } catch (exception) {

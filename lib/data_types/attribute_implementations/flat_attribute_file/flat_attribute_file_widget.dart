@@ -21,7 +21,8 @@ class FlatAttributeFileWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FlatAttributeFileWidget> createState() => _FlatAttributeFileWidgetState();
+  State<FlatAttributeFileWidget> createState() =>
+      _FlatAttributeFileWidgetState();
 }
 
 class _FlatAttributeFileWidgetState extends State<FlatAttributeFileWidget> {
@@ -53,22 +54,26 @@ class _FlatAttributeFileWidgetState extends State<FlatAttributeFileWidget> {
           },
           title: Text(
             widget.currentValue?.fileName ??
-                (widget.currentValue?.wasDeleted != true && widget.currentValue?.url != null
+                (widget.currentValue?.wasDeleted != true &&
+                        widget.currentValue?.url != null
                     ? widget.currentValue!.url!
-                    : FlatApp.getFlatTexts(context).flatAttributeFileSelectFileMessage),
+                    : FlatApp.getFlatTexts(context)
+                        .flatAttributeFileSelectFileMessage),
           ),
           leading: widget.currentValue?.data == null &&
                   widget.currentValue?.url != null &&
                   widget.currentValue?.wasDeleted == false &&
                   widget.flatTypeFile.onFileDownload != null
               ? IconButton(
-                  onPressed: () => widget.flatTypeFile.onFileDownload!.call(widget.currentValue!.url!),
+                  onPressed: () => widget.flatTypeFile.onFileDownload!
+                      .call(widget.currentValue!.url!),
                   icon: const Icon(Icons.file_download),
                 )
               : null,
           trailing: widget.currentValue != null &&
                   (widget.currentValue!.data != null ||
-                      (widget.currentValue!.url != null && !widget.currentValue!.wasDeleted))
+                      (widget.currentValue!.url != null &&
+                          !widget.currentValue!.wasDeleted))
               ? IconButton(
                   onPressed: () => widget.onFlatTypeUpdated(
                     FlatFileValue(
@@ -83,7 +88,8 @@ class _FlatAttributeFileWidgetState extends State<FlatAttributeFileWidget> {
                 )
               : null,
         ),
-        if (widget.shouldDisplayValidationErrors && !widget.flatTypeFile.isValid(widget.currentValue))
+        if (widget.shouldDisplayValidationErrors &&
+            !widget.flatTypeFile.isValid(widget.currentValue))
           Padding(
             padding: const EdgeInsets.only(
               top: 8.0,
@@ -91,7 +97,8 @@ class _FlatAttributeFileWidgetState extends State<FlatAttributeFileWidget> {
               right: 16,
             ),
             child: Text(
-              widget.flatTypeFile.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
+              widget.flatTypeFile.invalidValueErrorMessage ??
+                  flatTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

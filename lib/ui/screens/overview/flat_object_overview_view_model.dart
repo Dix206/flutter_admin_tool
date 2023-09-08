@@ -28,7 +28,8 @@ class FlatObjectOverviewViewModelProvider extends StatefulWidget {
   State createState() => _FlatObjectOverviewViewModelProviderState();
 }
 
-class _FlatObjectOverviewViewModelProviderState extends State<FlatObjectOverviewViewModelProvider> {
+class _FlatObjectOverviewViewModelProviderState
+    extends State<FlatObjectOverviewViewModelProvider> {
   final ValueNotifier<FlatObjectOverviewState?> _state = ValueNotifier(null);
 
   @override
@@ -100,7 +101,8 @@ class FlatObjectOverviewViewModel extends InheritedWidget {
   }
 
   static FlatObjectOverviewViewModel of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<FlatObjectOverviewViewModel>()!;
+    return context
+        .dependOnInheritedWidgetOfExactType<FlatObjectOverviewViewModel>()!;
   }
 
   Future<void> init() async {
@@ -122,7 +124,8 @@ class FlatObjectOverviewViewModel extends InheritedWidget {
             loadingError: NullableObject(errorMessage),
           ),
           onSuccess: (flatObjectValueList) => state.copyWith(
-            flatObjectValues: NullableObject(flatObjectValueList.flatObjectValues),
+            flatObjectValues:
+                NullableObject(flatObjectValueList.flatObjectValues),
             totalPages: flatObjectValueList.overallPageCount,
           ),
         );
@@ -140,7 +143,8 @@ class FlatObjectOverviewViewModel extends InheritedWidget {
             loadingError: NullableObject(errorMessage),
           ),
           onSuccess: (flatCurserObjectValueList) => state.copyWith(
-            flatObjectValues: NullableObject(flatCurserObjectValueList.flatObjectValues),
+            flatObjectValues:
+                NullableObject(flatCurserObjectValueList.flatObjectValues),
             hasMoreItems: flatCurserObjectValueList.hasMoreItems,
           ),
         );
@@ -214,11 +218,16 @@ class FlatObjectOverviewState extends Equatable {
     bool? hasMoreItems,
   }) {
     return FlatObjectOverviewState(
-      loadingError: loadingError == null ? this.loadingError : loadingError.value,
-      flatObjectValues: flatObjectValues == null ? this.flatObjectValues : flatObjectValues.value,
+      loadingError:
+          loadingError == null ? this.loadingError : loadingError.value,
+      flatObjectValues: flatObjectValues == null
+          ? this.flatObjectValues
+          : flatObjectValues.value,
       totalPages: totalPages ?? this.totalPages,
       isLoadingMoreItems: isLoadingMoreItems ?? this.isLoadingMoreItems,
-      loadMoreItemsError: loadMoreItemsError == null ? this.loadMoreItemsError : loadMoreItemsError.value,
+      loadMoreItemsError: loadMoreItemsError == null
+          ? this.loadMoreItemsError
+          : loadMoreItemsError.value,
       hasMoreItems: hasMoreItems ?? this.hasMoreItems,
     );
   }

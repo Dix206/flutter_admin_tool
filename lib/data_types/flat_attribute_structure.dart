@@ -59,12 +59,13 @@ abstract class FlatAttributeStructure<T extends Object> extends Equatable {
 
   /// This function should return a readable string based on the passed value of this attribute.
   String valueToString({
-   required BuildContext context,
-   required T? value,
+    required BuildContext context,
+    required T? value,
   });
 
   bool isValid(T? value) {
-    return (value != null && (validator?.call(value) ?? true)) || (value == null && isOptional);
+    return (value != null && (validator?.call(value) ?? true)) ||
+        (value == null && isOptional);
   }
 
   FlatAttributeValue toEmptyAttributeValue() {

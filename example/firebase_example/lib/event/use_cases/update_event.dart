@@ -7,7 +7,10 @@ Future<FlatResult<Unit>> updateEvent(FlatObjectValue flatObjectValue) async {
   try {
     final event = Event.fromFlatObjectValue(flatObjectValue: flatObjectValue);
 
-    await FirebaseFirestore.instance.collection(eventCollectionId).doc(event.id).set(event.toJson());
+    await FirebaseFirestore.instance
+        .collection(eventCollectionId)
+        .doc(event.id)
+        .set(event.toJson());
     return FlatResult.success(const Unit());
   } catch (exception) {
     return FlatResult.error("Failed to update event. Please try again");

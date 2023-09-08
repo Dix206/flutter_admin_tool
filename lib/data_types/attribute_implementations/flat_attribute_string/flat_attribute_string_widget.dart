@@ -19,11 +19,13 @@ class FlatAttributeStringWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FlatAttributeStringWidget> createState() => _FlatAttributeStringWidgetState();
+  State<FlatAttributeStringWidget> createState() =>
+      _FlatAttributeStringWidgetState();
 }
 
 class _FlatAttributeStringWidgetState extends State<FlatAttributeStringWidget> {
-  late final _textEditingController = TextEditingController(text: widget.currentValue);
+  late final _textEditingController =
+      TextEditingController(text: widget.currentValue);
 
   @override
   void initState() {
@@ -51,8 +53,9 @@ class _FlatAttributeStringWidgetState extends State<FlatAttributeStringWidget> {
       decoration: InputDecoration(
         hintText: widget.flatTypeString.hint,
         border: const OutlineInputBorder(),
-        errorText:
-            isValid || !widget.shouldDisplayValidationErrors ? null : widget.flatTypeString.invalidValueErrorMessage,
+        errorText: isValid || !widget.shouldDisplayValidationErrors
+            ? null
+            : widget.flatTypeString.invalidValueErrorMessage,
       ),
     );
   }

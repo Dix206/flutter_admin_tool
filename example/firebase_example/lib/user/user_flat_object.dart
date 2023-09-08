@@ -5,13 +5,13 @@ import 'package:firebase_example/user/load_user_by_id.dart';
 import 'package:firebase_example/user/update_user.dart';
 import 'package:flutter_admin_tool/flat.dart';
 
-const appUserFirebaseCollectionId = "prod_app_user";
+const userFirebaseCollectionId = "user";
 
 final userFlatObject = FlatObjectStructure(
   id: "user",
   displayName: "User",
   canBeSortedById: true,
-  attributes:  [
+  attributes: [
     const FlatAttributeString(
       id: "name",
       displayName: "Name",

@@ -33,7 +33,8 @@ void main() async {
       flatAuthInfos: FlatAuthInfos(
         getLoggedInUser: authFirebaseService.getLoggedInUser,
         onLogout: authFirebaseService.logout,
-        loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
+        loginScreenBuilder: (onLoginSuccess) =>
+            LoginScreen(onLoginSuccess: onLoginSuccess),
       ),
       flatCustomMenuEntries: [
         FlatCustomMenuEntry(
