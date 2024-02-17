@@ -41,8 +41,6 @@ class FlatAttributeImage extends FlatAttributeStructure<FlatFileValue> {
 
   @override
   bool isValid(FlatFileValue? value) {
-    return value?.data != null ||
-        (value?.url != null && value?.wasDeleted == false) ||
-        isOptional;
+    return value?.data != null || (value?.url != null && value?.wasDeleted == false) || isOptional;
   }
 }

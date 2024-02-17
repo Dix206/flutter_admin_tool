@@ -5,10 +5,7 @@ import 'package:flutter_admin_tool/flat.dart';
 
 Future<FlatResult<FlatObjectValue>> loadBlogById(String blogId) async {
   try {
-    final snapshot = await FirebaseFirestore.instance
-        .collection(blogCollectionId)
-        .doc(blogId)
-        .get();
+    final snapshot = await FirebaseFirestore.instance.collection(blogCollectionId).doc(blogId).get();
 
     final blog = Blog.fromJson(snapshot.data()!);
 

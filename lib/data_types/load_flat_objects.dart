@@ -3,14 +3,12 @@ import 'package:flutter_admin_tool/data_types/flat_object_sort_options.dart';
 import 'package:flutter_admin_tool/data_types/flat_object_value.dart';
 import 'package:flutter_admin_tool/data_types/flat_result.dart';
 
-typedef OnLoadFlatObjectsOffset = Future<FlatResult<FlatOffsetObjectValueList>>
-    Function({
+typedef OnLoadFlatObjectsOffset = Future<FlatResult<FlatOffsetObjectValueList>> Function({
   required int page,
   required String? searchQuery,
   required FlatObjectSortOptions? sortOptions,
 });
-typedef OnLoadFlatObjectsCurser = Future<FlatResult<FlatCurserObjectValueList>>
-    Function({
+typedef OnLoadFlatObjectsCurser = Future<FlatResult<FlatCurserObjectValueList>> Function({
   required String? lastLoadedObjectId,
   required String? searchQuery,
   required FlatObjectSortOptions? sortOptions,
@@ -27,14 +25,12 @@ class LoadFlatObjects extends Equatable {
     required this.curserLoading,
   });
 
-  factory LoadFlatObjects.offset(OnLoadFlatObjectsOffset offsetLoading) =>
-      LoadFlatObjects._(
+  factory LoadFlatObjects.offset(OnLoadFlatObjectsOffset offsetLoading) => LoadFlatObjects._(
         offsetLoading: offsetLoading,
         curserLoading: null,
       );
 
-  factory LoadFlatObjects.curser(OnLoadFlatObjectsCurser curserLoading) =>
-      LoadFlatObjects._(
+  factory LoadFlatObjects.curser(OnLoadFlatObjectsCurser curserLoading) => LoadFlatObjects._(
         offsetLoading: null,
         curserLoading: curserLoading,
       );

@@ -58,14 +58,11 @@ class Article {
     return Article(
       id: id ?? flatObjectValue.id as String,
       title: flatObjectValue.getAttributeValueByAttributeId('title'),
-      description:
-          flatObjectValue.getAttributeValueByAttributeId('description'),
+      description: flatObjectValue.getAttributeValueByAttributeId('description'),
       imageId: imageId,
       timestamp: flatObjectValue.getAttributeValueByAttributeId('timestamp'),
       isActive: flatObjectValue.getAttributeValueByAttributeId('isActive'),
-      authorId:
-          (flatObjectValue.getAttributeValueByAttributeId('author') as Author?)
-              ?.id,
+      authorId: (flatObjectValue.getAttributeValueByAttributeId('author') as Author?)?.id,
     );
   }
 
@@ -77,7 +74,7 @@ class Article {
       'imageId': imageId,
       'timestamp': timestamp.toIso8601String(),
       'isActive': isActive,
-      'authorId': authorId,
+      'author': authorId,
     };
   }
 
@@ -89,7 +86,7 @@ class Article {
       imageId: map['imageId'] as String?,
       timestamp: DateTime.parse(map['timestamp']),
       isActive: map['isActive'] as bool,
-      authorId: map['authorId'] as String?,
+      authorId: map['author'] == null ? null : (map['author'] as Map<String, dynamic>)["id"] as String,
     );
   }
 

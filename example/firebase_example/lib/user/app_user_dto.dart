@@ -22,10 +22,7 @@ class AppUserDto {
         FlatAttributeValue(id: 'name', value: name),
         FlatAttributeValue(
           id: 'departmentsWithAccess',
-          value: departmentsWithAccess
-                  ?.map((e) => Department.values.byName(e))
-                  .toList() ??
-              [],
+          value: departmentsWithAccess?.map((e) => Department.values.byName(e)).toList() ?? [],
         ),
       ],
     );
@@ -57,8 +54,7 @@ class AppUserDto {
     return AppUserDto(
       id: map['id'] as String,
       name: map['name'] as String,
-      departmentsWithAccess:
-          (map['departmentsWithAccess'] as List<dynamic>?)?.cast(),
+      departmentsWithAccess: (map['departmentsWithAccess'] as List<dynamic>?)?.cast(),
     );
   }
 
@@ -73,6 +69,5 @@ class AppUserDto {
   }
 
   @override
-  int get hashCode =>
-      id.hashCode ^ name.hashCode ^ departmentsWithAccess.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode ^ departmentsWithAccess.hashCode;
 }

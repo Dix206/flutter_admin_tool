@@ -26,9 +26,7 @@ Future<FlatResult<FlatObjectValue>> loadArticleById(String articleId) async {
     return FlatResult.success(
       article.toFlatObjectValue(
         authHeaders: {"x-appwrite-jwt": jwt.jwt},
-        author: authorDocument == null
-            ? null
-            : Author.fromJson(authorDocument.data),
+        author: authorDocument == null ? null : Author.fromJson(authorDocument.data),
       ),
     );
   } catch (exception) {

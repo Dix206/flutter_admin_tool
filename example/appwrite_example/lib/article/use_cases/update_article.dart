@@ -29,8 +29,7 @@ Future<FlatResult<Unit>> _updateArticleFromExistingArticle({
   required Article article,
 }) async {
   try {
-    final imageData =
-        flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('image');
+    final imageData = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('image');
 
     if (imageData?.data != null) {
       final imageId = const Uuid().v4();

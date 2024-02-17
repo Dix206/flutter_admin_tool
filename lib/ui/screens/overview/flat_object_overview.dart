@@ -13,12 +13,12 @@ class FlatObjectOverview extends StatefulWidget {
   final FlatObjectSortOptions? sortOptions;
 
   const FlatObjectOverview({
-    Key? key,
+    super.key,
     required this.flatObject,
     required this.searchQuery,
     required this.page,
     required this.sortOptions,
-  }) : super(key: key);
+  });
 
   @override
   State<FlatObjectOverview> createState() => _FlatObjectOverviewState();

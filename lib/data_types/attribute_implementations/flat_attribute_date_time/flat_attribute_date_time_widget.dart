@@ -13,22 +13,20 @@ class FlatAttributeDateTimeWidget extends StatefulWidget {
   final DateTime? maxDateTime;
 
   const FlatAttributeDateTimeWidget({
-    Key? key,
+    super.key,
     required this.flatTypeDateTime,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,
     required this.onFlatTypeUpdated,
     required this.minDateTime,
     required this.maxDateTime,
-  }) : super(key: key);
+  });
 
   @override
-  State<FlatAttributeDateTimeWidget> createState() =>
-      _FlatAttributeDateTimeWidgetState();
+  State<FlatAttributeDateTimeWidget> createState() => _FlatAttributeDateTimeWidgetState();
 }
 
-class _FlatAttributeDateTimeWidgetState
-    extends State<FlatAttributeDateTimeWidget> {
+class _FlatAttributeDateTimeWidgetState extends State<FlatAttributeDateTimeWidget> {
   @override
   Widget build(BuildContext context) {
     final FlatTexts flatTexts = FlatApp.getFlatTexts(context);
@@ -64,16 +62,14 @@ class _FlatAttributeDateTimeWidgetState
             ),
           ),
         ),
-        if (widget.shouldDisplayValidationErrors &&
-            !widget.flatTypeDateTime.isValid(widget.currentValue))
+        if (widget.shouldDisplayValidationErrors && !widget.flatTypeDateTime.isValid(widget.currentValue))
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 8.0,
               vertical: 4,
             ),
             child: Text(
-              widget.flatTypeDateTime.invalidValueErrorMessage ??
-                  flatTexts.defaultInvalidDataMessage,
+              widget.flatTypeDateTime.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),
@@ -95,8 +91,7 @@ class _FlatAttributeDateTimeWidgetState
     // ignore: use_build_context_synchronously
     final selectedTime = await showTimePicker(
       context: context,
-      initialTime:
-          TimeOfDay.fromDateTime(widget.currentValue ?? DateTime.now()),
+      initialTime: TimeOfDay.fromDateTime(widget.currentValue ?? DateTime.now()),
     );
     if (selectedTime != null) {
       widget.onFlatTypeUpdated(

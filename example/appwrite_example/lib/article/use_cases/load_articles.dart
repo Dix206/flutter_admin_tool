@@ -19,17 +19,14 @@ Future<FlatResult<FlatOffsetObjectValueList>> loadArticles({
         Query.limit(itemsToLoad),
         Query.offset((page - 1) * itemsToLoad),
         if (searchQuery != null) Query.search("title", searchQuery),
-        if (sortOptions?.ascending == true)
-          Query.orderAsc(sortOptions!.attributeId),
-        if (sortOptions?.ascending == false)
-          Query.orderDesc(sortOptions!.attributeId),
+        if (sortOptions?.ascending == true) Query.orderAsc(sortOptions!.attributeId),
+        if (sortOptions?.ascending == false) Query.orderDesc(sortOptions!.attributeId),
       ],
     );
 
     final jwt = await account.createJWT();
 
-    final articles = databaseList.documents
-        .map((document) => Article.fromJson(document.data));
+    final articles = databaseList.documents.map((document) => Article.fromJson(document.data));
 
     final List<FlatObjectValue> flatObjectValues = [];
 
@@ -45,9 +42,7 @@ Future<FlatResult<FlatOffsetObjectValueList>> loadArticles({
       flatObjectValues.add(
         article.toFlatObjectValue(
           authHeaders: {"x-appwrite-jwt": jwt.jwt},
-          author: authorDocument == null
-              ? null
-              : Author.fromJson(authorDocument.data),
+          author: authorDocument == null ? null : Author.fromJson(authorDocument.data),
         ),
       );
     }

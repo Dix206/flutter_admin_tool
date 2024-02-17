@@ -13,18 +13,17 @@ class FlatAttributeDateWidget extends StatefulWidget {
   final DateTime? maxDateTime;
 
   const FlatAttributeDateWidget({
-    Key? key,
+    super.key,
     required this.flatTypeDate,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,
     required this.onFlatTypeUpdated,
     required this.minDateTime,
     required this.maxDateTime,
-  }) : super(key: key);
+  });
 
   @override
-  State<FlatAttributeDateWidget> createState() =>
-      _FlatAttributeDateWidgetState();
+  State<FlatAttributeDateWidget> createState() => _FlatAttributeDateWidgetState();
 }
 
 class _FlatAttributeDateWidgetState extends State<FlatAttributeDateWidget> {
@@ -63,16 +62,14 @@ class _FlatAttributeDateWidgetState extends State<FlatAttributeDateWidget> {
             ),
           ),
         ),
-        if (widget.shouldDisplayValidationErrors &&
-            !widget.flatTypeDate.isValid(widget.currentValue))
+        if (widget.shouldDisplayValidationErrors && !widget.flatTypeDate.isValid(widget.currentValue))
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 8.0,
               vertical: 4,
             ),
             child: Text(
-              widget.flatTypeDate.invalidValueErrorMessage ??
-                  flatTexts.defaultInvalidDataMessage,
+              widget.flatTypeDate.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

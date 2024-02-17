@@ -5,9 +5,9 @@ class RegisterScreen extends StatelessWidget {
   final String parameter;
 
   const RegisterScreen({
-    Key? key,
+    super.key,
     required this.parameter,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

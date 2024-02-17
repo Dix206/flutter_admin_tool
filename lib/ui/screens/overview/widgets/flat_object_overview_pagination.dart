@@ -14,13 +14,13 @@ class FlatObjectOverviewPagination extends StatefulWidget {
   final FlatObjectSortOptions? sortOptions;
 
   const FlatObjectOverviewPagination({
-    Key? key,
+    super.key,
     required this.flatObject,
     required this.page,
     required this.overallPages,
     required this.searchQuery,
     required this.sortOptions,
-  }) : super(key: key);
+  });
 
   @override
   State<FlatObjectOverviewPagination> createState() => _PaginationState();
@@ -93,9 +93,7 @@ class _PaginationState extends State<FlatObjectOverviewPagination> {
             padding: const EdgeInsets.all(4.0),
             child: Icon(
               Icons.arrow_back_ios,
-              color: widget.page == 1
-                  ? Colors.grey
-                  : Theme.of(context).colorScheme.onSurface,
+              color: widget.page == 1 ? Colors.grey : Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
@@ -156,9 +154,7 @@ class _PaginationState extends State<FlatObjectOverviewPagination> {
             padding: const EdgeInsets.all(4.0),
             child: Icon(
               Icons.arrow_forward_ios,
-              color: widget.page == widget.overallPages
-                  ? Colors.grey
-                  : Theme.of(context).colorScheme.onSurface,
+              color: widget.page == widget.overallPages ? Colors.grey : Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),

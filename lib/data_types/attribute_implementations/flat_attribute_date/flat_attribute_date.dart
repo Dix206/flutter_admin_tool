@@ -45,8 +45,7 @@ class FlatAttributeDate extends FlatAttributeStructure<DateTime> {
   }) =>
       value == null
           ? FlatApp.getFlatTexts(context).flatAttributeValueNull
-          : DateFormat.yMd(Localizations.localeOf(context).languageCode)
-              .format(value);
+          : DateFormat.yMd(Localizations.localeOf(context).languageCode).format(value);
 
   @override
   List<Object?> get props => [

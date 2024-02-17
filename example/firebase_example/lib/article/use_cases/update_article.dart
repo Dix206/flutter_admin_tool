@@ -7,10 +7,7 @@ import 'package:uuid/uuid.dart';
 
 Future<FlatResult<Unit>> updateArticle(FlatObjectValue flatObjectValue) async {
   try {
-    final snapshot = await FirebaseFirestore.instance
-        .collection(articleCollectionId)
-        .doc(flatObjectValue.id!)
-        .get();
+    final snapshot = await FirebaseFirestore.instance.collection(articleCollectionId).doc(flatObjectValue.id!).get();
 
     final article = Article.fromJson(snapshot.data()!);
 
@@ -28,8 +25,7 @@ Future<FlatResult<Unit>> _updateArticleFromExistingArticle({
   required Article article,
 }) async {
   try {
-    final imageData =
-        flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('image');
+    final imageData = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('image');
 
     if (imageData?.data != null) {
       final imageId = const Uuid().v4();
@@ -52,10 +48,7 @@ Future<FlatResult<Unit>> _updateArticleFromExistingArticle({
             imageId: imageId,
           );
 
-          await FirebaseFirestore.instance
-              .collection(articleCollectionId)
-              .doc(newArticle.id)
-              .set(newArticle.toJson());
+          await FirebaseFirestore.instance.collection(articleCollectionId).doc(newArticle.id).set(newArticle.toJson());
           return FlatResult.success(const Unit());
         },
       );
@@ -73,10 +66,7 @@ Future<FlatResult<Unit>> _updateArticleFromExistingArticle({
             imageId: null,
           );
 
-          await FirebaseFirestore.instance
-              .collection(articleCollectionId)
-              .doc(newArticle.id)
-              .set(newArticle.toJson());
+          await FirebaseFirestore.instance.collection(articleCollectionId).doc(newArticle.id).set(newArticle.toJson());
           return FlatResult.success(const Unit());
         },
       );
@@ -88,10 +78,7 @@ Future<FlatResult<Unit>> _updateArticleFromExistingArticle({
       imageId: article.imageId,
     );
 
-    await FirebaseFirestore.instance
-        .collection(articleCollectionId)
-        .doc(newArticle.id)
-        .set(newArticle.toJson());
+    await FirebaseFirestore.instance.collection(articleCollectionId).doc(newArticle.id).set(newArticle.toJson());
     return FlatResult.success(const Unit());
   } catch (exception) {
     return FlatResult.error("Failed to update article. Please try again");

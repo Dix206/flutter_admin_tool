@@ -7,11 +7,11 @@ class FlatAttributeBoolWidget extends StatelessWidget {
   final OnFlatTypeUpdated<bool> onFlatTypeUpdated;
 
   const FlatAttributeBoolWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.currentValue,
     required this.onFlatTypeUpdated,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

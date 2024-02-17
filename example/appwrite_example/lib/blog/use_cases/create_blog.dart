@@ -9,8 +9,7 @@ Future<FlatResult<Unit>> createBlog(FlatObjectValue flatObjectValue) async {
   try {
     final id = const Uuid().v4();
 
-    final file =
-        flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('file');
+    final file = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('file');
 
     if (file?.data != null) {
       final fileId = const Uuid().v4();

@@ -12,13 +12,13 @@ class FlatAttributeSelectionWidget<T extends Object> extends StatelessWidget {
   final FlatAttributeSelection<T> flatTypeSelection;
 
   const FlatAttributeSelectionWidget({
-    Key? key,
+    super.key,
     required this.currentValue,
     required this.onFlatTypeUpdated,
     required this.options,
     required this.shouldDisplayValidationErrors,
     required this.flatTypeSelection,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +45,11 @@ class FlatAttributeSelectionWidget<T extends Object> extends StatelessWidget {
                     onTap: () => onFlatTypeUpdated(null),
                   )
                 : null,
-            hintText: FlatApp.getFlatTexts(context)
-                .flatAttributeSelectionNoItemSelected,
+            hintText: FlatApp.getFlatTexts(context).flatAttributeSelectionNoItemSelected,
             border: const OutlineInputBorder(),
           ),
         ),
-        if (shouldDisplayValidationErrors &&
-            !flatTypeSelection.isValid(currentValue))
+        if (shouldDisplayValidationErrors && !flatTypeSelection.isValid(currentValue))
           Padding(
             padding: const EdgeInsets.only(
               top: 8.0,
@@ -59,8 +57,7 @@ class FlatAttributeSelectionWidget<T extends Object> extends StatelessWidget {
               right: 16,
             ),
             child: Text(
-              flatTypeSelection.invalidValueErrorMessage ??
-                  flatTexts.defaultInvalidDataMessage,
+              flatTypeSelection.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

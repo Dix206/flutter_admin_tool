@@ -4,8 +4,7 @@ import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_att
 import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
 import 'package:flutter_admin_tool/flat_app.dart';
 
-class FlatAttributeList<T extends Object, S extends FlatAttributeStructure<T>>
-    extends FlatAttributeStructure<List> {
+class FlatAttributeList<T extends Object, S extends FlatAttributeStructure<T>> extends FlatAttributeStructure<List> {
   final FlatAttributeStructure<T> flatAttributeStructure;
 
   const FlatAttributeList({
@@ -45,8 +44,7 @@ class FlatAttributeList<T extends Object, S extends FlatAttributeStructure<T>>
           ? FlatApp.getFlatTexts(context).flatAttributeValueNull
           : value
               .map(
-                (item) => flatAttributeStructure.valueToString(
-                    context: context, value: item),
+                (item) => flatAttributeStructure.valueToString(context: context, value: item),
               )
               .join(" | ");
 

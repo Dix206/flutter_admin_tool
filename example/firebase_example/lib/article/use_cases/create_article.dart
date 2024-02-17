@@ -8,8 +8,7 @@ import 'package:uuid/uuid.dart';
 Future<FlatResult<Unit>> createArticle(FlatObjectValue flatObjectValue) async {
   try {
     final id = const Uuid().v4();
-    final imageData =
-        flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('image');
+    final imageData = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('image');
 
     if (imageData?.data != null) {
       final imageId = const Uuid().v4();
@@ -27,10 +26,7 @@ Future<FlatResult<Unit>> createArticle(FlatObjectValue flatObjectValue) async {
               imageId: imageId,
             );
 
-            await FirebaseFirestore.instance
-                .collection(articleCollectionId)
-                .doc(article.id)
-                .set(article.toJson());
+            await FirebaseFirestore.instance.collection(articleCollectionId).doc(article.id).set(article.toJson());
             return FlatResult.success(const Unit());
           });
     }
@@ -41,10 +37,7 @@ Future<FlatResult<Unit>> createArticle(FlatObjectValue flatObjectValue) async {
       imageId: null,
     );
 
-    await FirebaseFirestore.instance
-        .collection(articleCollectionId)
-        .doc(article.id)
-        .set(article.toJson());
+    await FirebaseFirestore.instance.collection(articleCollectionId).doc(article.id).set(article.toJson());
     return FlatResult.success(const Unit());
   } catch (exception) {
     return FlatResult.error("Failed to create article. Please try again");

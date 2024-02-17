@@ -5,8 +5,7 @@ import 'package:flutter_admin_tool/data_types/flat_texts.dart';
 import 'package:flutter_admin_tool/flat_app.dart';
 import 'package:flutter_admin_tool/ui/widgets/flat_button.dart';
 
-class FlatAttributeListWidget<T extends Object,
-    S extends FlatAttributeStructure<T>> extends StatefulWidget {
+class FlatAttributeListWidget<T extends Object, S extends FlatAttributeStructure<T>> extends StatefulWidget {
   final List<T> currentValue;
   final FlatAttributeList<T, S> flatTypeList;
   final bool shouldDisplayValidationErrors;
@@ -14,17 +13,16 @@ class FlatAttributeListWidget<T extends Object,
   final FlatAttributeStructure<T> flatAttributeStructure;
 
   const FlatAttributeListWidget({
-    Key? key,
+    super.key,
     required this.flatTypeList,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,
     required this.onFlatTypeUpdated,
     required this.flatAttributeStructure,
-  }) : super(key: key);
+  });
 
   @override
-  State<FlatAttributeListWidget> createState() =>
-      _FlatAttributeListWidgetState();
+  State<FlatAttributeListWidget> createState() => _FlatAttributeListWidgetState();
 }
 
 class _FlatAttributeListWidgetState extends State<FlatAttributeListWidget> {
@@ -46,8 +44,7 @@ class _FlatAttributeListWidgetState extends State<FlatAttributeListWidget> {
           key: ValueKey(widget.currentValue.length),
           child: widget.flatAttributeStructure.buildWidget(
             currentValue: _currentValue,
-            shouldDisplayValidationErrors:
-                _shouldDisplayCurrentValueValidationErrors,
+            shouldDisplayValidationErrors: _shouldDisplayCurrentValueValidationErrors,
             onFlatTypeUpdated: (value) => setState(() => _currentValue = value),
           ),
         ),
@@ -56,8 +53,7 @@ class _FlatAttributeListWidgetState extends State<FlatAttributeListWidget> {
             text: FlatApp.getFlatTexts(context).flatAttributeListAddItem,
             onPressed: () {
               if (!widget.flatAttributeStructure.isValid(_currentValue)) {
-                setState(
-                    () => _shouldDisplayCurrentValueValidationErrors = true);
+                setState(() => _shouldDisplayCurrentValueValidationErrors = true);
                 return;
               }
 
@@ -78,8 +74,7 @@ class _FlatAttributeListWidgetState extends State<FlatAttributeListWidget> {
         ...widget.currentValue.map(
           (item) => ListTile(
             title: Text(
-              widget.flatAttributeStructure
-                  .valueToString(context: context, value: item),
+              widget.flatAttributeStructure.valueToString(context: context, value: item),
             ),
             trailing: IconButton(
               onPressed: () {
@@ -98,8 +93,7 @@ class _FlatAttributeListWidgetState extends State<FlatAttributeListWidget> {
               right: 16.0,
             ),
             child: Text(
-              widget.flatTypeList.invalidValueErrorMessage ??
-                  flatTexts.defaultInvalidDataMessage,
+              widget.flatTypeList.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

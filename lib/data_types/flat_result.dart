@@ -44,9 +44,7 @@ class FlatResult<T> {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is FlatResult<T> &&
-        other.data == data &&
-        other.errorMessage == errorMessage;
+    return other is FlatResult<T> && other.data == data && other.errorMessage == errorMessage;
   }
 
   @override

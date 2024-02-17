@@ -11,16 +11,15 @@ class FlatAttributeTimeWidget extends StatefulWidget {
   final OnFlatTypeUpdated<TimeOfDay> onFlatTypeUpdated;
 
   const FlatAttributeTimeWidget({
-    Key? key,
+    super.key,
     required this.flatTypeTime,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,
     required this.onFlatTypeUpdated,
-  }) : super(key: key);
+  });
 
   @override
-  State<FlatAttributeTimeWidget> createState() =>
-      _FlatAttributeTimeWidgetState();
+  State<FlatAttributeTimeWidget> createState() => _FlatAttributeTimeWidgetState();
 }
 
 class _FlatAttributeTimeWidgetState extends State<FlatAttributeTimeWidget> {
@@ -59,16 +58,14 @@ class _FlatAttributeTimeWidgetState extends State<FlatAttributeTimeWidget> {
             ),
           ),
         ),
-        if (widget.shouldDisplayValidationErrors &&
-            !widget.flatTypeTime.isValid(widget.currentValue))
+        if (widget.shouldDisplayValidationErrors && !widget.flatTypeTime.isValid(widget.currentValue))
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 8.0,
               vertical: 4,
             ),
             child: Text(
-              widget.flatTypeTime.invalidValueErrorMessage ??
-                  flatTexts.defaultInvalidDataMessage,
+              widget.flatTypeTime.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),

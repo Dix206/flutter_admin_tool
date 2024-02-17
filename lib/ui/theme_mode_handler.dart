@@ -5,9 +5,9 @@ class ThemeModeHandler extends StatefulWidget {
   final Widget Function(ThemeMode themeMode) childBuilder;
 
   const ThemeModeHandler({
-    Key? key,
+    super.key,
     required this.childBuilder,
-  }) : super(key: key);
+  });
 
   @override
   State createState() => _ThemeModeHandlerState();
@@ -16,14 +16,11 @@ class ThemeModeHandler extends StatefulWidget {
     required BuildContext context,
     required ThemeMode themeMode,
   }) async {
-    await context
-        .findAncestorStateOfType<_ThemeModeHandlerState>()!
-        .setThemeMode(themeMode);
+    await context.findAncestorStateOfType<_ThemeModeHandlerState>()!.setThemeMode(themeMode);
   }
 
-  static ThemeMode getThemeMode(BuildContext context) => context
-      .dependOnInheritedWidgetOfExactType<_ThemeModeHandlerInherited>()!
-      .themeMode;
+  static ThemeMode getThemeMode(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_ThemeModeHandlerInherited>()!.themeMode;
 }
 
 class _ThemeModeHandlerState extends State<ThemeModeHandler> {

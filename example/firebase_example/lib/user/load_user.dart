@@ -11,18 +11,12 @@ Future<FlatResult<FlatCurserObjectValueList>> loadUser({
   try {
     const itemsToLoad = 20;
 
-    final query =
-        FirebaseFirestore.instance.collection(userFirebaseCollectionId);
+    final query = FirebaseFirestore.instance.collection(userFirebaseCollectionId);
     final sortedQuery = sortOptions == null
         ? query.orderBy("name", descending: true)
-        : query.orderBy(sortOptions.attributeId,
-            descending: !sortOptions.ascending);
-    final filteredQuery = searchQuery == null
-        ? sortedQuery
-        : sortedQuery.where("name", isGreaterThan: searchQuery);
-    final paginationQuery = lastLoadedObjectId != null
-        ? filteredQuery.startAfter([lastLoadedObjectId])
-        : filteredQuery;
+        : query.orderBy(sortOptions.attributeId, descending: !sortOptions.ascending);
+    final filteredQuery = searchQuery == null ? sortedQuery : sortedQuery.where("name", isGreaterThan: searchQuery);
+    final paginationQuery = lastLoadedObjectId != null ? filteredQuery.startAfter([lastLoadedObjectId]) : filteredQuery;
     final documentSnapshots = await paginationQuery.limit(itemsToLoad).get();
 
     return FlatResult.success(
@@ -35,7 +29,6 @@ Future<FlatResult<FlatCurserObjectValueList>> loadUser({
       ),
     );
   } catch (exception) {
-    return FlatResult.error(
-        "Es ist ein Fehler aufgetreten. Bitte probiere es erneut.");
+    return FlatResult.error("Es ist ein Fehler aufgetreten. Bitte probiere es erneut.");
   }
 }

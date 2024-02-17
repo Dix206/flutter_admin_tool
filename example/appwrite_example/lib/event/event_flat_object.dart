@@ -4,11 +4,13 @@ import 'package:example/event/use_cases/delete_event.dart';
 import 'package:example/event/use_cases/load_event_by_id.dart';
 import 'package:example/event/use_cases/load_events.dart';
 import 'package:example/event/use_cases/update_event.dart';
+import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_attribute_multi_selection/flat_attribute_multi_selection.dart';
 import 'package:flutter_admin_tool/flat.dart';
 
 final eventFlatObject = FlatObjectStructure(
   id: "event",
   displayName: "Event",
+  newObjectText: "New Event",
   canBeSortedById: true,
   attributes: [
     const FlatAttributeString(
@@ -53,6 +55,14 @@ final eventFlatObject = FlatObjectStructure(
       invalidValueErrorMessage: "You have to select a typ",
       options: EventType.values,
       optionToString: (option) => option.name,
+    ),
+    FlatAttributeMultiSelection<EventType>(
+      id: "secondaryEventTypes",
+      displayName: "Needed Secondary Items",
+      invalidValueErrorMessage: "You have to select at least one typ",
+      options: EventType.values,
+      optionToString: (option) => option.name,
+      shouldBeDisplayedOnOverviewTable: false,
     ),
     const FlatAttributeList(
       id: "neededItems",

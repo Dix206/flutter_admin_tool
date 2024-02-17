@@ -6,15 +6,14 @@ class FlatTopBar extends StatelessWidget {
   final List<Widget> actions;
 
   const FlatTopBar({
-    Key? key,
+    super.key,
     this.title,
     this.actions = const [],
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final bool isMobile =
-        MediaQuery.of(context).size.width < mobileViewMaxWidth;
+    final bool isMobile = MediaQuery.of(context).size.width < mobileViewMaxWidth;
 
     return Container(
       decoration: BoxDecoration(

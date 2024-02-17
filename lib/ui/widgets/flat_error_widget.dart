@@ -6,10 +6,10 @@ class FlatErrorWidget extends StatelessWidget {
   final Function() onRetry;
 
   const FlatErrorWidget({
-    Key? key,
+    super.key,
     required this.errorMessage,
     required this.onRetry,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

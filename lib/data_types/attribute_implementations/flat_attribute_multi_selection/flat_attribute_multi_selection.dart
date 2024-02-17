@@ -1,16 +1,16 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_attribute_selection/flat_attribute_selection_widget.dart';
+import 'package:flutter_admin_tool/data_types/attribute_implementations/flat_attribute_multi_selection/flat_attribute_multi_selection_widget.dart';
 
 import 'package:flutter_admin_tool/data_types/flat_attribute_structure.dart';
 import 'package:flutter_admin_tool/flat_app.dart';
 
-class FlatAttributeSelection<T extends Object> extends FlatAttributeStructure<T> {
+class FlatAttributeMultiSelection<T extends Object> extends FlatAttributeStructure<List<T>> {
   final List<T> options;
 
   /// Converts an option to a string that can be displayed to the user.
   final String Function(T) optionToString;
 
-  const FlatAttributeSelection({
+  const FlatAttributeMultiSelection({
     required this.options,
     required this.optionToString,
     required super.id,
@@ -27,12 +27,12 @@ class FlatAttributeSelection<T extends Object> extends FlatAttributeStructure<T>
 
   @override
   Widget buildWidget({
-    required T? currentValue,
+    required List<T>? currentValue,
     required bool shouldDisplayValidationErrors,
-    required OnFlatTypeUpdated<T> onFlatTypeUpdated,
+    required OnFlatTypeUpdated<List<T>> onFlatTypeUpdated,
   }) =>
-      FlatAttributeSelectionWidget(
-        flatTypeSelection: this,
+      FlatAttributeMultiSelectionWidget(
+        flatMultiTypeSelection: this,
         currentValue: currentValue,
         shouldDisplayValidationErrors: shouldDisplayValidationErrors,
         onFlatTypeUpdated: onFlatTypeUpdated,
@@ -42,9 +42,11 @@ class FlatAttributeSelection<T extends Object> extends FlatAttributeStructure<T>
   @override
   String valueToString({
     required BuildContext context,
-    required T? value,
+    required List<T>? value,
   }) =>
-      value == null ? FlatApp.getFlatTexts(context).flatAttributeValueNull : optionToString(value);
+      value == null || value.isEmpty
+          ? FlatApp.getFlatTexts(context).flatAttributeValueNull
+          : value.map((value) => optionToString(value)).join(', ');
 
   @override
   List<Object?> get props => [

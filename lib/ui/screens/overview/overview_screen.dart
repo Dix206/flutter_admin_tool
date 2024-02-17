@@ -10,12 +10,12 @@ class OverviewScreen extends StatelessWidget {
   final FlatObjectSortOptions? sortOptions;
 
   const OverviewScreen({
-    Key? key,
+    super.key,
     required this.selectedFlatObjectId,
     required this.searchQuery,
     required this.page,
     required this.sortOptions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +29,7 @@ class OverviewScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                FlatApp.getFlatTexts(context)
-                    .noFlatObjectStructureObjectFoundWithPassedId(
-                        selectedFlatObjectId),
+                FlatApp.getFlatTexts(context).noFlatObjectStructureObjectFoundWithPassedId(selectedFlatObjectId),
                 textAlign: TextAlign.center,
               ),
             ),

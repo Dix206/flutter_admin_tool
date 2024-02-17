@@ -26,17 +26,15 @@ GoRouter getGoRouter<T extends Object>({
     initialLocation: Routes.login,
     refreshListenable: authStateService,
     redirect: (context, state) async {
-      final isAuthRoute =
-          state.uri.toString().startsWith(Routes.settings) == true ||
-              state.uri.toString().startsWith("/custom") == true ||
-              state.uri.toString().startsWith("/overview") == true;
+      final isAuthRoute = state.uri.toString().startsWith(Routes.settings) == true ||
+          state.uri.toString().startsWith("/custom") == true ||
+          state.uri.toString().startsWith("/overview") == true;
 
       if (!authStateService.isInitialized) {
         return null;
       } else if (authStateService.isLoggedIn && !isAuthRoute) {
         return Routes.overview(
-          flatObjectId:
-              getFlatObjectStructures(authStateService.loggedInUser!).first.id,
+          flatObjectId: getFlatObjectStructures(authStateService.loggedInUser!).first.id,
           page: 1,
           searchQuery: null,
           sortOptions: null,
@@ -88,8 +86,7 @@ GoRouter getGoRouter<T extends Object>({
             (customMenuEntry) => FadeRoute(
               path: "/custom/:customMenuEntryId",
               childBuilder: (context, state) {
-                final customMenuEntryId =
-                    state.pathParameters['customMenuEntryId'];
+                final customMenuEntryId = state.pathParameters['customMenuEntryId'];
                 final customMenuEntry = flatCustomMenuEntries.firstWhereOrNull(
                   (entry) => entry.id == customMenuEntryId,
                 );
@@ -107,10 +104,8 @@ GoRouter getGoRouter<T extends Object>({
               final flatObjectId = state.pathParameters['flatObjectId'] ?? "";
               final searchQuery = state.uri.queryParameters['searchQuery'];
               final pageString = state.uri.queryParameters['page'] ?? "1";
-              final sortAttributeId =
-                  state.uri.queryParameters['sortAttribute'];
-              final sortAscending =
-                  state.uri.queryParameters['sortAscending'] == "true";
+              final sortAttributeId = state.uri.queryParameters['sortAttribute'];
+              final sortAscending = state.uri.queryParameters['sortAscending'] == "true";
 
               return OverviewScreen(
                 selectedFlatObjectId: flatObjectId,
@@ -131,10 +126,8 @@ GoRouter getGoRouter<T extends Object>({
               final flatObjectId = state.pathParameters['flatObjectId'] ?? "";
               final searchQuery = state.uri.queryParameters['searchQuery'];
               final pageString = state.uri.queryParameters['page'] ?? "";
-              final sortAttributeId =
-                  state.uri.queryParameters['sortAttribute'];
-              final sortAscending =
-                  state.uri.queryParameters['sortAscending'] == "true";
+              final sortAttributeId = state.uri.queryParameters['sortAttribute'];
+              final sortAscending = state.uri.queryParameters['sortAscending'] == "true";
 
               return InsertFlatObjectScreen(
                 flatObjectId: flatObjectId,
@@ -154,14 +147,11 @@ GoRouter getGoRouter<T extends Object>({
             path: "/overview/:flatObjectId/update/:existingFlatObjectValueId",
             childBuilder: (context, state) {
               final flatObjectId = state.pathParameters['flatObjectId'] ?? "";
-              final existingFlatObjectValueId =
-                  state.pathParameters['existingFlatObjectValueId'];
+              final existingFlatObjectValueId = state.pathParameters['existingFlatObjectValueId'];
               final searchQuery = state.uri.queryParameters['searchQuery'];
               final pageString = state.uri.queryParameters['page'] ?? "";
-              final sortAttributeId =
-                  state.uri.queryParameters['sortAttribute'];
-              final sortAscending =
-                  state.uri.queryParameters['sortAscending'] == "true";
+              final sortAttributeId = state.uri.queryParameters['sortAttribute'];
+              final sortAscending = state.uri.queryParameters['sortAscending'] == "true";
 
               return InsertFlatObjectScreen(
                 flatObjectId: flatObjectId,
@@ -186,19 +176,16 @@ GoRouter getGoRouter<T extends Object>({
 class Routes {
   static String login = "/login";
   static String settings = "/settings";
-  static customMenuEntry(String customMenuEntryId) =>
-      "/custom/$customMenuEntryId";
+  static customMenuEntry(String customMenuEntryId) => "/custom/$customMenuEntryId";
   static overview({
     required String flatObjectId,
     required String? searchQuery,
     required int page,
     required FlatObjectSortOptions? sortOptions,
   }) {
-    final searchQueryPath =
-        searchQuery == null ? "" : "&searchQuery=$searchQuery";
-    final sortOptionsPath = sortOptions == null
-        ? ""
-        : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
+    final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
+    final sortOptionsPath =
+        sortOptions == null ? "" : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
     return "/overview/$flatObjectId?page=$page$searchQueryPath$sortOptionsPath";
   }
 
@@ -210,11 +197,9 @@ class Routes {
     required FlatObjectSortOptions? sortOptions,
   }) {
     final pagePath = "?page=$page";
-    final searchQueryPath =
-        searchQuery == null ? "" : "&searchQuery=$searchQuery";
-    final sortOptionsPath = sortOptions == null
-        ? ""
-        : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
+    final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
+    final sortOptionsPath =
+        sortOptions == null ? "" : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
 
     return "/overview/$flatObjectId/update/$existingFlatObjectValueId$pagePath$searchQueryPath$sortOptionsPath";
   }
@@ -226,11 +211,9 @@ class Routes {
     required FlatObjectSortOptions? sortOptions,
   }) {
     final pagePath = "?page=$page";
-    final searchQueryPath =
-        searchQuery == null ? "" : "&searchQuery=$searchQuery";
-    final sortOptionsPath = sortOptions == null
-        ? ""
-        : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
+    final searchQueryPath = searchQuery == null ? "" : "&searchQuery=$searchQuery";
+    final sortOptionsPath =
+        sortOptions == null ? "" : "&sortAttribute=${sortOptions.attributeId}&sortAscending=${sortOptions.ascending}";
 
     return "/overview/$flatObjectId/create$pagePath$searchQueryPath$sortOptionsPath";
   }
@@ -247,9 +230,7 @@ class FadeRoute<T extends Object> extends GoRoute {
   }) : super(
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
               opacity: animation,
               child: child,
             ),

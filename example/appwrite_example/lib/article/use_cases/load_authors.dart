@@ -15,9 +15,7 @@ Future<FlatResult<List<Author>>> loadAuthors(String searchQuery) async {
       ],
     );
     return FlatResult.success(
-      databaseList.documents
-          .map((document) => Author.fromJson(document.data))
-          .toList(),
+      databaseList.documents.map((document) => Author.fromJson(document.data)).toList(),
     );
   } catch (exception) {
     return FlatResult.error("Failed to load authors. Please try again");

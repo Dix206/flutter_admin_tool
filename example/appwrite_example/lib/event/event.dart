@@ -10,6 +10,7 @@ class Event {
   final double? locationLatitude;
   final double? locationLongitude;
   final EventType eventType;
+  final List<EventType>? secondaryEventTypes;
   final List<String>? neededItems;
   final TimeOfDay startingTime;
 
@@ -18,6 +19,7 @@ class Event {
     required this.title,
     required this.price,
     required this.phoneNumber,
+    required this.secondaryEventTypes,
     required this.email,
     required this.locationLatitude,
     required this.locationLongitude,
@@ -45,6 +47,7 @@ class Event {
               : null,
         ),
         FlatAttributeValue(id: 'eventType', value: eventType),
+        FlatAttributeValue(id: 'secondaryEventTypes', value: secondaryEventTypes),
         FlatAttributeValue(id: 'neededItems', value: neededItems),
         FlatAttributeValue(id: 'startingTime', value: startingTime),
       ],
@@ -59,21 +62,15 @@ class Event {
       id: id ?? flatObjectValue.id!,
       title: flatObjectValue.getAttributeValueByAttributeId('title'),
       price: flatObjectValue.getAttributeValueByAttributeId('price'),
-      phoneNumber:
-          flatObjectValue.getAttributeValueByAttributeId('phoneNumber'),
+      phoneNumber: flatObjectValue.getAttributeValueByAttributeId('phoneNumber'),
       email: flatObjectValue.getAttributeValueByAttributeId('email'),
-      locationLatitude: (flatObjectValue
-              .getAttributeValueByAttributeId('location') as FlatLocation?)
-          ?.latitude,
-      locationLongitude: (flatObjectValue
-              .getAttributeValueByAttributeId('location') as FlatLocation?)
-          ?.longitude,
+      locationLatitude: (flatObjectValue.getAttributeValueByAttributeId('location') as FlatLocation?)?.latitude,
+      locationLongitude: (flatObjectValue.getAttributeValueByAttributeId('location') as FlatLocation?)?.longitude,
       eventType: flatObjectValue.getAttributeValueByAttributeId('eventType'),
-      neededItems: (flatObjectValue
-              .getAttributeValueByAttributeId('neededItems') as List<dynamic>?)
-          ?.cast(),
-      startingTime:
-          flatObjectValue.getAttributeValueByAttributeId('startingTime'),
+      secondaryEventTypes:
+          (flatObjectValue.getAttributeValueByAttributeId('secondaryEventTypes') as List<dynamic>).cast(),
+      neededItems: (flatObjectValue.getAttributeValueByAttributeId('neededItems') as List<dynamic>?)?.cast(),
+      startingTime: flatObjectValue.getAttributeValueByAttributeId('startingTime'),
     );
   }
 
@@ -87,6 +84,7 @@ class Event {
       'locationLatitude': locationLatitude,
       'locationLongitude': locationLongitude,
       'eventType': eventType.name,
+      'secondaryEventTypes': secondaryEventTypes?.map((eventType) => eventType.name).toList(),
       'neededItems': neededItems,
       'startingTime': startingTime.hour + startingTime.minute / 100,
     };
@@ -102,6 +100,9 @@ class Event {
       locationLatitude: map['locationLatitude'] as double?,
       locationLongitude: map['locationLongitude'] as double?,
       eventType: EventType.values.byName(map['eventType']),
+      secondaryEventTypes: (map['secondaryEventTypes'] as List<dynamic>?)
+          ?.map((eventType) => EventType.values.byName(eventType))
+          .toList(),
       neededItems: (map['neededItems'] as List<dynamic>?)?.cast(),
       startingTime: TimeOfDay(
         hour: (map['startingTime'] as double).floor(),

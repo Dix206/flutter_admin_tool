@@ -51,7 +51,8 @@ class FlatObjectValue extends Equatable {
 
     if (attributeValue.value is! S) {
       throw Exception(
-          'FlatAttributeValue with id $id is not of type $S but of type ${attributeValue.value.runtimeType}');
+        'FlatAttributeValue with id $id is not of type $S but of type ${attributeValue.value.runtimeType}',
+      );
     }
 
     return attributeValue.value as S;
@@ -62,9 +63,7 @@ class FlatObjectValue extends Equatable {
       id: id,
       values: values
           .map(
-            (value) => value.id.toLowerCase() == newValue.id.toLowerCase()
-                ? newValue
-                : value,
+            (value) => value.id.toLowerCase() == newValue.id.toLowerCase() ? newValue : value,
           )
           .toList(),
     );

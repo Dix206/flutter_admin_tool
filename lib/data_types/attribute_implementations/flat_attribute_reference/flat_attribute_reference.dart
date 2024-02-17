@@ -6,8 +6,7 @@ import 'package:flutter_admin_tool/data_types/flat_result.dart';
 import 'package:flutter_admin_tool/flat_app.dart';
 
 /// T is the type of the reference which will be setted
-class FlatAttributeReference<T extends Object>
-    extends FlatAttributeStructure<T> {
+class FlatAttributeReference<T extends Object> extends FlatAttributeStructure<T> {
   final Future<FlatResult<List<T>>> Function(String searchQuery) searchFunction;
   final String Function(T value) getReferenceDisplayString;
 
@@ -43,9 +42,7 @@ class FlatAttributeReference<T extends Object>
     required BuildContext context,
     required T? value,
   }) =>
-      value == null
-          ? FlatApp.getFlatTexts(context).flatAttributeValueNull
-          : getReferenceDisplayString(value);
+      value == null ? FlatApp.getFlatTexts(context).flatAttributeValueNull : getReferenceDisplayString(value);
 
   @override
   List<Object?> get props => [

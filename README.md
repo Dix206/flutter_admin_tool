@@ -22,6 +22,7 @@ IMPORTANT: This package is in early stages and not very well tested so far. Use 
   - [FlatAttributeFile](#FlatAttributeFile)
   - [FlatAttributeLocation](#FlatAttributeLocation)
   - [FlatAttributeSelection](#FlatAttributeSelection)
+  - [FlatAttributeMultiSelection](#FlatAttributeMultiSelection)
   - [FlatAttributeList](#FlatAttributeList)
   - [FlatAttributeReference](#FlatAttributeReference)
 - [Base Validator](#base-validator)
@@ -47,7 +48,7 @@ void main() {
 ```
 
 ## Handle authentication
-Flat is completely undependent from your used authentication method. You just have to pass a method to get the current logged in user to the `FlatAuthInfos`. If there currently is no logged in user, that method needs to return null. Based on that method Flat can check if the user is authenticated and allow/disallow specific routes.
+Flat is completely independent from your used authentication method. You just have to pass a method to get the current logged in user to the `FlatAuthInfos`. If there currently is no logged in user, that method needs to return null. Based on that method Flat can check if the user is authenticated and allow/disallow specific routes.
 
 The passed `onLogout` will be called if the user wants to logout. After this method was called, the `getLoggedInUser` method should return null. The further logout functionality and button will automatically handled.
 
@@ -67,7 +68,7 @@ void main() {
 }
 ```
 
-You can optionally display informations about the logged in user. Therefore you need to set the `getFlatUserInfos`. That method will give you the currently logged in user which was returned by the `getLoggedInUser` method.
+You can optionally display information about the logged in user. Therefore you need to set the `getFlatUserInfos`. That method will give you the currently logged in user which was returned by the `getLoggedInUser` method.
 
 ```dart
 void main() {
@@ -84,7 +85,7 @@ void main() {
 ```
 
 ## Object Structures
-The main part of Flat is the content management. You can easely display, create, update and delete objects. All Flat needs for that is the data structure of your object and the methods to handle these crud operations.
+The main part of Flat is the content management. You can easily display, create, update and delete objects. All Flat needs for that is the data structure of your object and the methods to handle these crud operations.
 
 To define the data structure you have to pass a method to `getFlatObjectStructures` which returns a list of `FlatObjectStructure`. The method gives you the currently logged in user so you can change the functionality based on the logged in user. The `FlatObjectStructure` needs to have a list of attributes. Every attribute must extend the `FlatAttributeStructure`. Flat gives you a number of pre defined attributes but if you need a specific new attribute, you can define it by yourself.
 
@@ -275,7 +276,7 @@ FlatAttributeLocation(
 ![Alt text](doc/FlatAttributeLocation.png "FlatAttributeLocation")
 
 ### FlatAttributeSelection
-The selected object could be of any type. 
+The selected value could be of any of the passed options. Only one option can be selected. 
 
 Example:
 ```dart
@@ -289,8 +290,23 @@ FlatAttributeSelection<EventType>(
 ```
 ![Alt text](doc/FlatAttributeSelection.png "FlatAttributeSelection")
 
+### FlatAttributeMultiSelection
+The selected value could be of any of the passed options. Multiple options can be selected.
+
+Example:
+```dart
+FlatAttributeMultiSelection<EventType>(
+    id: "secondaryEventTypes",
+    displayName: "Needed Secondary Items",
+    invalidValueErrorMessage: "You have to select at least one typ",
+    options: EventType.values,
+    optionToString: (option) => option.name,
+)
+```
+![Alt text](doc/FlatAttributeMultiSelection.png "FlatAttributeMultiSelection")
+
 ### FlatAttributeList
-You can use `FlatAttributeList`to add a list of attributes to your object. The type of the attributes will be defined by the parameter `FlatAttributeStructure`. There you have to pass a `FlatAttributeStructure`. You can use any `FlatAttributeStructure` you want. The behaviour for adding a new attribute instance to the list will be defined in there.
+You can use `FlatAttributeList`to add a list of attributes to your object. The type of the attributes will be defined by the parameter `FlatAttributeStructure`. There you have to pass a `FlatAttributeStructure`. You can use any `FlatAttributeStructure` you want. The behavior for adding a new attribute instance to the list will be defined in there.
 
 Example:
 ```dart
@@ -343,7 +359,7 @@ Future<FlatResult<List<Author>>> loadAuthors(String searchQuery) async {
 Flat offers you some base validation methods that you can use inside your `FlatAttributeStructure`. You can find them inside the `FlatBaseValidator` class.
 
 ## Flat Object Structure CRUD Operations
-In an `FlatObjectStructure` you need to define CRUD functions which connects Flat with your backend. Every of these functions returns a Future of `FlatResult`. The `FlatResult` has two constructors `FlatResult.success` and `FlatResult.error`. If your function succeeds you can use the `FlatResult.success` constructor and pass the required data. If a function shouldnt return any data you need to pass a new `Unit` object: `FlatResult.success(Unit())`. This is for example the case in the delete function. There we only need the information if the action was successful. So you could emagine `Unit()` as `void`. If the action wasnt successful you should use the `FlatResult.error` constructor and pass an error message string. That string will be displayed to the user.
+In an `FlatObjectStructure` you need to define CRUD functions which connects Flat with your backend. Every of these functions returns a Future of `FlatResult`. The `FlatResult` has two constructors `FlatResult.success` and `FlatResult.error`. If your function succeeds you can use the `FlatResult.success` constructor and pass the required data. If a function shouldnt return any data you need to pass a new `Unit` object: `FlatResult.success(Unit())`. This is for example the case in the delete function. There we only need the information if the action was successful. So you could imagine `Unit()` as `void`. If the action wasnt successful you should use the `FlatResult.error` constructor and pass an error message string. That string will be displayed to the user.
 
 Example:
 
@@ -363,9 +379,9 @@ Future<FlatResult<Unit>> deleteEvent(String eventId) async {
 }
 ```
 
-To get and pass instances of the pre defined `FlatObjectStructure` there will be used the object `FlatObjectValue`. That object gets an `id` which is the id of the instance, not the id of the `FlatObjectStructure`. Also it has a list of `FlatAttributeValue`. That list should contain a value for every `FlatAttributeStructure` defined in the `FlatObjectStructure`. Its important that the `id` which is set in an `FlatAttributeValue` is the same as the `id` in the defined `FlatAttributeStructure` to which it belongs to. Thats neccessary to load the value of the attribute in a `FlatObjectValue` with the method `getAttributeValueByAttributeId`.
+To get and pass instances of the pre defined `FlatObjectStructure` there will be used the object `FlatObjectValue`. That object gets an `id` which is the id of the instance, not the id of the `FlatObjectStructure`. Also it has a list of `FlatAttributeValue`. That list should contain a value for every `FlatAttributeStructure` defined in the `FlatObjectStructure`. Its important that the `id` which is set in an `FlatAttributeValue` is the same as the `id` in the defined `FlatAttributeStructure` to which it belongs to. Thats necessary to load the value of the attribute in a `FlatObjectValue` with the method `getAttributeValueByAttributeId`.
 
-It is a good practice to define a seperate model for the `FlatObjectStructure` with `fromFlatObjectValue` and `toFlatObjectValue` methods. Similar to the `fromJson` and `toJson` methods. That makes it possible to work with that model in a typesave way. 
+It is a good practice to define a separate model for the `FlatObjectStructure` with `fromFlatObjectValue` and `toFlatObjectValue` methods. Similar to the `fromJson` and `toJson` methods. That makes it possible to work with that model in a typesave way. 
 
 Example:
 ```dart
@@ -426,7 +442,7 @@ For the pagination there are two methods available. You can load your data with 
 
 To use the offset-pagination you have to use the `LoadFlatObjects.offset` constructor to pass the `OnLoadFlatObjectsOffset` function. 
 
-To use the curser-pagination you have to use the `LoadFlatObjects.curser` constructor and pass the `OnLoadFlatObjectsCurser` function. This method doesnt directly return a list of `FlatObjectValue` but an `FlatOffsetObjectValueList` object, which contains that `FlatObjectValue` list. Additionaly the `FlatOffsetObjectValueList` needs an `overallPageCount` value. This is needed to handle the pagination correctly. 
+To use the curser-pagination you have to use the `LoadFlatObjects.curser` constructor and pass the `OnLoadFlatObjectsCurser` function. This method doesn't directly return a list of `FlatObjectValue` but an `FlatOffsetObjectValueList` object, which contains that `FlatObjectValue` list. Additionally the `FlatOffsetObjectValueList` needs an `overallPageCount` value. This is needed to handle the pagination correctly. 
 The `OnLoadFlatObjectsCurser` function gets an `page` value. Thats the value of the page which should be loaded and returned from the function. The size of each page could be defined by yourself. 
 
 The only search parameter for now is `searchQuery`. That optional parameter contains the search text which was entered by the user to filter the objects. How implement that filter is up to you.

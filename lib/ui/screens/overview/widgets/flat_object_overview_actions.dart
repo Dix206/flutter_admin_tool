@@ -13,12 +13,12 @@ class FlatObjectOverviewActions extends StatelessWidget {
   final FlatObjectSortOptions? sortOptions;
 
   const FlatObjectOverviewActions({
-    Key? key,
+    super.key,
     required this.flatObjectStructure,
     required this.searchQuery,
     required this.page,
     required this.sortOptions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class FlatObjectOverviewActions extends StatelessWidget {
       children: [
         if (flatObjectStructure.onCreateFlatObject != null)
           FlatButton(
-            text: FlatApp.getFlatTexts(context).createNewObjectButton,
+            text: flatObjectStructure.newObjectText ?? FlatApp.getFlatTexts(context).createNewObjectButton,
             onPressed: () => context.go(
               Routes.createObject(
                 flatObjectId: flatObjectStructure.id,
@@ -59,19 +59,17 @@ class _SearchBar extends StatefulWidget {
   final FlatObjectSortOptions? sortOptions;
 
   const _SearchBar({
-    Key? key,
     required this.flatObject,
     required this.searchQuery,
     required this.sortOptions,
-  }) : super(key: key);
+  });
 
   @override
   State<_SearchBar> createState() => _SearchBarState();
 }
 
 class _SearchBarState extends State<_SearchBar> {
-  late final _textEditingController =
-      TextEditingController(text: widget.searchQuery);
+  late final _textEditingController = TextEditingController(text: widget.searchQuery);
 
   @override
   void dispose() {
@@ -97,15 +95,12 @@ class _SearchBarState extends State<_SearchBar> {
                 Routes.overview(
                   flatObjectId: widget.flatObject.id,
                   page: 1,
-                  searchQuery: _textEditingController.text.trim().isEmpty
-                      ? null
-                      : _textEditingController.text.trim(),
+                  searchQuery: _textEditingController.text.trim().isEmpty ? null : _textEditingController.text.trim(),
                   sortOptions: widget.sortOptions,
                 ),
               ),
               decoration: InputDecoration(
-                hintText:
-                    FlatApp.getFlatTexts(context).searchObjectsTextFieldHint,
+                hintText: FlatApp.getFlatTexts(context).searchObjectsTextFieldHint,
                 border: const OutlineInputBorder(),
                 prefixIcon: const Icon(Icons.search),
                 contentPadding: EdgeInsets.zero,
@@ -134,9 +129,7 @@ class _SearchBarState extends State<_SearchBar> {
             Routes.overview(
               flatObjectId: widget.flatObject.id,
               page: 1,
-              searchQuery: _textEditingController.text.trim().isEmpty
-                  ? null
-                  : _textEditingController.text.trim(),
+              searchQuery: _textEditingController.text.trim().isEmpty ? null : _textEditingController.text.trim(),
               sortOptions: widget.sortOptions,
             ),
           ),

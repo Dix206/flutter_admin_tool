@@ -13,15 +13,12 @@ class AuthFirebaseService {
     required String password,
   }) async {
     try {
-      final credentials =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final credentials = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      return credentials.user != null
-          ? FlatResult.success(const Unit())
-          : FlatResult.error("Login failed");
+      return credentials.user != null ? FlatResult.success(const Unit()) : FlatResult.error("Login failed");
     } catch (e) {
       return FlatResult.error("Login failed");
     }

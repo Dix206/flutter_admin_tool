@@ -13,13 +13,9 @@ Future<FlatResult<Unit>> createUser(FlatObjectValue flatObjectValue) async {
       id: id,
     );
 
-    await FirebaseFirestore.instance
-        .collection(userFirebaseCollectionId)
-        .doc(event.id)
-        .set(event.toJson());
+    await FirebaseFirestore.instance.collection(userFirebaseCollectionId).doc(event.id).set(event.toJson());
     return FlatResult.success(const Unit());
   } catch (exception) {
-    return FlatResult.error(
-        "Es ist ein Fehler aufgetreten. Bitte probiere es erneut.");
+    return FlatResult.error("Es ist ein Fehler aufgetreten. Bitte probiere es erneut.");
   }
 }

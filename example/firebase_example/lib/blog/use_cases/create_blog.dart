@@ -9,8 +9,7 @@ Future<FlatResult<Unit>> createBlog(FlatObjectValue flatObjectValue) async {
   try {
     final id = const Uuid().v4();
 
-    final file =
-        flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('file');
+    final file = flatObjectValue.getAttributeValueByAttributeId<FlatFileValue?>('file');
 
     if (file?.data != null) {
       final fileId = const Uuid().v4();
@@ -28,10 +27,7 @@ Future<FlatResult<Unit>> createBlog(FlatObjectValue flatObjectValue) async {
               fileId: fileId,
             );
 
-            await FirebaseFirestore.instance
-                .collection(blogCollectionId)
-                .doc(blog.id)
-                .set(blog.toJson());
+            await FirebaseFirestore.instance.collection(blogCollectionId).doc(blog.id).set(blog.toJson());
             return FlatResult.success(const Unit());
           });
     }
@@ -42,10 +38,7 @@ Future<FlatResult<Unit>> createBlog(FlatObjectValue flatObjectValue) async {
       fileId: null,
     );
 
-    await FirebaseFirestore.instance
-        .collection(blogCollectionId)
-        .doc(blog.id)
-        .set(blog.toJson());
+    await FirebaseFirestore.instance.collection(blogCollectionId).doc(blog.id).set(blog.toJson());
     return FlatResult.success(const Unit());
   } catch (exception) {
     return FlatResult.error("Failed to create blog. Please try again");

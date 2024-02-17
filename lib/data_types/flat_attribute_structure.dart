@@ -15,7 +15,7 @@ abstract class FlatAttributeStructure<T extends Object> extends Equatable {
   /// The name of an attribute will be shown in the UI.
   final String displayName;
 
-  /// If this value is set to false, this value has to be setted while creating/updating this object.
+  /// If this value is set to false, this value has to be set while creating/updating this object.
   /// If its true, this attribute can be null.
   final bool isOptional;
 
@@ -26,14 +26,14 @@ abstract class FlatAttributeStructure<T extends Object> extends Equatable {
   /// If the validator is null, the attribute is always valid and every value of type [T] can be passed.
   final Validator<T>? validator;
 
-  /// If the validation of this attribute failes (based on the passed [validator]) this message will be displayd to the user.
+  /// If the validation of this attribute failed (based on the passed [validator]) this message will be displayed to the user.
   final String? invalidValueErrorMessage;
 
   /// If this value is true this attribute value will be displayed on the overview list. Otherwise the value will not be displayed.
   final bool shouldBeDisplayedOnOverviewTable;
 
   /// If this is set to true, the object list on the overview table can be sorted by this attribute.
-  /// If the list can be sorted by this value, it is neccessary to implement the sort functionality in the object load function.
+  /// If the list can be sorted by this value, it is necessary to implement the sort functionality in the object load function.
   final bool canObjectBeSortedByThisAttribute;
 
   // This value will be initially used while creating a new object.
@@ -65,7 +65,7 @@ abstract class FlatAttributeStructure<T extends Object> extends Equatable {
 
   bool isValid(T? value) {
     return (value != null && (validator?.call(value) ?? true)) ||
-        (value == null && isOptional);
+        ((value == null || (value is List && value.isEmpty)) && isOptional);
   }
 
   FlatAttributeValue toEmptyAttributeValue() {

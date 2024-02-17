@@ -59,21 +59,13 @@ class Event {
       id: id ?? flatObjectValue.id!,
       title: flatObjectValue.getAttributeValueByAttributeId('title'),
       price: flatObjectValue.getAttributeValueByAttributeId('price'),
-      phoneNumber:
-          flatObjectValue.getAttributeValueByAttributeId('phoneNumber'),
+      phoneNumber: flatObjectValue.getAttributeValueByAttributeId('phoneNumber'),
       email: flatObjectValue.getAttributeValueByAttributeId('email'),
-      locationLatitude: (flatObjectValue
-              .getAttributeValueByAttributeId('location') as FlatLocation?)
-          ?.latitude,
-      locationLongitude: (flatObjectValue
-              .getAttributeValueByAttributeId('location') as FlatLocation?)
-          ?.longitude,
+      locationLatitude: (flatObjectValue.getAttributeValueByAttributeId('location') as FlatLocation?)?.latitude,
+      locationLongitude: (flatObjectValue.getAttributeValueByAttributeId('location') as FlatLocation?)?.longitude,
       eventType: flatObjectValue.getAttributeValueByAttributeId('eventType'),
-      neededItems: (flatObjectValue
-              .getAttributeValueByAttributeId('neededItems') as List<dynamic>?)
-          ?.cast(),
-      startingTime:
-          flatObjectValue.getAttributeValueByAttributeId('startingTime'),
+      neededItems: (flatObjectValue.getAttributeValueByAttributeId('neededItems') as List<dynamic>?)?.cast(),
+      startingTime: flatObjectValue.getAttributeValueByAttributeId('startingTime'),
     );
   }
 

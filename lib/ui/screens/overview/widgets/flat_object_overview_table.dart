@@ -22,13 +22,13 @@ class FlatObjectOverviewTable extends StatelessWidget {
   final FlatObjectSortOptions? sortOptions;
 
   const FlatObjectOverviewTable({
-    Key? key,
+    super.key,
     required this.flatObject,
     required this.searchQuery,
     required this.page,
     required this.overallPages,
     required this.sortOptions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +52,7 @@ class FlatObjectOverviewTable extends StatelessWidget {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: SizedBox(
-                  width: minWidth > constraints.maxWidth
-                      ? minWidth
-                      : constraints.maxWidth,
+                  width: minWidth > constraints.maxWidth ? minWidth : constraints.maxWidth,
                   child: Column(
                     children: [
                       _TableTitle(
@@ -75,24 +73,20 @@ class FlatObjectOverviewTable extends StatelessWidget {
                             }
                           },
                           childBuilder: (context) {
-                            final state =
-                                FlatObjectOverviewViewModel.of(context).state;
+                            final state = FlatObjectOverviewViewModel.of(context).state;
 
                             if (state.loadingError != null) {
                               return FlatErrorWidget(
                                 errorMessage: state.loadingError!,
-                                onRetry: FlatObjectOverviewViewModel.of(context)
-                                    .init,
+                                onRetry: FlatObjectOverviewViewModel.of(context).init,
                               );
                             } else if (state.flatObjectValues == null) {
                               return const FlatLoading();
                             } else if (state.flatObjectValues!.isEmpty) {
                               return Center(
                                 child: Text(
-                                  FlatApp.getFlatTexts(context)
-                                      .objectTableNoItemsMessage,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
+                                  FlatApp.getFlatTexts(context).objectTableNoItemsMessage,
+                                  style: Theme.of(context).textTheme.titleMedium,
                                 ),
                               );
                             } else {
@@ -130,12 +124,11 @@ class _TableTitle extends StatelessWidget {
   final FlatObjectSortOptions? sortOptions;
 
   const _TableTitle({
-    Key? key,
     required this.flatObject,
     required this.searchQuery,
     required this.page,
     required this.sortOptions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -155,9 +148,7 @@ class _TableTitle extends StatelessWidget {
               width: _idTableEntryWidth,
               height: _tableTitleEntryHeight,
               canBeSorted: flatObject.canBeSortedById,
-              isSortedAscending: sortOptions?.attributeId == "id"
-                  ? sortOptions?.ascending == true
-                  : null,
+              isSortedAscending: sortOptions?.attributeId == "id" ? sortOptions?.ascending == true : null,
               onSort: (isSortedAscending) => context.go(
                 Routes.overview(
                   flatObjectId: flatObject.id,
@@ -180,9 +171,7 @@ class _TableTitle extends StatelessWidget {
                     textColor: Theme.of(context).colorScheme.onPrimaryContainer,
                     height: _tableTitleEntryHeight,
                     canBeSorted: attribute.canObjectBeSortedByThisAttribute,
-                    isSortedAscending: sortOptions?.attributeId == attribute.id
-                        ? sortOptions?.ascending == true
-                        : null,
+                    isSortedAscending: sortOptions?.attributeId == attribute.id ? sortOptions?.ascending == true : null,
                     onSort: (isSortedAscending) => context.go(
                       Routes.overview(
                         flatObjectId: flatObject.id,
@@ -195,8 +184,7 @@ class _TableTitle extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
-                .toList(),
+                ),
             const SizedBox(width: 16),
           ],
         ),
@@ -217,7 +205,6 @@ class _TableContent extends StatefulWidget {
   final String? loadMoreItemsError;
 
   const _TableContent({
-    Key? key,
     required this.flatObject,
     required this.flatObjectValues,
     required this.page,
@@ -227,7 +214,7 @@ class _TableContent extends StatefulWidget {
     required this.hasMoreItems,
     required this.isLoadingMoreItems,
     required this.loadMoreItemsError,
-  }) : super(key: key);
+  });
 
   @override
   State<_TableContent> createState() => _TableContentState();
@@ -240,8 +227,7 @@ class _TableContentState extends State<_TableContent> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (_scrollController.offset + 50 >
-              _scrollController.position.maxScrollExtent &&
+      if (_scrollController.offset + 50 > _scrollController.position.maxScrollExtent &&
           widget.loadMoreItemsError == null) {
         FlatObjectOverviewViewModel.of(context).loadMoreItems();
       }
@@ -258,10 +244,8 @@ class _TableContentState extends State<_TableContent> {
     return ListView.separated(
       physics: const ClampingScrollPhysics(),
       controller: _scrollController,
-      itemCount: widget.flatObjectValues.length +
-          (widget.isLoadingMoreItems || widget.loadMoreItemsError != null
-              ? 1
-              : 0),
+      itemCount:
+          widget.flatObjectValues.length + (widget.isLoadingMoreItems || widget.loadMoreItemsError != null ? 1 : 0),
       separatorBuilder: (context, index) => const Divider(height: 0),
       itemBuilder: (context, index) {
         if (index == widget.flatObjectValues.length) {
@@ -270,8 +254,7 @@ class _TableContentState extends State<_TableContent> {
             child: widget.loadMoreItemsError != null
                 ? FlatErrorWidget(
                     errorMessage: widget.loadMoreItemsError!,
-                    onRetry:
-                        FlatObjectOverviewViewModel.of(context).loadMoreItems,
+                    onRetry: FlatObjectOverviewViewModel.of(context).loadMoreItems,
                   )
                 : const FlatLoading(),
           );
@@ -290,30 +273,24 @@ class _TableContentState extends State<_TableContent> {
             children: [
               const SizedBox(width: 16),
               _TableEntry(
-                text: flatObjectValue.id ??
-                    FlatApp.getFlatTexts(context).flatAttributeValueNull,
+                text: flatObjectValue.id ?? FlatApp.getFlatTexts(context).flatAttributeValueNull,
                 width: _idTableEntryWidth,
               ),
               ...flatObjectValue.values
                   .where(
                     (flatAttributeValue) =>
-                        widget.flatObject
-                            .getAttributeById(flatAttributeValue.id)
-                            ?.shouldBeDisplayedOnOverviewTable ??
+                        widget.flatObject.getAttributeById(flatAttributeValue.id)?.shouldBeDisplayedOnOverviewTable ??
                         false,
                   )
                   .map(
                     (flatAttributeValue) => _TableEntry(
-                      text: widget.flatObject
-                              .getAttributeById(flatAttributeValue.id)
-                              ?.valueToString(
+                      text: widget.flatObject.getAttributeById(flatAttributeValue.id)?.valueToString(
                                 context: context,
                                 value: flatAttributeValue.value,
                               ) ??
                           FlatApp.getFlatTexts(context).flatAttributeValueNull,
                     ),
-                  )
-                  .toList(),
+                  ),
               const SizedBox(width: 16),
             ],
           ),
@@ -348,7 +325,6 @@ class _TableEntry extends StatelessWidget {
   final Function(bool isSortedAscending)? onSort;
 
   const _TableEntry({
-    Key? key,
     required this.text,
     this.textColor,
     this.height = _tableEntryHeight,
@@ -356,7 +332,7 @@ class _TableEntry extends StatelessWidget {
     this.isSortedAscending = false,
     this.canBeSorted = false,
     this.onSort,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

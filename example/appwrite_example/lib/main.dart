@@ -25,8 +25,7 @@ void main() {
       flatAuthInfos: FlatAuthInfos(
         getLoggedInUser: authAppwriteService.getLoggedInUser,
         onLogout: authAppwriteService.logout,
-        loginScreenBuilder: (onLoginSuccess) =>
-            LoginScreen(onLoginSuccess: onLoginSuccess),
+        loginScreenBuilder: (onLoginSuccess) => LoginScreen(onLoginSuccess: onLoginSuccess),
       ),
       flatCustomMenuEntries: [
         FlatCustomMenuEntry(

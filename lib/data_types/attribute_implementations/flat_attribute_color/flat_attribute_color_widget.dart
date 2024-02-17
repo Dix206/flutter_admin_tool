@@ -14,13 +14,13 @@ class FlatAttributeColorWidget extends StatelessWidget {
   final FlatAttributeColor flatAttributeColor;
 
   const FlatAttributeColorWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.currentValue,
     required this.onFlatTypeUpdated,
     required this.shouldDisplayValidationErrors,
     required this.flatAttributeColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +39,13 @@ class FlatAttributeColorWidget extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           color: currentValue,
-          border: Border.all(
-              color: currentValue ?? Theme.of(context).colorScheme.onSurface),
+          border: Border.all(color: currentValue ?? Theme.of(context).colorScheme.onSurface),
           borderRadius: BorderRadius.circular(4),
         ),
       ),
-      subtitle: shouldDisplayValidationErrors &&
-              !flatAttributeColor.isValid(currentValue)
+      subtitle: shouldDisplayValidationErrors && !flatAttributeColor.isValid(currentValue)
           ? Text(
-              flatAttributeColor.invalidValueErrorMessage ??
-                  flatTexts.defaultInvalidDataMessage,
+              flatAttributeColor.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
                   ),
@@ -78,10 +75,9 @@ class _ColorPicker extends StatefulWidget {
   final Color initialColor;
 
   const _ColorPicker({
-    Key? key,
     required this.onFlatTypeUpdated,
     required this.initialColor,
-  }) : super(key: key);
+  });
 
   @override
   State<_ColorPicker> createState() => _ColorPickerState();
@@ -91,8 +87,7 @@ class _ColorPickerState extends State<_ColorPicker> {
   late Color _currentColor = widget.initialColor;
 
   late final _hexController = TextEditingController(
-    text:
-        "#${widget.initialColor.value.toRadixString(16).padLeft(8, '0').toUpperCase()}",
+    text: "#${widget.initialColor.value.toRadixString(16).padLeft(8, '0').toUpperCase()}",
   );
 
   @override
@@ -131,8 +126,7 @@ class _ColorPickerState extends State<_ColorPicker> {
                 onColorChanged: (color) => setState(
                   () {
                     _currentColor = color;
-                    _hexController.text =
-                        "#${color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}";
+                    _hexController.text = "#${color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}";
                   },
                 ),
               ),

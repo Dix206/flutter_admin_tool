@@ -4,9 +4,9 @@ class FlatLoading extends StatelessWidget {
   final double size;
 
   const FlatLoading({
-    Key? key,
+    super.key,
     this.size = 24.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

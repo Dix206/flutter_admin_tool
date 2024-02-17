@@ -21,13 +21,13 @@ class InsertFlatObjectScreen extends StatelessWidget {
   final FlatObjectSortOptions? sortOptions;
 
   const InsertFlatObjectScreen({
-    Key? key,
+    super.key,
     this.existingFlatObjectValueId,
     required this.flatObjectId,
     required this.searchQuery,
     required this.page,
     required this.sortOptions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +41,7 @@ class InsertFlatObjectScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            FlatApp.getFlatTexts(context)
-                .updateFlatObjectNoObjectFoundWithPassedId(flatObjectId),
+            FlatApp.getFlatTexts(context).updateFlatObjectNoObjectFoundWithPassedId(flatObjectId),
             textAlign: TextAlign.center,
           ),
         ),
@@ -56,8 +55,7 @@ class InsertFlatObjectScreen extends StatelessWidget {
             showErrorMessage(context: context, errorMessage: state.failure!);
           }
 
-          if (state is InsertFlatObjectInitState &&
-              (state.isInsertSuccessfull || state.isDeletionSuccessfull)) {
+          if (state is InsertFlatObjectInitState && (state.isInsertSuccessful || state.isDeletionSuccessful)) {
             _onNavigateBack(
               context: context,
               flatObject: flatObjectStructure,
@@ -72,8 +70,7 @@ class InsertFlatObjectScreen extends StatelessWidget {
               existingFlatObjectValueId: existingFlatObjectValueId,
               flatObject: flatObjectStructure,
               currentFlatObjectValue: state.currentFlatObjectValue,
-              shouldDisplayValidationErrors:
-                  state.shouldDisplayValidationErrors,
+              shouldDisplayValidationErrors: state.shouldDisplayValidationErrors,
               isInserting: state.isInserting,
               isDeleting: state.isDeleting,
               onNavigateBack: () => _onNavigateBack(
@@ -120,7 +117,6 @@ class _Content extends StatefulWidget {
   final Function() onNavigateBack;
 
   const _Content({
-    Key? key,
     required this.existingFlatObjectValueId,
     required this.flatObject,
     required this.currentFlatObjectValue,
@@ -128,7 +124,7 @@ class _Content extends StatefulWidget {
     required this.isInserting,
     required this.isDeleting,
     required this.onNavigateBack,
-  }) : super(key: key);
+  });
 
   @override
   State<_Content> createState() => _ContentState();
@@ -168,18 +164,16 @@ class _TopBar extends StatelessWidget {
   final Function() onNavigateBack;
 
   const _TopBar({
-    Key? key,
     required this.existingFlatObjectValueId,
     required this.isInserting,
     required this.isDeleting,
     required this.flatObject,
     required this.onNavigateBack,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final bool isMobile =
-        MediaQuery.of(context).size.width < mobileViewMaxWidth;
+    final bool isMobile = MediaQuery.of(context).size.width < mobileViewMaxWidth;
 
     return FlatTopBar(
       actions: [
@@ -200,22 +194,19 @@ class _TopBar extends StatelessWidget {
             ),
           ),
         FlatButton(
-          onPressed: () =>
-              InsertFlatObjectViewModel.of(context).insertObject(context),
+          onPressed: () => InsertFlatObjectViewModel.of(context).insertObject(context),
           text: FlatApp.getFlatTexts(context).save,
           isLoading: isInserting,
         ),
-        if (flatObject.onDeleteFlatObject != null &&
-            existingFlatObjectValueId != null)
+        if (flatObject.onDeleteFlatObject != null && existingFlatObjectValueId != null)
           FlatButton(
             onPressed: () async {
-              final shouldDeleteBject = await showDialog(
+              final shouldDeleteObject = await showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
                   title: Text(FlatApp.getFlatTexts(context).delete),
                   content: Text(
-                    FlatApp.getFlatTexts(context)
-                        .deleteFlatObjectValueConfirmationMessage,
+                    FlatApp.getFlatTexts(context).deleteFlatObjectValueConfirmationMessage,
                   ),
                   actions: [
                     TextButton(
@@ -230,7 +221,7 @@ class _TopBar extends StatelessWidget {
                 ),
               );
 
-              if (shouldDeleteBject == true && context.mounted) {
+              if (shouldDeleteObject == true && context.mounted) {
                 InsertFlatObjectViewModel.of(context).deleteObject();
               }
             },
@@ -251,12 +242,11 @@ class _AttributeWidgets extends StatelessWidget {
   final bool shouldDisplayValidationErrors;
 
   const _AttributeWidgets({
-    Key? key,
     required this.existingFlatObjectValueId,
     required this.flatObject,
     required this.currentFlatObjectValue,
     required this.shouldDisplayValidationErrors,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -286,13 +276,10 @@ class _AttributeWidgets extends StatelessWidget {
                     const SizedBox(height: 16),
                     flatValue.canBeEdited || existingFlatObjectValueId == null
                         ? flatValue.buildWidget(
-                            currentValue: currentFlatObjectValue
-                                .getAttributeValueByAttributeId(flatValue.id),
-                            shouldDisplayValidationErrors:
-                                shouldDisplayValidationErrors,
+                            currentValue: currentFlatObjectValue.getAttributeValueByAttributeId(flatValue.id),
+                            shouldDisplayValidationErrors: shouldDisplayValidationErrors,
                             onFlatTypeUpdated: (newValue) {
-                              InsertFlatObjectViewModel.of(context)
-                                  .updateAttributeValue(
+                              InsertFlatObjectViewModel.of(context).updateAttributeValue(
                                 id: flatValue.id,
                                 value: newValue,
                               );
@@ -300,10 +287,9 @@ class _AttributeWidgets extends StatelessWidget {
                           )
                         : SelectableText(
                             flatValue.valueToString(
-                                context: context,
-                                value: currentFlatObjectValue
-                                    .getAttributeValueByAttributeId(
-                                        flatValue.id)),
+                              context: context,
+                              value: currentFlatObjectValue.getAttributeValueByAttributeId(flatValue.id),
+                            ),
                           ),
                     const SizedBox(height: 16),
                   ],

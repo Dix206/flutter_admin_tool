@@ -13,24 +13,20 @@ class FlatAttributeLocationWidget extends StatefulWidget {
   final OnFlatTypeUpdated<FlatLocation> onFlatTypeUpdated;
 
   const FlatAttributeLocationWidget({
-    Key? key,
+    super.key,
     required this.flatTypeLocation,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,
     required this.onFlatTypeUpdated,
-  }) : super(key: key);
+  });
 
   @override
-  State<FlatAttributeLocationWidget> createState() =>
-      _FlatAttributeLocationWidgetState();
+  State<FlatAttributeLocationWidget> createState() => _FlatAttributeLocationWidgetState();
 }
 
-class _FlatAttributeLocationWidgetState
-    extends State<FlatAttributeLocationWidget> {
-  late final _latitudeController =
-      TextEditingController(text: widget.currentValue?.latitude.toString());
-  late final _longitudeController =
-      TextEditingController(text: widget.currentValue?.longitude.toString());
+class _FlatAttributeLocationWidgetState extends State<FlatAttributeLocationWidget> {
+  late final _latitudeController = TextEditingController(text: widget.currentValue?.latitude.toString());
+  late final _longitudeController = TextEditingController(text: widget.currentValue?.longitude.toString());
 
   @override
   void initState() {
@@ -40,14 +36,10 @@ class _FlatAttributeLocationWidgetState
   }
 
   void _setLocation() {
-    final latitude =
-        double.tryParse(_latitudeController.text.replaceAll(",", "."));
-    final longitude =
-        double.tryParse(_longitudeController.text.replaceAll(",", "."));
+    final latitude = double.tryParse(_latitudeController.text.replaceAll(",", "."));
+    final longitude = double.tryParse(_longitudeController.text.replaceAll(",", "."));
     widget.onFlatTypeUpdated(
-      latitude != null && longitude != null
-          ? FlatLocation(latitude: latitude, longitude: longitude)
-          : null,
+      latitude != null && longitude != null ? FlatLocation(latitude: latitude, longitude: longitude) : null,
     );
   }
 
@@ -74,8 +66,7 @@ class _FlatAttributeLocationWidgetState
             FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*")),
           ],
           decoration: InputDecoration(
-            hintText: widget.flatTypeLocation.latitudeHint ??
-                flatTexts.flatAttributeLocationLatitude,
+            hintText: widget.flatTypeLocation.latitudeHint ?? flatTexts.flatAttributeLocationLatitude,
             border: const OutlineInputBorder(),
           ),
         ),
@@ -89,13 +80,11 @@ class _FlatAttributeLocationWidgetState
             FilteringTextInputFormatter.allow(RegExp(r"^\d*\.?\d*")),
           ],
           decoration: InputDecoration(
-            hintText: widget.flatTypeLocation.longitudeHint ??
-                flatTexts.flatAttributeLocationLongitude,
+            hintText: widget.flatTypeLocation.longitudeHint ?? flatTexts.flatAttributeLocationLongitude,
             border: const OutlineInputBorder(),
           ),
         ),
-        if (!widget.flatTypeLocation.isValid(widget.currentValue) &&
-            widget.shouldDisplayValidationErrors)
+        if (!widget.flatTypeLocation.isValid(widget.currentValue) && widget.shouldDisplayValidationErrors)
           Padding(
             padding: const EdgeInsets.only(
               left: 16.0,
@@ -103,12 +92,8 @@ class _FlatAttributeLocationWidgetState
               top: 8,
             ),
             child: Text(
-              widget.flatTypeLocation.invalidValueErrorMessage ??
-                  flatTexts.defaultInvalidDataMessage,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.error),
+              widget.flatTypeLocation.invalidValueErrorMessage ?? flatTexts.defaultInvalidDataMessage,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
             ),
           ),
       ],

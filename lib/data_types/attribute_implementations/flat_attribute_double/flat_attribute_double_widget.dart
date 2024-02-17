@@ -10,21 +10,19 @@ class FlatAttributeDoubleWidget extends StatefulWidget {
   final OnFlatTypeUpdated<double> onFlatTypeUpdated;
 
   const FlatAttributeDoubleWidget({
-    Key? key,
+    super.key,
     required this.flatTypeDouble,
     required this.currentValue,
     required this.shouldDisplayValidationErrors,
     required this.onFlatTypeUpdated,
-  }) : super(key: key);
+  });
 
   @override
-  State<FlatAttributeDoubleWidget> createState() =>
-      _FlatAttributeDoubleWidgetState();
+  State<FlatAttributeDoubleWidget> createState() => _FlatAttributeDoubleWidgetState();
 }
 
 class _FlatAttributeDoubleWidgetState extends State<FlatAttributeDoubleWidget> {
-  late final _textEditingController =
-      TextEditingController(text: widget.currentValue?.toString());
+  late final _textEditingController = TextEditingController(text: widget.currentValue?.toString());
 
   @override
   void initState() {
@@ -55,8 +53,7 @@ class _FlatAttributeDoubleWidgetState extends State<FlatAttributeDoubleWidget> {
       decoration: InputDecoration(
         hintText: widget.flatTypeDouble.hint,
         border: const OutlineInputBorder(),
-        errorText: widget.flatTypeDouble.isValid(widget.currentValue) ||
-                !widget.shouldDisplayValidationErrors
+        errorText: widget.flatTypeDouble.isValid(widget.currentValue) || !widget.shouldDisplayValidationErrors
             ? null
             : widget.flatTypeDouble.invalidValueErrorMessage,
       ),

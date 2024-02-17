@@ -40,9 +40,7 @@ class FlatAttributeLocation extends FlatAttributeStructure<FlatLocation> {
     required BuildContext context,
     required FlatLocation? value,
   }) =>
-      value == null
-          ? FlatApp.getFlatTexts(context).flatAttributeValueNull
-          : "${value.latitude} | ${value.longitude}";
+      value == null ? FlatApp.getFlatTexts(context).flatAttributeValueNull : "${value.latitude} | ${value.longitude}";
 
   @override
   List<Object?> get props => [

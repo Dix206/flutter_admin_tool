@@ -18,17 +18,16 @@ class FlatMainScreen extends StatelessWidget {
   final Widget child;
 
   const FlatMainScreen({
-    Key? key,
+    super.key,
     required this.selectedTab,
     required this.selectedFlatObjectId,
     required this.selectedCustomMenuEntryId,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final bool isMobile =
-        MediaQuery.of(context).size.width < mobileViewMaxWidth;
+    final bool isMobile = MediaQuery.of(context).size.width < mobileViewMaxWidth;
 
     return Scaffold(
       drawer: isMobile
@@ -69,12 +68,11 @@ class _Menu extends StatelessWidget {
   final bool isDrawer;
 
   const _Menu({
-    Key? key,
     required this.selectedTab,
     required this.selectedFlatObjectId,
     required this.selectedCustomMenuEntryId,
     required this.isDrawer,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -152,8 +150,7 @@ class _Menu extends StatelessWidget {
                 },
                 tileColor: Theme.of(context).colorScheme.surface,
                 selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                selected: selectedTab == FlatMainScreenTab.overview &&
-                    flatObject.id == selectedFlatObjectId,
+                selected: selectedTab == FlatMainScreenTab.overview && flatObject.id == selectedFlatObjectId,
               ),
             ),
           ),
@@ -170,8 +167,7 @@ class _Menu extends StatelessWidget {
                 },
                 tileColor: Theme.of(context).colorScheme.surface,
                 selectedTileColor: Theme.of(context).scaffoldBackgroundColor,
-                selected: selectedTab == FlatMainScreenTab.custom &&
-                    customMenuEntry.id == selectedCustomMenuEntryId,
+                selected: selectedTab == FlatMainScreenTab.custom && customMenuEntry.id == selectedCustomMenuEntryId,
               ),
             ),
           ),

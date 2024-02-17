@@ -6,9 +6,9 @@ class LoginScreen extends StatefulWidget {
   final Function() onLoginSuccess;
 
   const LoginScreen({
-    Key? key,
+    super.key,
     required this.onLoginSuccess,
-  }) : super(key: key);
+  });
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   controller: passwordController,
                   decoration: const InputDecoration(
-                    hintText: "Passwort",
+                    hintText: "Password",
                   ),
                 ),
                 const SizedBox(height: 32),
